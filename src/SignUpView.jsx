@@ -50,8 +50,8 @@ const SignUpView = ({ setCurrentView }) => {
                         {isRegister && (
                             <div className="space-y-1.5">
                                 <label className="text-sm font-semibold text-slate-700">Nama Lengkap</label>
-                                <div className="relative">
-                                    <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                <div className="relative flex items-center">
+                                    <User className="absolute left-3.5 w-4 h-4 text-slate-400 pointer-events-none" />
                                     <input
                                         type="text"
                                         value={name}
@@ -66,8 +66,8 @@ const SignUpView = ({ setCurrentView }) => {
                         {/* Email Bisnis */}
                         <div className="space-y-1.5">
                             <label className="text-sm font-semibold text-slate-700">Email Bisnis</label>
-                            <div className="relative">
-                                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                            <div className="relative flex items-center">
+                                <Mail className="absolute left-3.5 w-4 h-4 text-slate-400 pointer-events-none" />
                                 <input
                                     type="email"
                                     value={email}
@@ -81,8 +81,8 @@ const SignUpView = ({ setCurrentView }) => {
                         {/* Kata Sandi */}
                         <div className="space-y-1.5">
                             <label className="text-sm font-semibold text-slate-700">Kata Sandi</label>
-                            <div className="relative">
-                                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                            <div className="relative flex items-center">
+                                <Lock className="absolute left-3.5 w-4 h-4 text-slate-400 pointer-events-none" />
                                 <input
                                     type={showPassword ? 'text' : 'password'}
                                     value={password}
@@ -93,7 +93,7 @@ const SignUpView = ({ setCurrentView }) => {
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                                    className="absolute right-3.5 text-slate-400 hover:text-slate-600 transition-colors"
                                 >
                                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                 </button>

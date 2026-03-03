@@ -227,8 +227,8 @@ const DesignSystemView = () => {
             {/* Text Input */}
             <div className="space-y-1.5">
               <label className="text-sm font-semibold text-slate-700">Text Input</label>
-              <div className="relative">
-                <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <div className="relative flex items-center">
+                <User className="absolute left-3.5 w-4 h-4 text-slate-400 pointer-events-none" />
                 <input
                   type="text"
                   value={demoInput}
@@ -242,8 +242,8 @@ const DesignSystemView = () => {
             {/* Email Input */}
             <div className="space-y-1.5">
               <label className="text-sm font-semibold text-slate-700">Email Input</label>
-              <div className="relative">
-                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <div className="relative flex items-center">
+                <Mail className="absolute left-3.5 w-4 h-4 text-slate-400 pointer-events-none" />
                 <input
                   type="email"
                   placeholder="nama@bisnis.com"
@@ -255,8 +255,8 @@ const DesignSystemView = () => {
             {/* Password Input */}
             <div className="space-y-1.5">
               <label className="text-sm font-semibold text-slate-700">Password Input</label>
-              <div className="relative">
-                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <div className="relative flex items-center">
+                <Lock className="absolute left-3.5 w-4 h-4 text-slate-400 pointer-events-none" />
                 <input
                   type={showPw ? 'text' : 'password'}
                   value={demoPassword}
@@ -264,7 +264,7 @@ const DesignSystemView = () => {
                   placeholder="••••••••"
                   className="w-full pl-10 pr-11 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
                 />
-                <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
+                <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3.5 text-slate-400 hover:text-slate-600 transition-colors">
                   {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
@@ -273,8 +273,8 @@ const DesignSystemView = () => {
             {/* Search Input */}
             <div className="space-y-1.5">
               <label className="text-sm font-semibold text-slate-700">Search</label>
-              <div className="relative">
-                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+              <div className="relative flex items-center">
+                <Search className="absolute left-3.5 w-4 h-4 text-slate-400 pointer-events-none" />
                 <input
                   type="text"
                   placeholder="Cari sesuatu..."
