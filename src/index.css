@@ -39,19 +39,49 @@ body, * {
   --primary-darker: 192 89% 36%;
 }
 
-/* Fallback utilities to ensure primary buttons remain visible */
-.bg-primary {
-  background-color: hsl(var(--primary)) !important;
-}
+/* ── Fallback utilities: background ── */
+.bg-primary { background-color: #13c8ec !important; }
+.bg-primary-dark { background-color: #0daecf !important; }
+.bg-primary-darker { background-color: #098fae !important; }
+.bg-primary\/5 { background-color: rgba(19, 200, 236, 0.05) !important; }
+.bg-primary\/10 { background-color: rgba(19, 200, 236, 0.1) !important; }
+.bg-primary\/20 { background-color: rgba(19, 200, 236, 0.2) !important; }
 
-.hover\:bg-primary-dark:hover {
-  background-color: hsl(var(--primary-dark)) !important;
-}
+/* ── Fallback utilities: hover backgrounds ── */
+.hover\:bg-primary:hover { background-color: #13c8ec !important; }
+.hover\:bg-primary-dark:hover { background-color: #0daecf !important; }
+.hover\:bg-primary-darker:hover { background-color: #098fae !important; }
+.hover\:bg-primary\/5:hover { background-color: rgba(19, 200, 236, 0.05) !important; }
+.hover\:bg-primary\/20:hover { background-color: rgba(19, 200, 236, 0.2) !important; }
 
-.text-primary-darker {
-  color: hsl(var(--primary-darker)) !important;
-}
+/* ── Fallback utilities: text ── */
+.text-primary { color: #13c8ec !important; }
+.text-primary-dark { color: #0daecf !important; }
+.text-primary-darker { color: #098fae !important; }
+.hover\:text-primary:hover { color: #13c8ec !important; }
+.hover\:text-primary-darker:hover { color: #098fae !important; }
 
-.shadow-primary {
-  box-shadow: 0 8px 20px hsl(var(--primary) / 0.3) !important;
-}
+/* ── Fallback utilities: border ── */
+.border-primary { border-color: #13c8ec !important; }
+.border-primary\/50 { border-color: rgba(19, 200, 236, 0.5) !important; }
+.hover\:border-primary:hover { border-color: #13c8ec !important; }
+.focus\:border-primary\/50:focus { border-color: rgba(19, 200, 236, 0.5) !important; }
+
+/* ── Fallback utilities: ring ── */
+.ring-primary\/10 { --tw-ring-color: rgba(19, 200, 236, 0.1) !important; }
+.focus\:ring-primary\/10:focus { --tw-ring-color: rgba(19, 200, 236, 0.1) !important; }
+
+/* ── Fallback utilities: gradient stops ── */
+.from-primary { --tw-gradient-from: #13c8ec !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(19, 200, 236, 0)) !important; }
+.from-primary-dark { --tw-gradient-from: #0daecf !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(13, 174, 207, 0)) !important; }
+.from-primary-darker { --tw-gradient-from: #098fae !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(9, 143, 174, 0)) !important; }
+.to-primary { --tw-gradient-to: #13c8ec !important; }
+.to-primary-dark { --tw-gradient-to: #0daecf !important; }
+.to-primary-darker { --tw-gradient-to: #098fae !important; }
+.hover\:from-primary-dark:hover { --tw-gradient-from: #0daecf !important; --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(13, 174, 207, 0)) !important; }
+.hover\:to-primary-darker:hover { --tw-gradient-to: #098fae !important; }
+
+/* ── Fallback utilities: shadows ── */
+.shadow-primary { box-shadow: 0 8px 20px rgba(19, 200, 236, 0.3) !important; }
+.shadow-primary-sm { box-shadow: 0 4px 14px rgba(19, 200, 236, 0.35) !important; }
+.shadow-primary-lg { box-shadow: 0 6px 18px rgba(19, 200, 236, 0.45) !important; }
