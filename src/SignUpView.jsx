@@ -57,7 +57,7 @@ const SignUpView = ({ setCurrentView }) => {
                                         value={name}
                                         onChange={e => setName(e.target.value)}
                                         placeholder="Contoh: Budi Gunawan"
-                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#13c8ec]/10 focus:border-[#13c8ec]/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
+                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
                                     />
                                 </div>
                             </div>
@@ -73,7 +73,7 @@ const SignUpView = ({ setCurrentView }) => {
                                     value={email}
                                     onChange={e => setEmail(e.target.value)}
                                     placeholder="nama@bisnis.com"
-                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#13c8ec]/10 focus:border-[#13c8ec]/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
+                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
                                 />
                             </div>
                         </div>
@@ -88,7 +88,7 @@ const SignUpView = ({ setCurrentView }) => {
                                     value={password}
                                     onChange={e => setPassword(e.target.value)}
                                     placeholder="••••••••"
-                                    className="w-full pl-10 pr-11 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#13c8ec]/10 focus:border-[#13c8ec]/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
+                                    className="w-full pl-10 pr-11 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
                                 />
                                 <button
                                     type="button"
@@ -104,7 +104,7 @@ const SignUpView = ({ setCurrentView }) => {
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="w-full py-3.5 mt-2 bg-gradient-to-r from-[#13c8ec] to-[#0daecf] hover:from-[#0daecf] hover:to-[#098fae] disabled:from-slate-300 disabled:to-slate-300 text-white font-bold rounded-2xl transition-all shadow-[0_8px_20px_rgba(19,200,236,0.3)] disabled:shadow-none flex items-center justify-center gap-2 text-[15px]"
+                            className="w-full py-3.5 mt-2 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary-darker disabled:from-slate-300 disabled:to-slate-300 text-white font-bold rounded-2xl transition-all shadow-primary disabled:shadow-none flex items-center justify-center gap-2 text-[15px]"
                         >
                             {isLoading ? (
                                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -122,7 +122,7 @@ const SignUpView = ({ setCurrentView }) => {
                         {isRegister ? 'Sudah punya akun? ' : 'Belum punya akun? '}
                         <button
                             onClick={() => setMode(isRegister ? 'login' : 'register')}
-                            className="text-[#13c8ec] font-bold hover:underline transition-all"
+                            className="text-primary font-bold hover:underline transition-all"
                         >
                             {isRegister ? 'Masuk di sini' : 'Daftar sekarang'}
                         </button>

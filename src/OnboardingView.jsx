@@ -247,13 +247,12 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
         tone: 'friendly',
         logo: null,
     });
-    const [templateTab, setTemplateTab] = useState('pick'); // 'pick' | 'upload'
-    const [typoTab, setTypoTab] = useState('preset'); // 'preset' | 'advance'
+    const [templateTab, setTemplateTab] = useState('pick');
+    const [typoTab, setTypoTab] = useState('preset');
     const [customPrimaryInput, setCustomPrimaryInput] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
     const [generatedPalettes, setGeneratedPalettes] = useState([]);
     const [selectedPaletteIdx, setSelectedPaletteIdx] = useState(null);
-
     const [isSaving, setIsSaving] = useState(false);
 
     const handleNext = () => {
@@ -339,7 +338,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
 
                     {/* Badge + Judul + Subjudul */}
                     <div className="text-center mb-6">
-                        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#13c8ec]/10 text-[#098fae] rounded-full text-xs font-bold mb-3">
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 text-primary-darker rounded-full text-xs font-bold mb-3">
                             <Sparkles className="w-3.5 h-3.5" />
                             Setup Profil Bisnis
                         </div>
@@ -358,14 +357,14 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                     <div className="flex items-center justify-center gap-2 mb-8">
                         {STEPS.map((s, i) => (
                             <React.Fragment key={s.id}>
-                                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all ${step > s.id ? 'bg-[#13c8ec] text-white' :
-                                    step === s.id ? 'bg-[#13c8ec] text-white ring-4 ring-[#13c8ec]/20' :
+                                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-black transition-all ${step > s.id ? 'bg-primary text-white' :
+                                    step === s.id ? 'bg-primary text-white ring-4 ring-primary/20' :
                                         'bg-slate-200 text-slate-400'
                                     }`}>
                                     {step > s.id ? <Check className="w-4 h-4" /> : s.id}
                                 </div>
                                 {i < STEPS.length - 1 && (
-                                    <div className={`h-0.5 w-10 rounded-full transition-all ${step > s.id ? 'bg-[#13c8ec]' : 'bg-slate-200'}`} />
+                                    <div className={`h-0.5 w-10 rounded-full transition-all ${step > s.id ? 'bg-primary' : 'bg-slate-200'}`} />
                                 )}
                             </React.Fragment>
                         ))}
@@ -384,12 +383,12 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                     value={localBrand.name}
                                     onChange={e => setLocalBrand({ ...localBrand, name: e.target.value })}
                                     placeholder="Contoh: Kopi Nusantara, Gaya Fashion, dll."
-                                    className="w-full p-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#13c8ec]/10 focus:border-[#13c8ec]/40 outline-none transition-all font-medium text-slate-800 placeholder-slate-400 text-lg"
+                                    className="w-full p-4 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/40 outline-none transition-all font-medium text-slate-800 placeholder-slate-400 text-lg"
                                 />
                                 {localBrand.name && (
-                                    <div className="px-4 py-2 bg-[#13c8ec]/5 rounded-xl border border-[#13c8ec]/20 animation-fade-in flex items-center gap-2">
+                                    <div className="px-4 py-2 bg-primary/5 rounded-xl border border-primary/20 animation-fade-in flex items-center gap-2">
                                         <span className="text-xs text-slate-500">Instagram:</span>
-                                        <span className="font-black text-[#13c8ec] text-sm">@{localBrand.name.toLowerCase().replace(/\s+/g, '_')}</span>
+                                        <span className="font-black text-primary text-sm">@{localBrand.name.toLowerCase().replace(/\s+/g, '_')}</span>
                                     </div>
                                 )}
                             </div>
@@ -402,11 +401,11 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                             key={cat.id}
                                             onClick={() => setLocalBrand({ ...localBrand, category: cat.label })}
                                             className={`p-3 rounded-xl border-2 flex flex-col items-center gap-1.5 transition-all text-center ${localBrand.category === cat.label
-                                                ? 'border-[#13c8ec] bg-[#13c8ec]/10 text-[#098fae]'
-                                                : 'border-slate-100 hover:border-[#13c8ec]/30 bg-slate-50 text-slate-600'
+                                                ? 'border-primary bg-primary/10 text-primary-darker'
+                                                : 'border-slate-100 hover:border-primary/30 bg-slate-50 text-slate-600'
                                                 }`}
                                         >
-                                            <div className={`p-1.5 rounded-lg ${localBrand.category === cat.label ? 'bg-[#13c8ec]/20' : 'bg-white'}`}>
+                                            <div className={`p-1.5 rounded-lg ${localBrand.category === cat.label ? 'bg-primary/20' : 'bg-white'}`}>
                                                 {cat.icon}
                                             </div>
                                             <span className="text-xs font-bold leading-tight">{cat.label}</span>
@@ -417,19 +416,19 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
 
                             <div className="space-y-2">
                                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Logo Bisnis (Opsional)</label>
-                                <label className="flex items-center gap-4 p-4 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-[#13c8ec]/50 transition-all cursor-pointer group">
+                                <label className="flex items-center gap-4 p-4 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-primary/50 transition-all cursor-pointer group">
                                     <div className="w-16 h-16 rounded-xl bg-white border border-slate-200 flex items-center justify-center overflow-hidden shadow-sm shrink-0 group-hover:scale-105 transition-transform">
                                         {localBrand.logo ? (
                                             <img src={localBrand.logo} alt="Logo" className="w-full h-full object-cover" />
                                         ) : (
-                                            <ImageIcon className="w-6 h-6 text-slate-400 group-hover:text-[#13c8ec]" />
+                                            <ImageIcon className="w-6 h-6 text-slate-400 group-hover:text-primary" />
                                         )}
                                     </div>
                                     <div className="flex-1">
                                         <p className="text-sm font-bold text-slate-700">Pilih atau Tarik Logo Kesini</p>
                                         <p className="text-xs text-slate-400 mt-0.5">Format PNG, JPG, SVG maks 5MB.</p>
                                     </div>
-                                    <div className="px-4 py-2 bg-white border border-slate-200 text-slate-600 text-xs font-bold rounded-xl flex items-center gap-1.5 hover:bg-slate-50 hover:text-[#13c8ec] transition-colors shadow-sm">
+                                    <div className="px-4 py-2 bg-white border border-slate-200 text-slate-600 text-xs font-bold rounded-xl flex items-center gap-1.5 hover:bg-slate-50 hover:text-primary transition-colors shadow-sm">
                                         <Upload className="w-3.5 h-3.5" /> Pilih File
                                     </div>
                                     <input
@@ -463,13 +462,13 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                 handleSelectColor(COLOR_SCHEMAS[0]);
                                             }
                                         }}
-                                        className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all ${!isManual ? 'bg-white text-[#098fae] shadow-sm' : 'text-slate-500'}`}
+                                        className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all ${!isManual ? 'bg-white text-primary-darker shadow-sm' : 'text-slate-500'}`}
                                     >
                                         Pilih Preset
                                     </button>
                                     <button
                                         onClick={() => handleSwitchToManual()}
-                                        className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all ${isManual ? 'bg-white text-[#098fae] shadow-sm' : 'text-slate-500'}`}
+                                        className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all ${isManual ? 'bg-white text-primary-darker shadow-sm' : 'text-slate-500'}`}
                                     >
                                         Atur Manual
                                     </button>
@@ -485,8 +484,8 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                     key={schema.id}
                                                     onClick={() => handleSelectColor(schema)}
                                                     className={`p-3 rounded-2xl border-2 flex flex-col gap-2.5 transition-all text-left ${isSelected
-                                                        ? 'border-[#13c8ec] bg-[#13c8ec]/5 shadow-md'
-                                                        : 'border-slate-100 hover:border-[#13c8ec]/40 bg-white'
+                                                        ? 'border-primary bg-primary/5 shadow-md'
+                                                        : 'border-slate-100 hover:border-primary/40 bg-white'
                                                         }`}
                                                 >
                                                     {/* Color bar — 3 horizontal segments */}
@@ -497,10 +496,10 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                     </div>
                                                     {/* Name + check */}
                                                     <div className="flex items-center justify-between px-0.5">
-                                                        <span className={`text-xs font-bold ${isSelected ? 'text-[#098fae]' : 'text-slate-700'}`}>
+                                                        <span className={`text-xs font-bold ${isSelected ? 'text-primary-darker' : 'text-slate-700'}`}>
                                                             {schema.name}
                                                         </span>
-                                                        {isSelected && <Check className="w-3.5 h-3.5 text-[#13c8ec] shrink-0" />}
+                                                        {isSelected && <Check className="w-3.5 h-3.5 text-primary shrink-0" />}
                                                     </div>
                                                 </button>
                                             );
@@ -513,7 +512,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                     <div className="space-y-5">
 
                                         {/* Phase 1: Primary color input */}
-                                        <div className="p-5 bg-gradient-to-r from-slate-50 to-cyan-50/30 rounded-2xl border-2 border-dashed border-[#13c8ec]/30">
+                                        <div className="p-5 bg-gradient-to-r from-slate-50 to-cyan-50/30 rounded-2xl border-2 border-dashed border-primary/30">
                                             <p className="text-sm font-black text-slate-800 mb-1">Masukkan Warna Primer Brand Anda</p>
                                             <p className="text-xs text-slate-500 mb-4">Kami akan generate 4 palet warna harmonis dari warna ini</p>
                                             <div className="flex items-center gap-3">
@@ -548,7 +547,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                             setCustomPrimaryInput(val.startsWith('#') ? val : '#' + val);
                                                         }
                                                     }}
-                                                    className="flex-1 px-3 py-2.5 text-sm font-mono font-bold border-2 border-slate-200 rounded-xl bg-white outline-none focus:ring-4 focus:ring-[#13c8ec]/10 focus:border-[#13c8ec]/40 uppercase placeholder-slate-300 transition-all"
+                                                    className="flex-1 px-3 py-2.5 text-sm font-mono font-bold border-2 border-slate-200 rounded-xl bg-white outline-none focus:ring-4 focus:ring-primary/10 focus:border-primary/40 uppercase placeholder-slate-300 transition-all"
                                                     maxLength={7}
                                                 />
 
@@ -556,7 +555,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                 <button
                                                     onClick={handleGeneratePalettes}
                                                     disabled={!customPrimaryInput || customPrimaryInput.length < 7 || isGenerating}
-                                                    className="px-4 py-2.5 bg-gradient-to-r from-[#13c8ec] to-[#0daecf] disabled:from-slate-300 disabled:to-slate-300 text-white text-sm font-black rounded-xl shadow-[0_4px_12px_rgba(19,200,236,0.35)] disabled:shadow-none transition-all hover:shadow-[0_6px_18px_rgba(19,200,236,0.45)] active:scale-95 whitespace-nowrap"
+                                                    className="px-4 py-2.5 bg-gradient-to-r from-primary to-primary-dark disabled:from-slate-300 disabled:to-slate-300 text-white text-sm font-black rounded-xl shadow-primary-sm disabled:shadow-none transition-all hover:shadow-primary-lg active:scale-95 whitespace-nowrap"
                                                 >
                                                     ✨ Generate
                                                 </button>
@@ -568,9 +567,9 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                             <div className="flex flex-col items-center justify-center py-10 gap-4 animation-fade-in">
                                                 {/* Spinning rings */}
                                                 <div className="relative w-16 h-16">
-                                                    <div className="absolute inset-0 rounded-full border-4 border-[#13c8ec]/20" />
-                                                    <div className="absolute inset-0 rounded-full border-4 border-t-[#13c8ec] border-r-transparent border-b-transparent border-l-transparent animate-spin" />
-                                                    <div className="absolute inset-2 rounded-full border-4 border-t-transparent border-r-[#0daecf] border-b-transparent border-l-transparent animate-spin" style={{ animationDirection: 'reverse', animationDuration: '0.7s' }} />
+                                                    <div className="absolute inset-0 rounded-full border-4 border-primary/20" />
+                                                    <div className="absolute inset-0 rounded-full border-4 border-t-primary border-r-transparent border-b-transparent border-l-transparent animate-spin" />
+                                                    <div className="absolute inset-2 rounded-full border-4 border-t-transparent border-r-primary-dark border-b-transparent border-l-transparent animate-spin" style={{ animationDirection: 'reverse', animationDuration: '0.7s' }} />
                                                     <div className="absolute inset-0 flex items-center justify-center text-xl">
                                                         🎨
                                                     </div>
@@ -603,8 +602,8 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                         key={palette.id}
                                                         onClick={() => handleSelectGeneratedPalette(palette, idx)}
                                                         className={`w-full p-4 rounded-2xl border-2 flex items-center gap-4 transition-all text-left ${selectedPaletteIdx === idx
-                                                            ? 'border-[#13c8ec] bg-[#13c8ec]/5 shadow-md ring-2 ring-[#13c8ec]/20'
-                                                            : 'border-slate-100 hover:border-[#13c8ec]/40 bg-white hover:bg-slate-50'}`}
+                                                            ? 'border-primary bg-primary/5 shadow-md ring-2 ring-primary/20'
+                                                            : 'border-slate-100 hover:border-primary/40 bg-white hover:bg-slate-50'}`}
                                                     >
                                                         {/* 3-color strip */}
                                                         <div className="flex gap-1 shrink-0">
@@ -623,7 +622,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                                 <span className="text-base">{palette.emoji}</span>
                                                                 <p className="font-black text-slate-800 text-sm">{palette.name}</p>
                                                                 {selectedPaletteIdx === idx && (
-                                                                    <span className="ml-auto text-[10px] bg-[#13c8ec] text-white px-2 py-0.5 rounded-full font-bold">Dipilih</span>
+                                                                    <span className="ml-auto text-[10px] bg-primary text-white px-2 py-0.5 rounded-full font-bold">Dipilih</span>
                                                                 )}
                                                             </div>
                                                             <p className="text-xs text-slate-500 mt-0.5">{palette.desc}</p>
@@ -639,7 +638,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                 {/* Re-generate with different primary */}
                                                 <button
                                                     onClick={() => { setGeneratedPalettes([]); setSelectedPaletteIdx(null); setCustomPrimaryInput(''); }}
-                                                    className="w-full py-2.5 text-xs font-bold text-slate-400 hover:text-[#098fae] transition-colors"
+                                                    className="w-full py-2.5 text-xs font-bold text-slate-400 hover:text-primary-darker transition-colors"
                                                 >
                                                     ↺ Coba warna primer lain
                                                 </button>
@@ -659,13 +658,13 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                             <div className="flex p-1 bg-slate-100 rounded-2xl">
                                 <button
                                     onClick={() => setTemplateTab('pick')}
-                                    className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all ${templateTab === 'pick' ? 'bg-white text-[#098fae] shadow-sm' : 'text-slate-500'}`}
+                                    className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all ${templateTab === 'pick' ? 'bg-white text-primary-darker shadow-sm' : 'text-slate-500'}`}
                                 >
                                     Pilih Template
                                 </button>
                                 <button
                                     onClick={() => setTemplateTab('upload')}
-                                    className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all ${templateTab === 'upload' ? 'bg-white text-[#098fae] shadow-sm' : 'text-slate-500'}`}
+                                    className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all ${templateTab === 'upload' ? 'bg-white text-primary-darker shadow-sm' : 'text-slate-500'}`}
                                 >
                                     Upload Desain
                                 </button>
@@ -774,8 +773,8 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                     setLocalBrand({ ...localBrand, designTemplate: updated });
                                                 }}
                                                 className={`rounded-2xl border-2 overflow-hidden flex flex-col transition-all text-left ${isSelected
-                                                    ? 'border-[#13c8ec] shadow-md'
-                                                    : 'border-slate-100 hover:border-[#13c8ec]/40'
+                                                    ? 'border-primary shadow-md'
+                                                    : 'border-slate-100 hover:border-primary/40'
                                                     }`}
                                             >
                                                 {/* Mockup preview area */}
@@ -787,11 +786,11 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                 </div>
                                                 {/* Name + checkbox */}
                                                 <div className="flex items-center justify-between px-3 py-2.5 bg-white">
-                                                    <span className={`text-xs font-bold leading-snug ${isSelected ? 'text-[#098fae]' : 'text-slate-800'}`}>
+                                                    <span className={`text-xs font-bold leading-snug ${isSelected ? 'text-primary-darker' : 'text-slate-800'}`}>
                                                         {tpl.name}
                                                     </span>
                                                     <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${isSelected
-                                                        ? 'bg-[#13c8ec] border-[#13c8ec]'
+                                                        ? 'bg-primary border-primary'
                                                         : 'border-slate-300 bg-white'
                                                         }`}>
                                                         {isSelected && <Check className="w-3 h-3 text-white" />}
@@ -811,7 +810,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                         <p className="font-bold text-slate-700 text-sm">Upload file desain Anda</p>
                                         <p className="text-xs text-slate-400 mt-1">PNG, JPG, atau PDF — maks. 10MB</p>
                                     </div>
-                                    <label className="px-5 py-2.5 bg-[#13c8ec] text-white text-sm font-bold rounded-xl cursor-pointer hover:bg-[#0daecf] transition-colors">
+                                    <label className="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-xl cursor-pointer hover:bg-primary-dark transition-colors">
                                         Pilih File
                                         <input type="file" accept="image/*,.pdf" className="hidden" />
                                     </label>
@@ -831,16 +830,16 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                 {/* Live typography preview */}
                                 <div className="relative bg-white border border-slate-100 rounded-2xl p-5 overflow-hidden shadow-sm">
                                     {/* decorative blob */}
-                                    <div className="absolute top-0 right-0 w-20 h-20 rounded-full bg-[#13c8ec]/10 -translate-y-4 translate-x-4" />
-                                    <p className="text-[10px] font-black tracking-widest text-[#13c8ec] mb-1">TEKS JUDUL</p>
+                                    <div className="absolute top-0 right-0 w-20 h-20 rounded-full bg-primary/10 -translate-y-4 translate-x-4" />
+                                    <p className="text-[10px] font-black tracking-widest text-primary mb-1">TEKS JUDUL</p>
                                     <p style={selectedTypo.heading} className="text-slate-900 mb-2">
                                         Masa Depan Brand Anda
                                     </p>
-                                    <p className="text-[10px] font-black tracking-widest text-[#13c8ec] mb-0.5">SUB JUDUL</p>
+                                    <p className="text-[10px] font-black tracking-widest text-primary mb-0.5">SUB JUDUL</p>
                                     <p style={selectedTypo.sub} className="text-slate-700 mb-3">
                                         Kombinasi sempurna antara estetika dan fungsi.
                                     </p>
-                                    <p className="text-[10px] font-black tracking-widest text-[#13c8ec] mb-0.5">DESKRIPSI</p>
+                                    <p className="text-[10px] font-black tracking-widest text-primary mb-0.5">DESKRIPSI</p>
                                     <p style={selectedTypo.body} className="text-slate-500">
                                         Ini adalah contoh teks paragraf atau deskripsi yang akan ditampilkan
                                         pada desain Anda. Tipografi yang tepat akan memastikan pesan Anda mudah
@@ -852,13 +851,13 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                 <div className="flex p-1 bg-slate-100 rounded-2xl">
                                     <button
                                         onClick={() => setTypoTab('preset')}
-                                        className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all ${typoTab === 'preset' ? 'bg-white text-[#098fae] shadow-sm' : 'text-slate-500'}`}
+                                        className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all ${typoTab === 'preset' ? 'bg-white text-primary-darker shadow-sm' : 'text-slate-500'}`}
                                     >
                                         Template Siap Pakai
                                     </button>
                                     <button
                                         onClick={() => setTypoTab('advance')}
-                                        className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all ${typoTab === 'advance' ? 'bg-white text-[#098fae] shadow-sm' : 'text-slate-500'}`}
+                                        className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all ${typoTab === 'advance' ? 'bg-white text-primary-darker shadow-sm' : 'text-slate-500'}`}
                                     >
                                         Pengaturan Advance
                                     </button>
@@ -874,16 +873,16 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                     key={preset.id}
                                                     onClick={() => toggleTypo(preset.id)}
                                                     className={`rounded-2xl border-2 overflow-hidden flex flex-col text-left transition-all ${isSel
-                                                        ? 'border-[#13c8ec] shadow-md'
-                                                        : 'border-slate-100 hover:border-[#13c8ec]/40 bg-white'
+                                                        ? 'border-primary shadow-md'
+                                                        : 'border-slate-100 hover:border-primary/40 bg-white'
                                                         }`}
                                                 >
                                                     {/* Name + checkbox */}
                                                     <div className="flex items-center justify-between px-3 pt-3 pb-1">
-                                                        <span className={`text-xs font-bold ${isSel ? 'text-[#098fae]' : 'text-slate-700'}`}>
+                                                        <span className={`text-xs font-bold ${isSel ? 'text-primary-darker' : 'text-slate-700'}`}>
                                                             {preset.name}
                                                         </span>
-                                                        <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${isSel ? 'bg-[#13c8ec] border-[#13c8ec]' : 'border-slate-300 bg-white'
+                                                        <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${isSel ? 'bg-primary border-primary' : 'border-slate-300 bg-white'
                                                             }`}>
                                                             {isSel && <Check className="w-3 h-3 text-white" />}
                                                         </div>
@@ -911,7 +910,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                     <div className="space-y-4">
                                         {[{ label: 'Judul', key: 'heading' }, { label: 'Sub Judul', key: 'sub' }, { label: 'Deskripsi', key: 'body' }].map(({ label, key }) => (
                                             <div key={key} className="space-y-2">
-                                                <label className="text-xs font-black uppercase tracking-wider text-[#13c8ec]">{label}</label>
+                                                <label className="text-xs font-black uppercase tracking-wider text-primary">{label}</label>
                                                 <div className="grid grid-cols-2 gap-2">
                                                     <div className="space-y-1">
                                                         <label className="text-[10px] text-slate-500 font-semibold">Ketebalan</label>
@@ -921,7 +920,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                                 ...localBrand,
                                                                 typography: { ...localBrand.typography, [key]: { ...(localBrand.typography?.[key] || {}), fontWeight: Number(e.target.value) } }
                                                             })}
-                                                            className="w-full text-xs border border-slate-200 rounded-lg px-2 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#13c8ec]/20"
+                                                            className="w-full text-xs border border-slate-200 rounded-lg px-2 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20"
                                                         >
                                                             <option value={300}>Tipis</option>
                                                             <option value={400}>Normal</option>
@@ -939,7 +938,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                                 ...localBrand,
                                                                 typography: { ...localBrand.typography, [key]: { ...(localBrand.typography?.[key] || {}), fontSize: e.target.value } }
                                                             })}
-                                                            className="w-full text-xs border border-slate-200 rounded-lg px-2 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#13c8ec]/20"
+                                                            className="w-full text-xs border border-slate-200 rounded-lg px-2 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-primary/20"
                                                         >
                                                             <option value="0.75rem">XS</option>
                                                             <option value="0.875rem">S</option>
@@ -970,7 +969,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                     <button
                         onClick={step === STEPS.length ? handleFinish : handleNext}
                         disabled={!canProceed() || isSaving}
-                        className="flex-1 py-4 bg-gradient-to-r from-[#13c8ec] to-[#0daecf] hover:from-[#0daecf] hover:to-[#098fae] disabled:from-slate-300 disabled:to-slate-300 text-white font-bold rounded-2xl transition-all shadow-[0_8px_20px_rgba(19,200,236,0.3)] disabled:shadow-none flex items-center justify-center gap-2"
+                        className="flex-1 py-4 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary-darker disabled:from-slate-300 disabled:to-slate-300 text-white font-bold rounded-2xl transition-all shadow-primary disabled:shadow-none flex items-center justify-center gap-2"
                     >
                         {isSaving ? (
                             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
