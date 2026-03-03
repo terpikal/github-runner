@@ -156,13 +156,13 @@ const DesignSystemView = () => {
             <div>
               <h3 className="text-sm font-bold text-slate-700 mb-4">Primary</h3>
               <div className="flex flex-wrap gap-4 items-center">
-                <button className="py-3 px-8 bg-gradient-to-r from-[#13c8ec] to-[#0daecf] hover:from-[#0daecf] hover:to-[#098fae] text-white font-bold rounded-2xl transition-all shadow-[0_8px_20px_rgba(19,200,236,0.3)] flex items-center gap-2 text-[15px]">
+                <button style={{ background: `linear-gradient(to right, ${PRIMARY}, ${PRIMARY_DARK})`, boxShadow: `0 8px 20px ${PRIMARY}4D` }} className="py-3 px-8 text-white font-bold rounded-2xl transition-all flex items-center gap-2 text-[15px] hover:opacity-90">
                   <Sparkles className="w-4 h-4" /> Primary Button
                 </button>
-                <button className="py-3 px-8 bg-gradient-to-r from-[#13c8ec] to-[#0daecf] text-white font-bold rounded-2xl shadow-[0_8px_20px_rgba(19,200,236,0.3)] flex items-center gap-2 text-[15px] opacity-50 cursor-not-allowed" disabled>
+                <button style={{ background: `linear-gradient(to right, ${PRIMARY}, ${PRIMARY_DARK})`, boxShadow: `0 8px 20px ${PRIMARY}4D` }} className="py-3 px-8 text-white font-bold rounded-2xl flex items-center gap-2 text-[15px] opacity-50 cursor-not-allowed" disabled>
                   Disabled
                 </button>
-                <button className="py-2.5 px-6 bg-gradient-to-r from-[#13c8ec] to-[#0daecf] hover:from-[#0daecf] hover:to-[#098fae] text-white font-bold rounded-xl transition-all shadow-[0_8px_20px_rgba(19,200,236,0.3)] text-sm">
+                <button style={{ background: `linear-gradient(to right, ${PRIMARY}, ${PRIMARY_DARK})`, boxShadow: `0 8px 20px ${PRIMARY}4D` }} className="py-2.5 px-6 text-white font-bold rounded-xl transition-all text-sm hover:opacity-90">
                   Small
                 </button>
               </div>
