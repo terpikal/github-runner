@@ -38,7 +38,7 @@ const CopyButton = ({ text }) => {
 const Section = ({ title, children }) => (
   <section className="mb-16">
     <h2 className="text-2xl font-black text-slate-900 tracking-tight mb-6 flex items-center gap-3">
-      <div className="w-1.5 h-8 rounded-full bg-gradient-to-b from-[#13c8ec] to-[#098fae]" />
+      <div className="w-1.5 h-8 rounded-full bg-gradient-to-b from-primary to-primary-darker" />
       {title}
     </h2>
     {children}
@@ -66,7 +66,7 @@ const DesignSystemView = () => {
               <p className="text-xs text-slate-400">Postibel UI Components & Tokens</p>
             </div>
           </div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#13c8ec]/10 text-[#098fae] text-xs font-bold">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 text-primary-darker text-xs font-bold">
             <Sparkles className="w-3.5 h-3.5" /> v1.0
           </div>
         </div>
@@ -96,8 +96,8 @@ const DesignSystemView = () => {
           <h3 className="text-lg font-bold text-slate-800 mt-10 mb-4">Gradients</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {[
-              { name: 'Primary Gradient', css: `linear-gradient(to right, ${PRIMARY}, ${PRIMARY_DARK})`, tw: 'from-[#13c8ec] to-[#0daecf]' },
-              { name: 'Primary Hover', css: `linear-gradient(to right, ${PRIMARY_DARK}, ${PRIMARY_DARKER})`, tw: 'from-[#0daecf] to-[#098fae]' },
+              { name: 'Primary Gradient', css: `linear-gradient(to right, ${PRIMARY}, ${PRIMARY_DARK})`, tw: 'from-primary to-primary-dark' },
+              { name: 'Primary Hover', css: `linear-gradient(to right, ${PRIMARY_DARK}, ${PRIMARY_DARKER})`, tw: 'from-primary-dark to-primary-darker' },
               { name: 'Page Background', css: 'linear-gradient(to bottom right, #f8fafc, #ecfeff30, #f1f5f9)', tw: 'from-slate-50 via-cyan-50/30 to-slate-100' },
             ].map(g => (
               <div key={g.name} className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
@@ -156,13 +156,13 @@ const DesignSystemView = () => {
             <div>
               <h3 className="text-sm font-bold text-slate-700 mb-4">Primary</h3>
               <div className="flex flex-wrap gap-4 items-center">
-                <button style={{ background: `linear-gradient(to right, ${PRIMARY}, ${PRIMARY_DARK})`, boxShadow: `0 8px 20px ${PRIMARY}4D` }} className="py-3 px-8 text-white font-bold rounded-2xl transition-all flex items-center gap-2 text-[15px] hover:opacity-90">
+                <button className="py-3 px-8 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary-darker text-white font-bold rounded-2xl transition-all shadow-primary flex items-center gap-2 text-[15px]">
                   <Sparkles className="w-4 h-4" /> Primary Button
                 </button>
-                <button style={{ background: `linear-gradient(to right, ${PRIMARY}, ${PRIMARY_DARK})`, boxShadow: `0 8px 20px ${PRIMARY}4D` }} className="py-3 px-8 text-white font-bold rounded-2xl flex items-center gap-2 text-[15px] opacity-50 cursor-not-allowed" disabled>
+                <button className="py-3 px-8 bg-gradient-to-r from-primary to-primary-dark text-white font-bold rounded-2xl shadow-primary flex items-center gap-2 text-[15px] opacity-50 cursor-not-allowed" disabled>
                   Disabled
                 </button>
-                <button style={{ background: `linear-gradient(to right, ${PRIMARY}, ${PRIMARY_DARK})`, boxShadow: `0 8px 20px ${PRIMARY}4D` }} className="py-2.5 px-6 text-white font-bold rounded-xl transition-all text-sm hover:opacity-90">
+                <button className="py-2.5 px-6 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary-darker text-white font-bold rounded-xl transition-all shadow-primary text-sm">
                   Small
                 </button>
               </div>
@@ -175,7 +175,7 @@ const DesignSystemView = () => {
                 <button className="py-3 px-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition-colors text-[15px]">
                   Secondary
                 </button>
-                <button className="py-3 px-8 bg-[#13c8ec]/10 hover:bg-[#13c8ec]/20 text-[#098fae] font-bold rounded-2xl transition-colors text-[15px]">
+                <button className="py-3 px-8 bg-primary/10 hover:bg-primary/20 text-primary-darker font-bold rounded-2xl transition-colors text-[15px]">
                   Tinted
                 </button>
               </div>
@@ -185,10 +185,10 @@ const DesignSystemView = () => {
             <div>
               <h3 className="text-sm font-bold text-slate-700 mb-4">Outline & Ghost</h3>
               <div className="flex flex-wrap gap-4 items-center">
-                <button className="py-3 px-8 border-2 border-slate-200 hover:border-[#13c8ec] hover:text-[#098fae] text-slate-600 font-bold rounded-2xl transition-all text-[15px]">
+                <button className="py-3 px-8 border-2 border-slate-200 hover:border-primary hover:text-primary-darker text-slate-600 font-bold rounded-2xl transition-all text-[15px]">
                   Outline
                 </button>
-                <button className="py-3 px-8 text-[#098fae] hover:bg-[#13c8ec]/5 font-bold rounded-2xl transition-colors text-[15px]">
+                <button className="py-3 px-8 text-primary-darker hover:bg-primary/5 font-bold rounded-2xl transition-colors text-[15px]">
                   Ghost
                 </button>
               </div>
@@ -209,7 +209,7 @@ const DesignSystemView = () => {
               <h3 className="text-sm font-bold text-slate-700 mb-4">Icon Buttons</h3>
               <div className="flex flex-wrap gap-3 items-center">
                 {[Plus, Search, Filter, Download, Upload, Edit3, Settings, Bell].map((Icon, i) => (
-                  <button key={i} className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-[#098fae] transition-all border border-slate-100">
+                  <button key={i} className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-primary-darker transition-all border border-slate-100">
                     <Icon className="w-5 h-5" />
                   </button>
                 ))}
@@ -231,7 +231,7 @@ const DesignSystemView = () => {
                   value={demoInput}
                   onChange={e => setDemoInput(e.target.value)}
                   placeholder="Masukkan nama Anda"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#13c8ec]/10 focus:border-[#13c8ec]/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
                 />
               </div>
             </div>
@@ -244,7 +244,7 @@ const DesignSystemView = () => {
                 <input
                   type="email"
                   placeholder="nama@bisnis.com"
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#13c8ec]/10 focus:border-[#13c8ec]/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
                 />
               </div>
             </div>
@@ -259,7 +259,7 @@ const DesignSystemView = () => {
                   value={demoPassword}
                   onChange={e => setDemoPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full pl-10 pr-11 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#13c8ec]/10 focus:border-[#13c8ec]/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
+                  className="w-full pl-10 pr-11 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
                 />
                 <button type="button" onClick={() => setShowPw(!showPw)} className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
                   {showPw ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -275,7 +275,7 @@ const DesignSystemView = () => {
                 <input
                   type="text"
                   placeholder="Cari sesuatu..."
-                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#13c8ec]/10 focus:border-[#13c8ec]/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
+                  className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
                 />
               </div>
             </div>
@@ -286,14 +286,14 @@ const DesignSystemView = () => {
               <textarea
                 rows="3"
                 placeholder="Tulis deskripsi di sini..."
-                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-[#13c8ec]/10 focus:border-[#13c8ec]/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400 resize-none"
+                className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400 resize-none"
               />
             </div>
 
             {/* Toggle */}
             <div className="space-y-1.5">
               <label className="text-sm font-semibold text-slate-700">Toggle</label>
-              <button onClick={() => setDemoToggle(!demoToggle)} className={`relative w-12 h-7 rounded-full transition-colors ${demoToggle ? 'bg-[#13c8ec]' : 'bg-slate-200'}`}>
+              <button onClick={() => setDemoToggle(!demoToggle)} className={`relative w-12 h-7 rounded-full transition-colors ${demoToggle ? 'bg-primary' : 'bg-slate-200'}`}>
                 <div className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${demoToggle ? 'left-6' : 'left-1'}`} />
               </button>
             </div>
@@ -304,7 +304,7 @@ const DesignSystemView = () => {
         <Section title="Badges & Tags">
           <div className="bg-white rounded-2xl border border-slate-100 p-8 shadow-sm">
             <div className="flex flex-wrap gap-3">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#13c8ec]/10 text-[#098fae] text-xs font-bold"><Sparkles className="w-3.5 h-3.5" /> AI Workspace</span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary-darker text-xs font-bold"><Sparkles className="w-3.5 h-3.5" /> AI Workspace</span>
               <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 text-xs font-bold">Sales</span>
               <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-200 text-xs font-bold">Awareness</span>
               <span className="px-3 py-1 rounded-full bg-purple-50 text-purple-600 border border-purple-200 text-xs font-bold">Edukasi</span>
@@ -321,8 +321,8 @@ const DesignSystemView = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Basic Card */}
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-shadow p-6">
-              <div className="w-10 h-10 rounded-xl bg-[#13c8ec]/10 flex items-center justify-center mb-4">
-                <Star className="w-5 h-5 text-[#098fae]" />
+              <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
+                <Star className="w-5 h-5 text-primary-darker" />
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">Basic Card</h3>
               <p className="text-sm text-slate-500 leading-relaxed">Card standar dengan ikon, judul, dan deskripsi singkat.</p>
@@ -335,7 +335,7 @@ const DesignSystemView = () => {
               </div>
               <h3 className="text-lg font-bold text-slate-900 mb-2">Action Card</h3>
               <p className="text-sm text-slate-500 leading-relaxed mb-4 flex-1">Card dengan tombol aksi di bagian bawah.</p>
-              <button className="w-full py-2.5 bg-gradient-to-r from-[#13c8ec] to-[#0daecf] hover:from-[#0daecf] hover:to-[#098fae] text-white font-bold rounded-xl transition-all text-sm">
+              <button className="w-full py-2.5 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary-darker text-white font-bold rounded-xl transition-all text-sm">
                 Lihat Detail
               </button>
             </div>
@@ -359,7 +359,7 @@ const DesignSystemView = () => {
               {[
                 { name: 'sm', cls: 'shadow-sm', code: 'shadow-sm' },
                 { name: 'default', cls: 'shadow-[0_8px_30px_rgb(0,0,0,0.04)]', code: '0_8px_30px_rgb(0,0,0,0.04)' },
-                { name: 'primary', cls: 'shadow-[0_8px_20px_rgba(19,200,236,0.3)]', code: '0_8px_20px_rgba(19,200,236,0.3)' },
+                { name: 'primary', cls: 'shadow-primary', code: 'shadow-primary' },
                 { name: 'elevated', cls: 'shadow-[0_20px_60px_rgba(0,0,0,0.07)]', code: '0_20px_60px_rgba(0,0,0,0.07)' },
               ].map(s => (
                 <div key={s.name} className={`h-24 rounded-2xl bg-white border border-slate-100 ${s.cls} flex items-center justify-center`}>
@@ -378,7 +378,7 @@ const DesignSystemView = () => {
                 { name: 'full', cls: 'rounded-full', size: 'w-16 h-16' },
               ].map(r => (
                 <div key={r.name} className="flex flex-col items-center gap-2">
-                  <div className={`${r.size} ${r.cls} bg-[#13c8ec]/10 border-2 border-[#13c8ec]/30`} />
+                  <div className={`${r.size} ${r.cls} bg-primary/10 border-2 border-primary/30`} />
                   <code className="text-[10px] text-slate-500 font-mono">{r.name}</code>
                 </div>
               ))}
@@ -393,7 +393,7 @@ const DesignSystemView = () => {
               {[1, 2, 3, 4, 6, 8, 10, 12, 16, 20, 24].map(s => (
                 <div key={s} className="flex items-center gap-4">
                   <code className="text-xs text-slate-500 font-mono w-10 text-right">{s}</code>
-                  <div className="h-4 rounded bg-gradient-to-r from-[#13c8ec] to-[#0daecf]" style={{ width: `${s * 4}px` }} />
+                  <div className="h-4 rounded bg-gradient-to-r from-primary to-primary-dark" style={{ width: `${s * 4}px` }} />
                   <span className="text-[10px] text-slate-400 font-mono">{s * 4}px</span>
                 </div>
               ))}
