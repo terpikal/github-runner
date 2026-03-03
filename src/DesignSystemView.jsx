@@ -2,14 +2,10 @@ import React, { useState } from 'react';
 import { ArrowLeft, Copy, Check, Sparkles, Mail, Lock, Eye, EyeOff, User, Search, Plus, Download, Trash2, Edit3, ChevronRight, Heart, Star, Bell, Settings, Filter, Upload, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const PRIMARY = '#13c8ec';
-const PRIMARY_DARK = '#0daecf';
-const PRIMARY_DARKER = '#098fae';
-
 const COLORS = [
-  { name: 'Primary', value: PRIMARY, usage: 'Tombol utama, aksen, link aktif' },
-  { name: 'Primary Dark', value: PRIMARY_DARK, usage: 'Hover state, gradient end' },
-  { name: 'Primary Darker', value: PRIMARY_DARKER, usage: 'Active state, badge text' },
+  { name: 'Primary', value: '#13c8ec', usage: 'Tombol utama, aksen, link aktif' },
+  { name: 'Primary Dark', value: '#0daecf', usage: 'Hover state, gradient end' },
+  { name: 'Primary Darker', value: '#098fae', usage: 'Active state, badge text' },
   { name: 'Slate 900', value: '#0f172a', usage: 'Heading, teks utama' },
   { name: 'Slate 700', value: '#334155', usage: 'Label, sub-heading' },
   { name: 'Slate 500', value: '#64748b', usage: 'Teks sekunder, deskripsi' },
@@ -96,8 +92,8 @@ const DesignSystemView = () => {
           <h3 className="text-lg font-bold text-slate-800 mt-10 mb-4">Gradients</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {[
-              { name: 'Primary Gradient', css: `linear-gradient(to right, ${PRIMARY}, ${PRIMARY_DARK})`, tw: 'from-primary to-primary-dark' },
-              { name: 'Primary Hover', css: `linear-gradient(to right, ${PRIMARY_DARK}, ${PRIMARY_DARKER})`, tw: 'from-primary-dark to-primary-darker' },
+              { name: 'Primary Gradient', css: 'linear-gradient(to right, #13c8ec, #0daecf)', tw: 'from-primary to-primary-dark' },
+              { name: 'Primary Hover', css: 'linear-gradient(to right, #0daecf, #098fae)', tw: 'from-primary-dark to-primary-darker' },
               { name: 'Page Background', css: 'linear-gradient(to bottom right, #f8fafc, #ecfeff30, #f1f5f9)', tw: 'from-slate-50 via-cyan-50/30 to-slate-100' },
             ].map(g => (
               <div key={g.name} className="bg-white rounded-2xl border border-slate-100 overflow-hidden shadow-sm">
