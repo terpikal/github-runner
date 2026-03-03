@@ -152,13 +152,20 @@ const DesignSystemView = () => {
             <div>
               <h3 className="text-sm font-bold text-slate-700 mb-4">Primary</h3>
               <div className="flex flex-wrap gap-4 items-center">
-                <button className="py-3 px-8 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary-darker text-white font-bold rounded-2xl transition-all shadow-primary flex items-center gap-2 text-[15px]">
+                <button
+                  className="py-3 px-8 bg-primary hover:bg-primary-dark text-white font-bold rounded-2xl transition-all shadow-primary flex items-center gap-2 text-[15px]"
+                >
                   <Sparkles className="w-4 h-4" /> Primary Button
                 </button>
-                <button className="py-3 px-8 bg-gradient-to-r from-primary to-primary-dark text-white font-bold rounded-2xl shadow-primary flex items-center gap-2 text-[15px] opacity-50 cursor-not-allowed" disabled>
+                <button
+                  className="py-3 px-8 bg-primary text-white font-bold rounded-2xl shadow-primary flex items-center gap-2 text-[15px] opacity-50 cursor-not-allowed"
+                  disabled
+                >
                   Disabled
                 </button>
-                <button className="py-2.5 px-6 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary-darker text-white font-bold rounded-xl transition-all shadow-primary text-sm">
+                <button
+                  className="py-2.5 px-6 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl transition-all shadow-primary text-sm"
+                >
                   Small
                 </button>
               </div>
