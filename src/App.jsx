@@ -361,7 +361,7 @@ const DashboardView = ({
                                 <div className="relative" >
                                     <button
                                         onClick={() => setShowImageMenu(!showImageMenu)}
-                                        className={`p-2 rounded-lg transition-all ${showImageMenu ? 'bg-slate-200/60 text-[#13c8ec]' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-200/40'}`}
+                                        className={`p-2 rounded-xl transition-all ${showImageMenu ? 'bg-slate-200/60 text-primary' : 'text-slate-400 hover:text-slate-600 hover:bg-slate-200/40'}`}
                                         title="Tambahkan Gambar"
                                     >
                                         <ImageIcon className="w-5 h-5" />
