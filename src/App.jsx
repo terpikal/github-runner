@@ -678,6 +678,7 @@ const EditorView = ({ editingPost, setCurrentView, handleSaveToLibrary, brandDNA
 // --- DAY DETAIL MODAL ---
 const DayDetailModal = ({ day, year, month, onClose, onEditPost, library, onGoToDashboard, onAddFromLibrary }) => {
     const [addMode, setAddMode] = useState(null); // null | 'choose' | 'bank'
+    const [bankSearch, setBankSearch] = useState('');
 
     if (!day) return null;
     const dateLabel = new Date(year, month, day.dayNumber).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
@@ -798,6 +799,17 @@ const DayDetailModal = ({ day, year, month, onClose, onEditPost, library, onGoTo
                     {/* === PANEL: Bank Konten Picker === */}
                     {addMode === 'bank' && (
                         <div className="space-y-3 animation-fade-in">
+                            {/* Search */}
+                            <div className="relative flex items-center">
+                                <Search className="absolute left-3.5 w-4 h-4 text-slate-400 pointer-events-none" />
+                                <input
+                                    type="text"
+                                    value={bankSearch}
+                                    onChange={(e) => setBankSearch(e.target.value)}
+                                    placeholder="Cari konten..."
+                                    className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
+                                />
+                            </div>
                             {(!library || library.length === 0) ? (
                                 <div className="text-center py-12">
                                     <div className="w-14 h-14 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-3">
@@ -806,8 +818,21 @@ const DayDetailModal = ({ day, year, month, onClose, onEditPost, library, onGoTo
                                     <p className="font-semibold text-slate-600">Bank konten masih kosong</p>
                                     <p className="text-sm text-slate-400 mt-1">Buat konten baru terlebih dahulu melalui menu Generate.</p>
                                 </div>
-                            ) : (
-                                library.map((post) => {
+                            ) : (() => {
+                                const q = bankSearch.toLowerCase().trim();
+                                const filtered = q ? library.filter(post =>
+                                    (post.headline && post.headline.toLowerCase().includes(q)) ||
+                                    (post.caption && post.caption.toLowerCase().includes(q)) ||
+                                    (post.goal?.name && post.goal.name.toLowerCase().includes(q)) ||
+                                    (post.type && post.type.toLowerCase().includes(q))
+                                ) : library;
+                                return filtered.length === 0 ? (
+                                    <div className="text-center py-10">
+                                        <Search className="w-8 h-8 text-slate-300 mx-auto mb-2" />
+                                        <p className="font-semibold text-slate-600">Tidak ada konten ditemukan</p>
+                                        <p className="text-sm text-slate-400 mt-1">Coba kata kunci lain</p>
+                                    </div>
+                                ) : filtered.map((post) => {
                                     const thumb = post.type === 'carousel' && post.slides ? post.slides[0].image : post.image;
                                     return (
                                         <div
@@ -844,8 +869,8 @@ const DayDetailModal = ({ day, year, month, onClose, onEditPost, library, onGoTo
                                             </span>
                                         </div>
                                     );
-                                })
-                            )}
+                                });
+                            })()}
                         </div>
                     )}
 
