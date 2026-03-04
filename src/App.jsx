@@ -3732,7 +3732,7 @@ function App() {
     const removeAttachment = (id) => setAttachments(attachments.filter(a => a.id !== id));
 
     return (
-        <div className="min-h-screen bg-slate-50 font-sans text-slate-900" >
+        <div className="min-h-screen bg-slate-100 font-sans text-slate-900" >
             {showNav && (
                 <Sidebar
                     isSidebarExpanded={isSidebarExpanded}

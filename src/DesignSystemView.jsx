@@ -60,7 +60,7 @@ const DesignSystemView = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-cyan-50/20 to-slate-100">
+    <div className="min-h-screen bg-slate-100">
       {/* Header */}
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200/60">
         <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
