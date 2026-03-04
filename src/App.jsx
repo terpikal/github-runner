@@ -646,8 +646,9 @@ const TOAST_TYPES = {
     error: { icon: <X className="w-5 h-5" />, title: 'Gagal!', msg: 'Terjadi kesalahan saat menyimpan.', accent: '#ef4444', iconBg: 'bg-red-100', iconColor: 'text-red-600', progressColor: 'bg-red-400', ringColor: 'ring-red-100' },
 };
 
-const ToastNotification = ({ type, exiting, onDismiss }) => {
+const ToastNotification = ({ type, exiting, onDismiss, customMsg }) => {
     const cfg = TOAST_TYPES[type] || TOAST_TYPES.success;
+    const displayMsg = customMsg || cfg.msg;
     const [progress, setProgress] = useState(100);
 
     useEffect(() => {
@@ -671,7 +672,7 @@ const ToastNotification = ({ type, exiting, onDismiss }) => {
             </div>
             <div className="flex-1 min-w-0 pt-0.5">
                 <p className="text-[13px] font-extrabold text-slate-800 tracking-tight">{cfg.title}</p>
-                <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{cfg.msg}</p>
+                <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{displayMsg}</p>
             </div>
             <button onClick={onDismiss} className="shrink-0 mt-0.5 p-1.5 rounded-xl hover:bg-slate-100 transition-all duration-200 active:scale-90">
                 <X className="w-3.5 h-3.5 text-slate-400" />
@@ -1275,6 +1276,16 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
     const [openActionMenuId, setOpenActionMenuId] = useState(null);
     const [moreMenuId, setMoreMenuId] = useState(null);
     const [deleteConfirmPost, setDeleteConfirmPost] = useState(null);
+    const [libToasts, setLibToasts] = useState([]);
+
+    const showLibToast = (type = 'success', msg) => {
+        const id = Date.now();
+        setLibToasts(prev => [...prev, { id, type, msg, exiting: false }]);
+        setTimeout(() => {
+            setLibToasts(prev => prev.map(t => t.id === id ? { ...t, exiting: true } : t));
+            setTimeout(() => setLibToasts(prev => prev.filter(t => t.id !== id)), 350);
+        }, 3000);
+    };
     const [isDraftingPlan, setIsDraftingPlan] = useState(false);
     const [editingPlannerPost, setEditingPlannerPost] = useState(null);
 
@@ -1845,7 +1856,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                     Batal
                                                 </button>
                                                 <button 
-                                                    onClick={() => { setLibrary(library.filter(p => p.id !== deleteConfirmPost.id)); setDeleteConfirmPost(null); }}
+                                                    onClick={() => { setLibrary(library.filter(p => p.id !== deleteConfirmPost.id)); setDeleteConfirmPost(null); showLibToast('success', 'Konten berhasil dihapus.'); }}
                                                     className="flex-1 px-5 py-3 rounded-xl font-bold text-white bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/25 transition-all"
                                                 >
                                                     Ya, Hapus
@@ -1855,6 +1866,16 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                     </div>
                                 </ModalPortal>
                             )}
+
+                            {/* Library Toasts */}
+                            <div className="fixed top-6 right-6 z-[9999] flex flex-col gap-3 pointer-events-none">
+                                {libToasts.map(t => (
+                                    <ToastNotification key={t.id} type={t.type} exiting={t.exiting} onDismiss={() => {
+                                        setLibToasts(prev => prev.map(x => x.id === t.id ? { ...x, exiting: true } : x));
+                                        setTimeout(() => setLibToasts(prev => prev.filter(x => x.id !== t.id)), 350);
+                                    }} customMsg={t.msg} />
+                                ))}
+                            </div>
                             </div>
                                     )}
                                 </div>
