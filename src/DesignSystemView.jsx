@@ -335,15 +335,24 @@ const DesignSystemView = () => {
         {/* ── BADGES ── */}
         <Section title="Badges & Tags">
           <div className="bg-white rounded-2xl border border-slate-100 p-8 shadow-sm">
-            <div className="flex flex-wrap gap-3">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary-darker text-xs font-bold"><Sparkles className="w-3.5 h-3.5" /> AI Workspace</span>
-              <span className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200 text-xs font-bold">Sales</span>
-              <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-200 text-xs font-bold">Awareness</span>
-              <span className="px-3 py-1 rounded-full bg-purple-50 text-purple-600 border border-purple-200 text-xs font-bold">Edukasi</span>
-              <span className="px-3 py-1 rounded-full bg-pink-50 text-pink-600 border border-pink-200 text-xs font-bold">Engagement</span>
-              <span className="px-3 py-1 rounded-full bg-amber-50 text-amber-600 border border-amber-200 text-xs font-bold">Warning</span>
-              <span className="px-3 py-1 rounded-full bg-red-50 text-red-600 border border-red-200 text-xs font-bold">Error</span>
-              <span className="px-3 py-1 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">Default</span>
+            <div className="flex flex-wrap gap-4">
+              {[
+                { id: 'badge-ai', label: 'AI Workspace', icon: <Sparkles className="w-3.5 h-3.5" />, cls: 'bg-primary/10 text-primary-darker' },
+                { id: 'badge-sales', label: 'Sales', cls: 'bg-emerald-50 text-emerald-600 border border-emerald-200' },
+                { id: 'badge-awareness', label: 'Awareness', cls: 'bg-blue-50 text-blue-600 border border-blue-200' },
+                { id: 'badge-edukasi', label: 'Edukasi', cls: 'bg-purple-50 text-purple-600 border border-purple-200' },
+                { id: 'badge-engagement', label: 'Engagement', cls: 'bg-pink-50 text-pink-600 border border-pink-200' },
+                { id: 'badge-warning', label: 'Warning', cls: 'bg-amber-50 text-amber-600 border border-amber-200' },
+                { id: 'badge-error', label: 'Error', cls: 'bg-red-50 text-red-600 border border-red-200' },
+                { id: 'badge-default', label: 'Default', cls: 'bg-slate-100 text-slate-600' },
+              ].map(b => (
+                <div key={b.id} className="flex flex-col items-center gap-1.5">
+                  <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${b.cls}`}>
+                    {b.icon} {b.label}
+                  </span>
+                  <code className="text-[10px] text-slate-400 font-mono">.{b.id}</code>
+                </div>
+              ))}
             </div>
           </div>
         </Section>
