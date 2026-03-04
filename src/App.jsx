@@ -420,8 +420,8 @@ const DashboardView = ({
                                 <h3 className="text-base font-bold text-slate-800 flex items-center gap-2">
                                     <Camera className="w-4 h-4 text-primary" /> Pilih Foto Model
                                 </h3>
-                                <button onClick={() => setShowModelPicker(false)} className="p-1.5 hover:bg-slate-100 rounded-lg transition-colors">
-                                    <X className="w-4 h-4 text-slate-400" />
+                                <button onClick={() => setShowModelPicker(false)} className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-primary-darker transition-all border border-slate-100">
+                                    <X className="w-5 h-5" />
                                 </button>
                             </div>
                             <div className="p-5 overflow-y-auto max-h-[60vh] space-y-4">
