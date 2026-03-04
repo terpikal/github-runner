@@ -806,15 +806,15 @@ const DayDetailModal = ({ day, year, month, onClose, onEditPost, library, onGoTo
                                         <div className={`w-1.5 flex-shrink-0 rounded-full ${p.category === 'Promo' ? 'bg-pink-400' : p.category === 'Edukasi' ? 'bg-yellow-400' : p.category === 'Testimoni' ? 'bg-purple-400' : 'bg-blue-400'}`} />
                                         <div className="flex-1 min-w-0">
                                             <div className="flex items-center gap-2 mb-2 flex-wrap">
-                                                <span className={`text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md border ${categoryStyle(p.category)}`}>
+                                                <span className={`text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full border ${categoryStyle(p.category)}`}>
                                                     {p.category}
                                                 </span>
                                                 {p.isApproved ? (
-                                                    <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-md">
+                                                    <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
                                                         <CheckCircle2 className="w-3 h-3" /> Approved
                                                     </span>
                                                 ) : (
-                                                    <span className="flex items-center gap-1 text-[10px] font-bold text-slate-500 bg-white border border-slate-200 px-2.5 py-1 rounded-md">
+                                                    <span className="flex items-center gap-1 text-[10px] font-bold text-slate-500 bg-white border border-slate-200 px-3 py-1 rounded-full">
                                                         <Clock className="w-3 h-3" /> {p.selectedTime || p.recommendedTime}
                                                     </span>
                                                 )}
@@ -1315,7 +1315,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                     <img src={displayImage} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Post" />
 
                                                     <div className="absolute top-2 left-2 flex flex-col gap-1" >
-                                                        {post.status === 'scheduled' && <div className="px-2 py-1 bg-emerald-500/90 text-white text-[10px] rounded-md backdrop-blur-md flex items-center gap-1 font-bold shadow-sm"> <Clock className="w-3 h-3" /> Terjadwal</div >}
+                                                        {post.status === 'scheduled' && <div className="px-3 py-1 bg-emerald-500/90 text-white text-[10px] rounded-full backdrop-blur-md flex items-center gap-1 font-bold shadow-sm"> <Clock className="w-3 h-3" /> Terjadwal</div >}
                                                     </div>
 
                                                     < div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 backdrop-blur-[2px]" >
@@ -1328,11 +1328,11 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                     <div className="flex flex-wrap items-center gap-2 mb-2" >
                                                         {
                                                             post.goal && (
-                                                                <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-bold border uppercase tracking-wider ${post.goal.color}`} >
+                                                                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold border uppercase tracking-wider ${post.goal.color}`} >
                                                                     {renderGoalIcon(post.goal.icon, "w-3 h-3")} {post.goal.name}
                                                                 </span>
                                                             )}
-                                                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[9px] font-bold border border-slate-200 bg-slate-100 text-slate-500 uppercase tracking-wider" >
+                                                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold border border-slate-200 bg-slate-100 text-slate-500 uppercase tracking-wider" >
                                                             {post.type === 'carousel' ? <Layout className="w-3 h-3" /> : post.type === 'video' ? <Video className="w-3 h-3" /> : <ImageIcon className="w-3 h-3" />}
                                                             {post.type === 'carousel' ? 'Karosel' : post.type === 'video' ? 'Video' : 'Single'}
                                                         </span>
@@ -1537,7 +1537,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                                     >
                                                                         <div>
                                                                             <div className="flex items-center justify-between mb-3">
-                                                                                <span className={`text-[10px] uppercase font-bold tracking-wider px-2.5 py-1 rounded-md
+                                                                                <span className={`text-[10px] uppercase font-bold tracking-wider px-3 py-1 rounded-full
                                                                                             ${p.category === 'Promo' ? 'bg-pink-50 text-pink-600' :
                                                                                         p.category === 'Edukasi' ? 'bg-yellow-50 text-yellow-700' :
                                                                                             'bg-blue-50 text-blue-600'}
@@ -1545,11 +1545,11 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                                                     {p.category}
                                                                                 </span>
                                                                                 {p.isApproved ? (
-                                                                                    <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md">
+                                                                                    <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">
                                                                                         <CheckCircle2 className="w-3 h-3" /> Approved
                                                                                     </span>
                                                                                 ) : (
-                                                                                    <span className="flex items-center gap-1 text-[10px] font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md">
+                                                                                    <span className="flex items-center gap-1 text-[10px] font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-full">
                                                                                         <Clock className="w-3 h-3" /> {p.selectedTime || p.recommendedTime}
                                                                                     </span>
                                                                                 )}
