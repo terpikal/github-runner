@@ -928,6 +928,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
     const [activeTab, setActiveTab] = useState('grid');
     const [isPlannerAlertVisible, setIsPlannerAlertVisible] = useState(true);
     const [isIgConnected, setIsIgConnected] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [autoPostConfig, setAutoPostConfig] = useState({
@@ -1368,8 +1369,39 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                 < button onClick={() => setCurrentView('dashboard')
                                 } className="px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary-dark transition-colors" > Buat Desain Baru </button>
                             </div>
-                        ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6" >
+                        ) : (() => {
+                            const filteredLibrary = library.filter(post => {
+                                if (!searchQuery.trim()) return true;
+                                const q = searchQuery.toLowerCase();
+                                return (
+                                    (post.headline && post.headline.toLowerCase().includes(q)) ||
+                                    (post.caption && post.caption.toLowerCase().includes(q)) ||
+                                    (post.body && post.body.toLowerCase().includes(q)) ||
+                                    (post.goal?.name && post.goal.name.toLowerCase().includes(q)) ||
+                                    (post.type && post.type.toLowerCase().includes(q))
+                                );
+                            });
+                            return (
+                                <div className="space-y-5">
+                                    {/* Search Bar */}
+                                    <div className="relative flex items-center">
+                                        <Search className="absolute left-3.5 w-4 h-4 text-slate-400 pointer-events-none" />
+                                        <input
+                                            type="text"
+                                            value={searchQuery}
+                                            onChange={(e) => setSearchQuery(e.target.value)}
+                                            placeholder="Cari konten..."
+                                            className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
+                                        />
+                                    </div>
+                                    {filteredLibrary.length === 0 ? (
+                                        <div className="text-center py-16 bg-white rounded-2xl border border-slate-200 border-dashed">
+                                            <Search className="w-10 h-10 text-slate-300 mx-auto mb-3" />
+                                            <p className="font-semibold text-slate-600">Tidak ada konten ditemukan</p>
+                                            <p className="text-sm text-slate-400 mt-1">Coba kata kunci lain</p>
+                                        </div>
+                                    ) : (
+                                    <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6" >
                                 {
                                     library.map(post => {
                                         const displayImage = post.type === 'carousel' && post.slides ? post.slides[0].image : post.image;
@@ -1414,7 +1446,11 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                         )
                                     })}
                             </div>
-                        )
+                                    )}
+                                </div>
+                            );
+                        })()
+                    )}
                     )}
 
                 {activeTab === 'calendar' && (
