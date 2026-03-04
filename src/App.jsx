@@ -2742,25 +2742,24 @@ const ProfileView = ({ brandDNA, setBrandDNA, businesses, setBusinesses, setCurr
 
     return (
         <div className="w-full max-w-5xl mx-auto animation-fade-in pb-20 md:pb-0" >
-            <div className="flex p-1.5 bg-slate-100/80 backdrop-blur-sm rounded-2xl w-fit mb-8 border border-slate-200/50" >
+            <div className="flex p-1.5 bg-white/80 backdrop-blur-sm rounded-2xl w-fit mb-8 border border-slate-200/50 shadow-sm">
                 <button
                     onClick={() => setActiveTab('account')}
                     className={`px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 flex items-center gap-2 ${activeTab === 'account'
-                        ? 'bg-white text-primary-darker shadow-sm ring-1 ring-slate-200/50'
-                        : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
-                        }`
-                    }
-                >
-                    <User className="w-4 h-4" /> <span>Informasi Akun </span>
-                </button>
-                < button
-                    onClick={() => setActiveTab('business')}
-                    className={`px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 flex items-center gap-2 ${activeTab === 'business'
-                        ? 'bg-white text-primary-darker shadow-sm ring-1 ring-slate-200/50'
-                        : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
+                        ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-primary-sm'
+                        : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
                         }`}
                 >
-                    <Briefcase className="w-4 h-4" /> <span>Profil Bisnis </span>
+                    <User className="w-4 h-4" /> <span>Informasi Akun</span>
+                </button>
+                <button
+                    onClick={() => setActiveTab('business')}
+                    className={`px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 flex items-center gap-2 ${activeTab === 'business'
+                        ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-primary-sm'
+                        : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'
+                        }`}
+                >
+                    <Briefcase className="w-4 h-4" /> <span>Profil Bisnis</span>
                 </button>
             </div>
 
