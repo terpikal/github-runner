@@ -349,6 +349,7 @@ const DesignSystemView = () => {
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className={`w-full flex items-center gap-3 py-3 px-4 rounded-xl border transition-all text-left ${demoDropdown ? 'border-primary/50 bg-white' : 'border-slate-200 bg-slate-50'}`}
                 >
+                  <Filter className="w-4 h-4 text-slate-400" />
                   <span className={`text-sm flex-1 ${demoDropdown ? 'font-medium text-slate-800' : 'text-slate-400'}`}>
                     {demoDropdown || 'Pilih opsi...'}
                   </span>
