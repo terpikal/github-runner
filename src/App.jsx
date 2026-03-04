@@ -1732,9 +1732,9 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                     filteredLibrary.map(post => {
                                         const displayImage = post.type === 'carousel' && post.slides ? post.slides[0].image : post.image;
                                         return (
-                                            <div key={post.id} className="bg-white rounded-[1.5rem] border border-slate-100 overflow-hidden group hover:shadow-xl hover:border-primary/20 transition-all duration-300 flex flex-col hover:-translate-y-1" >
+                                            <div key={post.id} className="bg-white rounded-[1.5rem] border border-slate-100 overflow-hidden group/card hover:shadow-xl hover:border-primary/20 transition-all duration-300 flex flex-col hover:-translate-y-1" >
                                                 <div className="aspect-[4/3] relative overflow-hidden bg-slate-100" >
-                                                    <img src={displayImage} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Post" />
+                                                    <img src={displayImage} className="w-full h-full object-cover transition-transform duration-500 group-hover/card:scale-110" alt="Post" />
 
                                                     <div className="absolute top-3 left-3 flex flex-col gap-1.5" >
                                                         {post.status === 'scheduled' && (
@@ -1756,7 +1756,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                         </span>
                                                     </div>
 
-                                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center pb-5 gap-2">
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-all duration-300 flex items-end justify-center pb-5 gap-2">
                                                         <button onClick={() => setPreviewPost(post)} className="px-5 py-2.5 bg-white text-slate-900 rounded-xl text-xs font-bold flex items-center gap-1.5 hover:scale-105 transition-transform shadow-lg">
                                                             <Eye className="w-3.5 h-3.5" /> Pratinjau
                                                         </button>
