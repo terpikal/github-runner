@@ -829,51 +829,24 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
 
                                 {/* Dramatic generating loading */}
                                 {isGeneratingTemplate && ReactDOM.createPortal(
-                                    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white/95 backdrop-blur-md animate-fade-in">
-                                        <div className="flex flex-col items-center gap-6 animate-fade-in">
-                                            {/* Spinning rings */}
-                                            <div className="relative w-20 h-20">
-                                                <div className="absolute inset-0 rounded-full border-4 border-primary/15" />
-                                                <div className="absolute inset-0 rounded-full border-4 border-t-primary border-r-transparent border-b-transparent border-l-transparent animate-spin" />
-                                                <div className="absolute inset-2 rounded-full border-4 border-t-transparent border-r-primary/60 border-b-transparent border-l-transparent animate-spin" style={{ animationDirection: 'reverse', animationDuration: '0.7s' }} />
-                                                <div className="absolute inset-4 rounded-full border-4 border-t-transparent border-r-transparent border-b-primary/30 border-l-transparent animate-spin" style={{ animationDuration: '1.5s' }} />
-                                                <div className="absolute inset-0 flex items-center justify-center">
-                                                    <Sparkles className="w-6 h-6 text-primary animate-pulse" />
-                                                </div>
+                                    <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-slate-950/95 backdrop-blur-md animate-fade-in">
+                                        {/* Animated rings */}
+                                        <div className="relative flex items-center justify-center mb-10">
+                                            <div className="absolute w-48 h-48 rounded-full border-2 border-primary/10 animate-ping" style={{ animationDuration: '2s' }} />
+                                            <div className="absolute w-36 h-36 rounded-full border-2 border-primary/20 animate-ping" style={{ animationDuration: '1.5s', animationDelay: '0.3s' }} />
+                                            <div className="absolute w-24 h-24 rounded-full border-4 border-primary/30 animate-spin" style={{ animationDuration: '3s' }} />
+                                            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary-darker flex items-center justify-center shadow-[0_0_40px_rgba(19,200,236,0.5)]">
+                                                <Sparkles className="w-9 h-9 text-white animate-bounce" />
                                             </div>
-
-                                            {/* Text */}
-                                            <div className="text-center">
-                                                <p className="font-black text-slate-800 text-lg">Generating template...</p>
-                                                <p className="text-sm text-slate-400 mt-1.5">Menganalisis brand DNA & membuat rekomendasi desain</p>
-                                            </div>
-
-                                            {/* Animated color bars */}
-                                            <div className="flex gap-2">
-                                                {[
-                                                    localBrand.primaryColor || '#0891B2',
-                                                    localBrand.secondaryColor || '#14B8A6',
-                                                    localBrand.tertiaryColor || '#ECFEFF',
-                                                    '#94a3b8'
-                                                ].map((c, i) => (
-                                                    <div
-                                                        key={i}
-                                                        className="w-10 h-2.5 rounded-full animate-pulse"
-                                                        style={{ backgroundColor: c, animationDelay: `${i * 0.2}s` }}
-                                                    />
-                                                ))}
-                                            </div>
-
-                                            {/* Progress dots */}
-                                            <div className="flex gap-1.5 mt-2">
-                                                {[0, 1, 2].map(i => (
-                                                    <div
-                                                        key={i}
-                                                        className="w-2 h-2 rounded-full bg-primary animate-bounce"
-                                                        style={{ animationDelay: `${i * 0.15}s` }}
-                                                    />
-                                                ))}
-                                            </div>
+                                        </div>
+                                        {/* Text */}
+                                        <h2 className="text-2xl font-extrabold text-white mb-3 tracking-tight">AI sedang merancang template...</h2>
+                                        <p className="text-slate-400 text-sm max-w-xs text-center leading-relaxed mb-8">
+                                            Menganalisis brand DNA & membuat rekomendasi desain terbaik untuk brand Anda.
+                                        </p>
+                                        {/* Progress bar */}
+                                        <div className="w-64 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                            <div className="h-full bg-gradient-to-r from-primary to-primary-darker rounded-full animate-pulse" style={{ width: '70%' }} />
                                         </div>
                                     </div>,
                                     document.body
