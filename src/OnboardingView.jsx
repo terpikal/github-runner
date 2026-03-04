@@ -448,8 +448,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                             <div className="space-y-2">
                                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Produk / Jasa yang Ditawarkan</label>
                                 <div className="relative">
-                                    <div className="relative flex items-center">
-                                        <ShoppingBag className="absolute left-3.5 w-4 h-4 text-slate-400 pointer-events-none" />
+                                    <div className="relative">
                                         <input
                                             type="text"
                                             value={productSearch}
@@ -459,7 +458,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                             }}
                                             onFocus={() => setIsProductDropdownOpen(true)}
                                             placeholder={localBrand.category ? `Cari produk/jasa di ${localBrand.category}...` : 'Pilih kategori dulu, lalu ketik produk/jasa'}
-                                            className="w-full pl-10 pr-4 py-3.5 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/40 outline-none transition-all font-medium text-slate-800 placeholder-slate-400 text-sm"
+                                            className="w-full px-4 py-3.5 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/40 outline-none transition-all font-medium text-slate-800 placeholder-slate-400 text-sm"
                                         />
                                     </div>
 
