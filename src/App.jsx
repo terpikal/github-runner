@@ -457,7 +457,7 @@ const DashboardView = ({
 
                 < div className="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 p-5 md:p-6" >
                     <h3 className="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2" >
-                        <Layout className="w-4 h-4 text-primary" /> Format Postingan
+                        <Layout className="w-4 h-4 text-primary" /> Format Konten
                     </h3>
                     < div className="grid grid-cols-2 gap-3" >
                         <button onClick={() => setPostType('single')} className={`w-full p-4 rounded-2xl border-2 flex items-center justify-between transition-all ${postType === 'single' ? 'border-primary bg-primary/10' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
