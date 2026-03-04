@@ -857,19 +857,36 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                     document.body
                                 )}
 
-                                {/* Selected templates indicator */}
+                                {/* Selected templates preview */}
                                 {(localBrand.designTemplate || []).length > 0 && (
-                                    <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-xl border border-primary/10">
-                                        <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
-                                        <p className="text-xs font-bold text-primary-darker">
-                                            {(localBrand.designTemplate || []).length} template dipilih
-                                        </p>
-                                        <button
-                                            onClick={() => setShowTemplateModal(true)}
-                                            className="ml-auto text-xs font-bold text-primary hover:underline"
-                                        >
-                                            Ubah
-                                        </button>
+                                    <div className="space-y-3">
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center gap-2">
+                                                <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
+                                                <p className="text-xs font-bold text-primary-darker">
+                                                    {(localBrand.designTemplate || []).length} template dipilih
+                                                </p>
+                                            </div>
+                                            <button
+                                                onClick={() => setShowTemplateModal(true)}
+                                                className="text-xs font-bold text-primary hover:underline"
+                                            >
+                                                Ubah
+                                            </button>
+                                        </div>
+                                        <div className="grid grid-cols-3 gap-2">
+                                            {TEMPLATES.filter(tpl => (localBrand.designTemplate || []).includes(tpl.id)).map(tpl => (
+                                                <div key={tpl.id} className="rounded-xl border border-primary/20 overflow-hidden bg-white shadow-sm">
+                                                    <div className="w-full aspect-[4/3] flex items-center justify-center" style={{ backgroundColor: tpl.bg }}>
+                                                        <div className="flex gap-0.5">
+                                                            <div className="w-4 h-4 rounded" style={{ backgroundColor: tpl.content }} />
+                                                            <div className="w-3 h-4 rounded" style={{ backgroundColor: tpl.accent }} />
+                                                        </div>
+                                                    </div>
+                                                    <p className="text-[10px] font-bold text-slate-600 text-center py-1.5 truncate px-1">{tpl.name}</p>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 )}
                             </div>
