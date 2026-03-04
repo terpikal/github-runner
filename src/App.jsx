@@ -269,6 +269,7 @@ const DashboardView = ({
     brandDNA,
     prompt, setPrompt,
     postType, setPostType,
+    aspectRatio, setAspectRatio,
     attachments,
     handleSimulateAttach, removeAttachment,
     handleGenerate
@@ -437,6 +438,38 @@ const DashboardView = ({
                             </div>
                             < div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${postType === 'carousel' ? 'border-primary' : 'border-slate-300'}`}> {postType === 'carousel' && <div className="w-2.5 h-2.5 bg-primary rounded-full" />}</div>
                         </button>
+                    </div>
+                </div>
+
+                <div className="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 p-5 md:p-6">
+                    <h3 className="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <Sliders className="w-4 h-4 text-primary" /> Aspek Rasio
+                    </h3>
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        {[
+                            { id: '1:1', label: '1:1', desc: 'Feed', preview: 'aspect-square' },
+                            { id: '4:5', label: '4:5', desc: 'Portrait', preview: '' },
+                            { id: '9:16', label: '9:16', desc: 'Story/Reels', preview: '' },
+                            { id: '16:9', label: '16:9', desc: 'Landscape', preview: '' },
+                        ].map(ratio => (
+                            <button
+                                key={ratio.id}
+                                onClick={() => setAspectRatio(ratio.id)}
+                                className={`p-3 rounded-2xl border-2 flex flex-col items-center gap-2 transition-all ${aspectRatio === ratio.id ? 'border-primary bg-primary/10' : 'border-slate-100 hover:border-slate-200 bg-white'}`}
+                            >
+                                <div
+                                    className={`rounded-lg border-2 transition-colors ${aspectRatio === ratio.id ? 'border-primary bg-primary/20' : 'border-slate-300 bg-slate-100'}`}
+                                    style={{
+                                        width: ratio.id === '16:9' ? '48px' : ratio.id === '9:16' ? '24px' : ratio.id === '4:5' ? '28px' : '32px',
+                                        height: ratio.id === '16:9' ? '27px' : ratio.id === '9:16' ? '42px' : ratio.id === '4:5' ? '35px' : '32px',
+                                    }}
+                                />
+                                <div className="text-center">
+                                    <p className={`text-sm font-bold ${aspectRatio === ratio.id ? 'text-primary-darker' : 'text-slate-700'}`}>{ratio.label}</p>
+                                    <p className="text-[10px] text-slate-400 font-medium">{ratio.desc}</p>
+                                </div>
+                            </button>
+                        ))}
                     </div>
                 </div>
 
@@ -3383,6 +3416,7 @@ function App() {
 
     const [prompt, setPrompt] = useState('');
     const [postType, setPostType] = useState('single');
+    const [aspectRatio, setAspectRatio] = useState('1:1');
     const [generatedResults, setGeneratedResults] = useState([]);
     const [attachments, setAttachments] = useState([]);
     const [editingPost, setEditingPost] = useState(null);
@@ -3592,6 +3626,8 @@ function App() {
                             setPrompt={setPrompt}
                             postType={postType}
                             setPostType={setPostType}
+                            aspectRatio={aspectRatio}
+                            setAspectRatio={setAspectRatio}
                             attachments={attachments}
                             handleSimulateAttach={handleSimulateAttach}
                             removeAttachment={removeAttachment}
