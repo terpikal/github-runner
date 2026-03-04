@@ -2339,7 +2339,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                 <div className="absolute w-36 h-36 rounded-full border-2 border-primary/20 animate-ping" style={{ animationDuration: '1.5s', animationDelay: '0.3s' }}></div>
                                 <div className="absolute w-24 h-24 rounded-full border-4 border-primary/30 animate-spin" style={{ animationDuration: '3s' }}></div>
                                 <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary-darker flex items-center justify-center shadow-[0_0_40px_rgba(19,200,236,0.5)]">
-                                    <img src={postibleLogo} alt="Postibel" className="w-9 h-9 animate-bounce" />
+                                    <img src={postibleLogo} alt="Postibel" className="w-11 h-11 animate-bounce" />
                                 </div>
                             </div>
                             {/* Text */}
@@ -3322,7 +3322,7 @@ const VideoEditorView = ({ handleSaveToLibrary }) => {
                             <div className="absolute w-36 h-36 rounded-full border-2 border-primary/20 animate-ping" style={{ animationDuration: '1.5s', animationDelay: '0.3s' }}></div>
                             <div className="absolute w-24 h-24 rounded-full border-4 border-primary/30 animate-spin" style={{ animationDuration: '3s' }}></div>
                             <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary-darker flex items-center justify-center shadow-[0_0_40px_rgba(19,200,236,0.5)]">
-                                <img src={postibleLogo} alt="Postibel" className="w-9 h-9 animate-bounce" />
+                                <img src={postibleLogo} alt="Postibel" className="w-11 h-11 animate-bounce" />
                             </div>
                         </div>
                         {/* Text */}
@@ -3914,7 +3914,7 @@ function App() {
                         <div className="absolute w-36 h-36 rounded-full border-2 border-primary/20 animate-ping" style={{ animationDuration: '1.5s', animationDelay: '0.3s' }} />
                         <div className="absolute w-24 h-24 rounded-full border-4 border-primary/30 animate-spin" style={{ animationDuration: '3s' }} />
                         <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary-darker flex items-center justify-center shadow-[0_0_40px_rgba(19,200,236,0.5)]">
-                            <img src={postibleLogo} alt="Postibel" className="w-9 h-9 animate-bounce" />
+                            <img src={postibleLogo} alt="Postibel" className="w-11 h-11 animate-bounce" />
                         </div>
                     </div>
                     {/* Text */}
