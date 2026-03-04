@@ -540,7 +540,10 @@ const GeneratingView = ({ brandDNA }) => (
     </div>
 );
 
-const ResultsView = ({ generatedResults, setCurrentView, setPreviewPost, setEditingPost, handleSaveToLibrary, brandDNA }) => (
+const ResultsView = ({ generatedResults, setCurrentView, setPreviewPost, setEditingPost, handleSaveToLibrary, brandDNA }) => {
+    const [showConfirmReset, setShowConfirmReset] = useState(false);
+
+    return (
     <div className="max-w-6xl mx-auto animation-fade-in pb-20 md:pb-0">
         {/* Hero Header */}
         <div className="relative mb-10 p-8 rounded-[2rem] bg-gradient-to-br from-primary/10 via-white to-primary/5 border border-primary/15 overflow-hidden">
@@ -559,11 +562,42 @@ const ResultsView = ({ generatedResults, setCurrentView, setPreviewPost, setEdit
                         <p className="text-slate-500 mt-1 text-sm">Berikut {generatedResults.length} variasi desain berdasarkan instruksi Anda</p>
                     </div>
                 </div>
-                <button onClick={() => setCurrentView('dashboard')} className="flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 rounded-2xl text-slate-700 hover:bg-slate-50 hover:border-primary/30 font-bold text-sm transition-all shadow-sm hover:shadow-md group">
+                <button onClick={() => setShowConfirmReset(true)} className="flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 rounded-2xl text-slate-700 hover:bg-slate-50 hover:border-primary/30 font-bold text-sm transition-all shadow-sm hover:shadow-md group">
                     <RotateCcw className="w-4 h-4 group-hover:rotate-[-180deg] transition-transform duration-500" /> Buat Instruksi Baru
                 </button>
             </div>
         </div>
+
+        {/* Konfirmasi Reset Modal */}
+        {showConfirmReset && ReactDOM.createPortal(
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 animate-fade-in">
+                <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowConfirmReset(false)} />
+                <div className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-sm p-6 text-center animate-scale-in">
+                    <div className="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-4">
+                        <Trash2 className="w-7 h-7 text-red-500" />
+                    </div>
+                    <h3 className="text-lg font-black text-slate-900 mb-2">Buat Instruksi Baru?</h3>
+                    <p className="text-sm text-slate-500 mb-6 leading-relaxed">
+                        Semua hasil desain yang belum disimpan akan terhapus. Pastikan Anda sudah menyimpan desain yang diinginkan.
+                    </p>
+                    <div className="flex gap-3">
+                        <button
+                            onClick={() => setShowConfirmReset(false)}
+                            className="flex-1 py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition-colors text-sm"
+                        >
+                            Batal
+                        </button>
+                        <button
+                            onClick={() => { setShowConfirmReset(false); setCurrentView('dashboard'); }}
+                            className="flex-1 py-3 px-4 bg-red-500 hover:bg-red-600 text-white font-bold rounded-xl transition-colors text-sm"
+                        >
+                            Ya, Hapus & Buat Baru
+                        </button>
+                    </div>
+                </div>
+            </div>,
+            document.body
+        )}
 
         {/* Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
@@ -603,7 +637,8 @@ const ResultsView = ({ generatedResults, setCurrentView, setPreviewPost, setEdit
             ))}
         </div>
     </div>
-);
+    );
+};
 
 const EditorView = ({ editingPost, setCurrentView, handleSaveToLibrary, brandDNA }) => {
     const [localPost, setLocalPost] = useState(editingPost || {});
