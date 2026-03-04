@@ -408,22 +408,51 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
 
                             <div className="space-y-2">
                                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Kategori Bisnis</label>
-                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                                    {CATEGORIES.map(cat => (
-                                        <button
-                                            key={cat.id}
-                                            onClick={() => setLocalBrand({ ...localBrand, category: cat.label })}
-                                            className={`p-3 rounded-xl border-2 flex flex-col items-center gap-1.5 transition-all text-center ${localBrand.category === cat.label
-                                                ? 'border-primary bg-primary/10 text-primary-darker'
-                                                : 'border-slate-100 hover:border-primary/30 bg-slate-50 text-slate-600'
-                                                }`}
-                                        >
-                                            <div className={`p-1.5 rounded-xl ${localBrand.category === cat.label ? 'bg-primary/20' : 'bg-white'}`}>
-                                                {cat.icon}
+                                <div className="relative">
+                                    <button
+                                        onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
+                                        className={`w-full flex items-center gap-3 p-4 rounded-2xl border transition-all text-left ${localBrand.category ? 'border-primary/40 bg-white' : 'border-slate-200 bg-slate-50'}`}
+                                    >
+                                        {localBrand.category ? (
+                                            <>
+                                                <div className="p-1.5 rounded-xl bg-primary/20 text-primary-darker">
+                                                    {CATEGORIES.find(c => c.label === localBrand.category)?.icon}
+                                                </div>
+                                                <span className="font-bold text-slate-800 text-sm flex-1">{localBrand.category}</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Briefcase className="w-5 h-5 text-slate-400" />
+                                                <span className="text-slate-400 font-medium text-sm flex-1">Pilih kategori bisnis...</span>
+                                            </>
+                                        )}
+                                        <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isCategoryDropdownOpen ? 'rotate-180' : ''}`} />
+                                    </button>
+
+                                    {isCategoryDropdownOpen && (
+                                        <>
+                                            <div className="fixed inset-0 z-10" onClick={() => setIsCategoryDropdownOpen(false)} />
+                                            <div className="absolute z-20 mt-2 w-full bg-white border border-slate-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] rounded-2xl py-2 animation-fade-in">
+                                                {CATEGORIES.map(cat => (
+                                                    <button
+                                                        key={cat.id}
+                                                        onClick={() => {
+                                                            setLocalBrand({ ...localBrand, category: cat.label, product: '' });
+                                                            setProductSearch('');
+                                                            setIsCategoryDropdownOpen(false);
+                                                        }}
+                                                        className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${localBrand.category === cat.label ? 'bg-primary/10 text-primary-darker' : 'text-slate-600 hover:bg-slate-50'}`}
+                                                    >
+                                                        <div className={`p-1.5 rounded-xl ${localBrand.category === cat.label ? 'bg-primary/20' : 'bg-slate-100'}`}>
+                                                            {cat.icon}
+                                                        </div>
+                                                        <span className="text-sm font-bold">{cat.label}</span>
+                                                        {localBrand.category === cat.label && <Check className="w-4 h-4 ml-auto text-primary" />}
+                                                    </button>
+                                                ))}
                                             </div>
-                                            <span className="text-xs font-bold leading-tight">{cat.label}</span>
-                                        </button>
-                                    ))}
+                                        </>
+                                    )}
                                 </div>
                             </div>
 
