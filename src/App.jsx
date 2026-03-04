@@ -213,7 +213,7 @@ const InstagramPostMock = ({ post, brand, slideOverride = null, onSlideChange = 
         <div className="w-full max-w-[400px] bg-white flex flex-col shadow-sm rounded-lg overflow-hidden border border-slate-100 mx-auto relative" >
             <div className="flex items-center justify-between p-3 border-b border-slate-50" >
                 <div className="flex items-center gap-2" >
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#13c8ec] to-[#0daecf] p-[2px]" >
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-primary to-primary-dark p-[2px]" >
                         <div className="w-full h-full bg-white rounded-full flex items-center justify-center text-[10px] font-black" >
                             {brand.name.charAt(0)}
                         </div>
@@ -246,7 +246,7 @@ const InstagramPostMock = ({ post, brand, slideOverride = null, onSlideChange = 
                             <button onClick={handlePrev} className="absolute left-2 top-1/2 -translate-y-1/2 z-30 p-2 bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-sm transition-all" > <ChevronLeft className="w-4 h-4" /> </button>
                             < button onClick={handleNext} className="absolute right-2 top-1/2 -translate-y-1/2 z-30 p-2 bg-black/20 hover:bg-black/40 text-white rounded-full backdrop-blur-sm transition-all" > <ChevronRight className="w-4 h-4" /> </button>
                             < div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 flex gap-1.5" >
-                                {slides.map((_, i) => <div key={i} className={`h-1.5 rounded-full transition-all ${currentIdx === i ? 'w-4 bg-[#13c8ec]' : 'w-1.5 bg-white/50'}`} />)
+                                {slides.map((_, i) => <div key={i} className={`h-1.5 rounded-full transition-all ${currentIdx === i ? 'w-4 bg-primary' : 'w-1.5 bg-white/50'}`} />)
                                 }
                             </div>
                             < div className="absolute top-4 right-4 z-30 px-2 py-1 bg-black/40 text-white text-[10px] font-bold rounded-lg backdrop-blur-sm" > {currentIdx + 1}/{slides.length}</div >
@@ -280,7 +280,7 @@ const DashboardView = ({
 
             <div className="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6 pt-4 md:pt-0" >
                 <div className="text-center md:text-left" >
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#13c8ec]/10 text-[#098fae] text-xs font-bold mb-3" >
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary-darker text-xs font-bold mb-3" >
                         <Sparkles className="w-3.5 h-3.5" /> AI Workspace
                     </div>
                     <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight mb-2">
@@ -293,7 +293,7 @@ const DashboardView = ({
             </div>
 
             < div className="space-y-6" >
-                <div className="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 p-2 overflow-hidden transition-all focus-within:ring-4 focus-within:ring-[#13c8ec]/20 focus-within:border-[#13c8ec]/40" >
+                <div className="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 p-2 overflow-hidden transition-all focus-within:ring-4 focus-within:ring-primary/10 focus-within:border-primary/50" >
                     <div className="relative bg-slate-50/80 rounded-[1.5rem] p-5 md:p-6 flex flex-col" >
                         <textarea
                             rows="2"
@@ -346,9 +346,9 @@ const DashboardView = ({
                                             <button
                                                 key={idea.label}
                                                 onClick={() => setPrompt(idea.text)}
-                                                className="flex-shrink-0 flex items-center gap-1.5 text-xs bg-white border border-slate-200 hover:border-[#13c8ec] hover:text-[#0daecf] hover:bg-[#13c8ec]/5 text-slate-600 px-3.5 py-2 rounded-full transition-all font-semibold shadow-sm"
+                                                className="flex-shrink-0 flex items-center gap-1.5 text-xs bg-white border border-slate-200 hover:border-primary hover:text-primary-dark hover:bg-primary/5 text-slate-600 px-3.5 py-2 rounded-full transition-all font-semibold shadow-sm"
                                             >
-                                                <span className="text-[#13c8ec]" > {idea.icon} </span>
+                                                <span className="text-primary" > {idea.icon} </span>
                                                 {idea.label}
                                             </button>
                                         ))
@@ -414,28 +414,28 @@ const DashboardView = ({
 
                 < div className="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 p-5 md:p-6" >
                     <h3 className="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2" >
-                        <Layout className="w-4 h-4 text-[#13c8ec]" /> Format Postingan
+                        <Layout className="w-4 h-4 text-primary" /> Format Postingan
                     </h3>
                     < div className="grid grid-cols-1 sm:grid-cols-2 gap-3" >
-                        <button onClick={() => setPostType('single')} className={`w-full p-4 rounded-2xl border-2 flex items-center justify-between transition-all ${postType === 'single' ? 'border-[#13c8ec] bg-[#13c8ec]/10' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
+                        <button onClick={() => setPostType('single')} className={`w-full p-4 rounded-2xl border-2 flex items-center justify-between transition-all ${postType === 'single' ? 'border-primary bg-primary/10' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
                             <div className="flex items-center gap-3" >
-                                <div className={`p-2 rounded-xl ${postType === 'single' ? 'bg-[#13c8ec]/20 text-[#0daecf]' : 'bg-slate-100 text-slate-500'}`}> <ImageIcon className="w-5 h-5" /> </div>
+                                <div className={`p-2 rounded-xl ${postType === 'single' ? 'bg-primary/20 text-primary-dark' : 'bg-slate-100 text-slate-500'}`}> <ImageIcon className="w-5 h-5" /> </div>
                                 < div className="text-left" >
-                                    <p className={`font-semibold ${postType === 'single' ? 'text-[#098fae]' : 'text-slate-700'}`}> Satu Gambar </p>
+                                    <p className={`font-semibold ${postType === 'single' ? 'text-primary-darker' : 'text-slate-700'}`}> Satu Gambar </p>
                                     < p className="text-xs text-slate-500 mt-0.5" > Feed standar </p>
                                 </div>
                             </div>
-                            < div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${postType === 'single' ? 'border-[#13c8ec]' : 'border-slate-300'}`}> {postType === 'single' && <div className="w-2.5 h-2.5 bg-[#13c8ec] rounded-full" />}</div>
+                            < div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${postType === 'single' ? 'border-primary' : 'border-slate-300'}`}> {postType === 'single' && <div className="w-2.5 h-2.5 bg-primary rounded-full" />}</div>
                         </button>
-                        < button onClick={() => setPostType('carousel')} className={`w-full p-4 rounded-2xl border-2 flex items-center justify-between transition-all ${postType === 'carousel' ? 'border-[#13c8ec] bg-[#13c8ec]/10' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
+                        < button onClick={() => setPostType('carousel')} className={`w-full p-4 rounded-2xl border-2 flex items-center justify-between transition-all ${postType === 'carousel' ? 'border-primary bg-primary/10' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
                             <div className="flex items-center gap-3" >
-                                <div className={`p-2 rounded-xl ${postType === 'carousel' ? 'bg-[#13c8ec]/20 text-[#0daecf]' : 'bg-slate-100 text-slate-500'}`}> <Layout className="w-5 h-5" /> </div>
+                                <div className={`p-2 rounded-xl ${postType === 'carousel' ? 'bg-primary/20 text-primary-dark' : 'bg-slate-100 text-slate-500'}`}> <Layout className="w-5 h-5" /> </div>
                                 < div className="text-left" >
-                                    <p className={`font-semibold ${postType === 'carousel' ? 'text-[#098fae]' : 'text-slate-700'}`}> Karosel </p>
+                                    <p className={`font-semibold ${postType === 'carousel' ? 'text-primary-darker' : 'text-slate-700'}`}> Karosel </p>
                                     < p className="text-xs text-slate-500 mt-0.5" > Konten geser multi - slide </p>
                                 </div>
                             </div>
-                            < div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${postType === 'carousel' ? 'border-[#13c8ec]' : 'border-slate-300'}`}> {postType === 'carousel' && <div className="w-2.5 h-2.5 bg-[#13c8ec] rounded-full" />}</div>
+                            < div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${postType === 'carousel' ? 'border-primary' : 'border-slate-300'}`}> {postType === 'carousel' && <div className="w-2.5 h-2.5 bg-primary rounded-full" />}</div>
                         </button>
                     </div>
                 </div>
@@ -453,10 +453,10 @@ const DashboardView = ({
 const GeneratingView = ({ brandDNA }) => (
     <div className="flex flex-col items-center justify-center h-[70vh] animation-fade-in text-center px-4" >
         <div className="relative w-24 h-24 mb-8" >
-            <div className="absolute inset-0 border-4 border-[#13c8ec]/30 rounded-full animate-pulse" > </div>
-            < div className="absolute inset-0 border-4 border-[#13c8ec] rounded-full border-t-transparent animate-spin" > </div>
+            <div className="absolute inset-0 border-4 border-primary/30 rounded-full animate-pulse" > </div>
+            < div className="absolute inset-0 border-4 border-primary rounded-full border-t-transparent animate-spin" > </div>
             < div className="absolute inset-0 flex items-center justify-center" >
-                <Sparkles className="w-8 h-8 text-[#13c8ec] animate-bounce" />
+                <Sparkles className="w-8 h-8 text-primary animate-bounce" />
             </div>
         </div>
         < h2 className="text-2xl font-bold text-slate-900 mb-2" > Merancang konten Anda...</h2>
@@ -480,7 +480,7 @@ const ResultsView = ({ generatedResults, setCurrentView, setPreviewPost, setEdit
                         <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50" >
                             <span className="text-xs font-bold uppercase tracking-wider text-slate-500" > Opsi {idx + 1} </span>
                             < div className="flex items-center gap-2" >
-                                <button onClick={() => setPreviewPost(post)} className="p-1.5 bg-white border border-slate-200 rounded-md text-slate-500 hover:text-[#13c8ec] transition-colors shadow-sm" title="Pratinjau Penuh" >
+                                <button onClick={() => setPreviewPost(post)} className="p-1.5 bg-white border border-slate-200 rounded-md text-slate-500 hover:text-primary transition-colors shadow-sm" title="Pratinjau Penuh" >
                                     <Eye className="w-3.5 h-3.5" />
                                 </button>
                                 < span className="text-xs font-bold px-3 py-1 bg-slate-100 border border-slate-200 rounded-full text-slate-500 capitalize" > {post.type === 'carousel' ? 'Karosel' : post.type === 'video' ? 'Video' : 'Single'} </span>
@@ -489,7 +489,7 @@ const ResultsView = ({ generatedResults, setCurrentView, setPreviewPost, setEdit
                         < div className="p-4 flex-1 flex justify-center" > <InstagramPostMock post={post} brand={brandDNA} /> </div>
                         < div className="p-4 bg-slate-50 border-t border-slate-100 grid grid-cols-2 gap-2" >
                             <button onClick={() => { setEditingPost(post); setCurrentView('editor'); }} className="py-2.5 flex items-center justify-center gap-2 bg-white border border-slate-200 rounded-xl text-slate-700 font-medium hover:bg-slate-100 text-sm" > <Edit3 className="w-4 h-4" /> Edit Teks </button>
-                            < button onClick={() => handleSaveToLibrary(post)} className="py-2.5 flex items-center justify-center gap-2 bg-[#13c8ec] rounded-xl text-white font-medium hover:bg-[#0daecf] text-sm" > <Download className="w-4 h-4" /> Simpan </button>
+                            < button onClick={() => handleSaveToLibrary(post)} className="py-2.5 flex items-center justify-center gap-2 bg-primary rounded-xl text-white font-medium hover:bg-primary-dark text-sm" > <Download className="w-4 h-4" /> Simpan </button>
                         </div>
                     </div>
                 ))}
@@ -528,8 +528,8 @@ const EditorView = ({ editingPost, setCurrentView, handleSaveToLibrary, brandDNA
                             <button onClick={() => setIsScheduleModalOpen(false)} className="absolute top-6 right-6 p-2 text-slate-400 hover:bg-slate-100 rounded-full transition-colors">
                                 <X className="w-5 h-5" />
                             </button>
-                            <div className="w-12 h-12 rounded-2xl bg-[#13c8ec]/10 flex items-center justify-center mb-6">
-                                <Calendar className="w-6 h-6 text-[#13c8ec]" />
+                            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mb-6">
+                                <Calendar className="w-6 h-6 text-primary" />
                             </div>
                             <h3 className="text-2xl font-black text-slate-900 mb-2 tracking-tight">Jadwalkan Postingan</h3>
                             <p className="text-slate-500 mb-6">Mau di upload tanggal berapa?</p>
@@ -541,7 +541,7 @@ const EditorView = ({ editingPost, setCurrentView, handleSaveToLibrary, brandDNA
                                         type="date"
                                         value={scheduleDate}
                                         onChange={(e) => setScheduleDate(e.target.value)}
-                                        className="w-full p-3 rounded-xl border border-slate-200 focus:border-[#13c8ec] focus:ring-2 focus:ring-[#13c8ec]/20 outline-none transition-all"
+                                        className="w-full p-3 rounded-xl border border-slate-200 focus:border-primary/50 focus:ring-2 focus:ring-primary/10 outline-none transition-all"
                                     />
                                 </div>
                             </div>
@@ -559,7 +559,7 @@ const EditorView = ({ editingPost, setCurrentView, handleSaveToLibrary, brandDNA
                                             alert('Pilih tanggal terlebih dahulu');
                                         }
                                     }}
-                                    className="flex-1 px-5 py-3 rounded-xl font-bold text-white bg-[#13c8ec] hover:bg-[#0daecf] shadow-lg shadow-[#13c8ec]/20 transition-all"
+                                    className="flex-1 px-5 py-3 rounded-xl font-bold text-white bg-primary hover:bg-primary-dark shadow-lg shadow-primary transition-all"
                                 >Simpan Jadwal</button>
                             </div>
                         </div>
@@ -572,8 +572,8 @@ const EditorView = ({ editingPost, setCurrentView, handleSaveToLibrary, brandDNA
                     <button onClick={() => setCurrentView('library')} className="flex items-center gap-2 text-slate-500 hover:text-slate-800" > <ChevronLeft className="w-5 h-5" /> Kembali </button>
                     <div className="flex items-center gap-3">
                         <button onClick={() => alert('Fitur posting langsung ke Instagram sedang dalam pengembangan.')} className="px-5 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl font-medium flex items-center gap-2 transition-colors"> <Send className="w-4 h-4" /> Posting Sekarang </button>
-                        <button onClick={() => setIsScheduleModalOpen(true)} className="px-5 py-2.5 bg-white hover:bg-[#13c8ec]/5 border border-[#13c8ec] text-[#13c8ec] rounded-xl font-medium flex items-center gap-2 transition-colors"> <Calendar className="w-4 h-4" /> Jadwalkan </button>
-                        <button onClick={() => handleSaveToLibrary(localPost)} className="px-5 py-2.5 bg-[#13c8ec] hover:bg-[#0daecf] text-white rounded-xl font-medium transition-colors" > Simpan Pustaka </button>
+                        <button onClick={() => setIsScheduleModalOpen(true)} className="px-5 py-2.5 bg-white hover:bg-primary/5 border border-primary text-primary rounded-xl font-medium flex items-center gap-2 transition-colors"> <Calendar className="w-4 h-4" /> Jadwalkan </button>
+                        <button onClick={() => handleSaveToLibrary(localPost)} className="px-5 py-2.5 bg-primary hover:bg-primary-dark text-white rounded-xl font-medium transition-colors" > Simpan Pustaka </button>
                     </div>
                 </div>
                 <div className="flex flex-col lg:flex-row gap-8 px-4 md:px-0 pb-10" >
@@ -583,21 +583,21 @@ const EditorView = ({ editingPost, setCurrentView, handleSaveToLibrary, brandDNA
                             <div className="mt-4 flex gap-2" >
                                 {
                                     localPost.slides.map((_, i) => (
-                                        <button key={i} onClick={() => setActiveSlideIdx(i)} className={`px-4 py-2 rounded-lg text-sm font-bold ${activeSlideIdx === i ? 'bg-[#13c8ec] text-white' : 'bg-slate-200 text-slate-600'}`}> Slide {i + 1} </button>
+                                        <button key={i} onClick={() => setActiveSlideIdx(i)} className={`px-4 py-2 rounded-lg text-sm font-bold ${activeSlideIdx === i ? 'bg-primary text-white' : 'bg-slate-200 text-slate-600'}`}> Slide {i + 1} </button>
                                     ))}
                             </div>
                         )}
                     </div>
                     <div className="w-full lg:w-1/2 bg-white rounded-3xl border border-slate-100 shadow-sm p-6 space-y-6" >
-                        <h3 className="font-bold text-slate-800 flex items-center gap-2" > <Edit3 className="w-4 h-4 text-[#13c8ec]" /> Edit Konten {isCarousel ? `(Slide ${activeSlideIdx + 1})` : ''} </h3>
+                        <h3 className="font-bold text-slate-800 flex items-center gap-2" > <Edit3 className="w-4 h-4 text-primary" /> Edit Konten {isCarousel ? `(Slide ${activeSlideIdx + 1})` : ''} </h3>
                         <div className="space-y-4" >
                             <div className="space-y-2" >
                                 <label className="text-sm font-bold text-slate-700" > Headline </label>
-                                <input type="text" value={currentSlide.headline || ''} onChange={(e) => updateSlideContent('headline', e.target.value)} className="w-full p-3 rounded-xl border border-slate-100 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#13c8ec]/20 outline-none" />
+                                <input type="text" value={currentSlide.headline || ''} onChange={(e) => updateSlideContent('headline', e.target.value)} className="w-full p-3 rounded-xl border border-slate-100 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-primary/10 outline-none" />
                             </div>
                             <div className="space-y-2" >
                                 <label className="text-sm font-bold text-slate-700" > Sub - headline </label>
-                                <input type="text" value={currentSlide.body || ''} onChange={(e) => updateSlideContent('body', e.target.value)} className="w-full p-3 rounded-xl border border-slate-100 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#13c8ec]/20 outline-none" />
+                                <input type="text" value={currentSlide.body || ''} onChange={(e) => updateSlideContent('body', e.target.value)} className="w-full p-3 rounded-xl border border-slate-100 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-primary/10 outline-none" />
                             </div>
                             <div className="space-y-2" >
                                 <label className="text-sm font-bold text-slate-700" > Caption Postingan </label>
@@ -676,7 +676,7 @@ const DayDetailModal = ({ day, year, month, onClose, onEditPost, library, onGoTo
                             </>
                         ) : (
                             <>
-                                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#13c8ec]/10 text-[#098fae] text-xs font-bold mb-2">
+                                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary-darker text-xs font-bold mb-2">
                                     <CalendarDays className="w-3.5 h-3.5" />
                                     Jadwal Konten
                                 </div>
@@ -702,16 +702,16 @@ const DayDetailModal = ({ day, year, month, onClose, onEditPost, library, onGoTo
                             {/* Option 1 — Generate */}
                             <button
                                 onClick={handleGoGenerate}
-                                className="w-full group flex items-center gap-5 p-5 bg-gradient-to-r from-[#13c8ec]/5 to-[#0daecf]/5 hover:from-[#13c8ec]/15 hover:to-[#0daecf]/15 border-2 border-[#13c8ec]/20 hover:border-[#13c8ec]/50 rounded-2xl transition-all text-left"
+                                className="w-full group flex items-center gap-5 p-5 bg-gradient-to-r from-primary/5 to-primary-dark/5 hover:from-primary/15 hover:to-primary-dark/15 border-2 border-primary/20 hover:border-primary/50 rounded-2xl transition-all text-left"
                             >
-                                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-gradient-to-br from-[#13c8ec] to-[#0daecf] flex items-center justify-center shadow-lg shadow-[#13c8ec]/20 group-hover:scale-110 transition-transform">
+                                <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center shadow-lg shadow-primary group-hover:scale-110 transition-transform">
                                     <Sparkles className="w-6 h-6 text-white" />
                                 </div>
                                 <div className="flex-1 min-w-0">
                                     <p className="font-extrabold text-slate-800 text-base">Generate dengan AI</p>
                                     <p className="text-sm text-slate-500 mt-0.5">Buat konten baru dari awal menggunakan AI — Anda akan diarahkan ke halaman utama.</p>
                                 </div>
-                                <ChevronRight className="w-5 h-5 text-slate-300 group-hover:text-[#13c8ec] transition-colors flex-shrink-0" />
+                                <ChevronRight className="w-5 h-5 text-slate-300 group-hover:text-primary transition-colors flex-shrink-0" />
                             </button>
 
                             {/* Option 2 — From Bank */}
@@ -749,7 +749,7 @@ const DayDetailModal = ({ day, year, month, onClose, onEditPost, library, onGoTo
                                         <div
                                             key={post.id}
                                             onClick={() => handlePickFromBank(post)}
-                                            className="group flex items-center gap-4 p-3 bg-slate-50 hover:bg-white rounded-2xl border border-slate-100 hover:border-[#13c8ec]/30 hover:shadow-md transition-all cursor-pointer"
+                                            className="group flex items-center gap-4 p-3 bg-slate-50 hover:bg-white rounded-2xl border border-slate-100 hover:border-primary/30 hover:shadow-md transition-all cursor-pointer"
                                         >
                                             {/* Thumbnail */}
                                             {thumb ? (
@@ -775,7 +775,7 @@ const DayDetailModal = ({ day, year, month, onClose, onEditPost, library, onGoTo
                                                 <p className="text-xs text-slate-400 line-clamp-1 mt-0.5">{post.caption}</p>
                                             </div>
                                             {/* CTA */}
-                                            <span className="flex-shrink-0 flex items-center gap-1 text-xs font-bold text-[#13c8ec] bg-[#13c8ec]/10 px-3 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <span className="flex-shrink-0 flex items-center gap-1 text-xs font-bold text-primary bg-primary/10 px-3 py-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
                                                 <Plus className="w-3.5 h-3.5" /> Jadwalkan
                                             </span>
                                         </div>
@@ -800,7 +800,7 @@ const DayDetailModal = ({ day, year, month, onClose, onEditPost, library, onGoTo
                                 day.posts.map((p) => (
                                     <div
                                         key={p.id}
-                                        className="group flex gap-4 p-4 bg-slate-50 hover:bg-white rounded-2xl border border-slate-100 hover:border-[#13c8ec]/30 hover:shadow-md transition-all cursor-pointer"
+                                        className="group flex gap-4 p-4 bg-slate-50 hover:bg-white rounded-2xl border border-slate-100 hover:border-primary/30 hover:shadow-md transition-all cursor-pointer"
                                         onClick={() => { onEditPost(p); onClose(); }}
                                     >
                                         <div className={`w-1.5 flex-shrink-0 rounded-full ${p.category === 'Promo' ? 'bg-pink-400' : p.category === 'Edukasi' ? 'bg-yellow-400' : p.category === 'Testimoni' ? 'bg-purple-400' : 'bg-blue-400'}`} />
@@ -827,7 +827,7 @@ const DayDetailModal = ({ day, year, month, onClose, onEditPost, library, onGoTo
                                             <p className="text-xs text-slate-500 mt-1 italic line-clamp-2 leading-relaxed">"{p.hook || p.caption}"</p>
                                         </div>
                                         <div className="flex-shrink-0 flex items-center">
-                                            <span className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 text-xs font-bold text-[#13c8ec] bg-[#13c8ec]/10 px-3 py-2 rounded-xl">
+                                            <span className="opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 text-xs font-bold text-primary bg-primary/10 px-3 py-2 rounded-xl">
                                                 <Edit3 className="w-3.5 h-3.5" /> Edit
                                             </span>
                                         </div>
@@ -849,7 +849,7 @@ const DayDetailModal = ({ day, year, month, onClose, onEditPost, library, onGoTo
                     {addMode === null && (
                         <button
                             onClick={() => setAddMode('choose')}
-                            className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#13c8ec] to-[#0daecf] hover:from-[#0daecf] hover:to-[#098fae] text-white font-bold text-sm rounded-xl transition-all shadow-[0_4px_14px_rgba(19,200,236,0.35)] hover:-translate-y-0.5 active:translate-y-0"
+                            className="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary-darker text-white font-bold text-sm rounded-xl transition-all shadow-primary-sm hover:-translate-y-0.5 active:translate-y-0"
                         >
                             <Plus className="w-4 h-4" /> Tambah Konten
                         </button>
@@ -1213,10 +1213,10 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
         return (
             <div className="flex flex-col items-center justify-center h-[70vh] animation-fade-in text-center px-4" >
                 <div className="relative w-24 h-24 mb-8" >
-                    <div className="absolute inset-0 border-4 border-[#13c8ec]/30 rounded-full animate-pulse" > </div>
-                    < div className="absolute inset-0 border-4 border-[#13c8ec] rounded-full border-t-transparent animate-spin" > </div>
+                    <div className="absolute inset-0 border-4 border-primary/30 rounded-full animate-pulse" > </div>
+                    < div className="absolute inset-0 border-4 border-primary rounded-full border-t-transparent animate-spin" > </div>
                     < div className="absolute inset-0 flex items-center justify-center" >
-                        <Sparkles className="w-8 h-8 text-[#13c8ec] animate-bounce" />
+                        <Sparkles className="w-8 h-8 text-primary animate-bounce" />
                     </div>
                 </div>
                 < h2 className="text-2xl font-bold text-slate-900 mb-2" > Menganalisa & Menyusun Planner...</h2>
@@ -1235,10 +1235,10 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                 <div className="flex flex-col xl:flex-row xl:items-start justify-between gap-6 mb-8" >
                     <div className="flex items-center gap-3 mb-2">
                         <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-                            Konten Post & Planner <span className="px-3 py-1 bg-[#13c8ec]/10 text-[#098fae] border border-[#13c8ec]/20 text-[10px] font-black uppercase tracking-widest rounded-full">PRO</span>
+                            Konten Post & Planner <span className="px-3 py-1 bg-primary/10 text-primary-darker border border-primary/20 text-[10px] font-black uppercase tracking-widest rounded-full">PRO</span>
                         </h1>
                         <div className="group relative flex items-center justify-center">
-                            <HelpCircle className="w-5 h-5 text-slate-400 cursor-help hover:text-[#13c8ec] transition-colors" />
+                            <HelpCircle className="w-5 h-5 text-slate-400 cursor-help hover:text-primary transition-colors" />
                             <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-72 p-3 bg-slate-800 text-white text-xs rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all shadow-xl z-20 pointer-events-none">
                                 Kelola semua desain Anda, buat jadwal otomatis selama 1 bulan, dan posting langsung ke Instagram tanpa harus membuka aplikasi lain.
                                 <div className="absolute bottom-full left-1/2 -translate-x-1/2 border-4 border-transparent border-b-slate-800" />
@@ -1253,13 +1253,13 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                     <div className="flex p-1.5 bg-slate-100/80 backdrop-blur-sm rounded-2xl w-fit border border-slate-200/50" >
                         <button
                             onClick={() => { setActiveTab('grid'); }}
-                            className={`px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 flex items-center gap-2 ${activeTab === 'grid' ? 'bg-white text-[#098fae] shadow-sm ring-1 ring-slate-200/50' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
+                            className={`px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 flex items-center gap-2 ${activeTab === 'grid' ? 'bg-white text-primary-darker shadow-sm ring-1 ring-slate-200/50' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
                         >
                             <Layout className="w-4 h-4" /> <span>Bank Konten </span>
                         </button>
                         <button
                             onClick={() => { setActiveTab('calendar'); setIsPlannerAlertVisible(true); }}
-                            className={`px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 flex items-center gap-2 ${activeTab === 'calendar' ? 'bg-white text-[#098fae] shadow-sm ring-1 ring-slate-200/50' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
+                            className={`px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 flex items-center gap-2 ${activeTab === 'calendar' ? 'bg-white text-primary-darker shadow-sm ring-1 ring-slate-200/50' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
                         >
                             <CalendarDays className="w-4 h-4" /> <span>Konten Planner </span>
                         </button>
@@ -1268,7 +1268,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                     {/* Combined Settings & IG Status (Moved from top header) */}
                     <button
                         onClick={() => setIsSettingsOpen(true)}
-                        className="flex items-stretch bg-white border border-slate-200 shadow-sm rounded-2xl overflow-hidden hover:border-[#13c8ec]/50 hover:shadow-md transition-all group h-[52px]"
+                        className="flex items-stretch bg-white border border-slate-200 shadow-sm rounded-2xl overflow-hidden hover:border-primary/50 hover:shadow-md transition-all group h-[52px]"
                     >
                         {/* IG Status Section */}
                         <div className={`flex items-center gap-2 px-4 py-2 border-r border-slate-100 ${isIgConnected ? 'bg-emerald-50/50' : 'bg-amber-50/80'}`}>
@@ -1288,7 +1288,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                             )}
                         </div>
                         {/* Settings Section */}
-                        <div className="px-5 flex items-center gap-2 font-bold text-sm text-slate-700 group-hover:text-[#13c8ec] transition-colors bg-white">
+                        <div className="px-5 flex items-center gap-2 font-bold text-sm text-slate-700 group-hover:text-primary transition-colors bg-white">
                             <Settings className="w-4 h-4" /> <span className="hidden sm:inline">Pengaturan</span>
                         </div>
                     </button>
@@ -1302,7 +1302,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                 <h3 className="text-xl font-bold text-slate-800 mb-2" > Pustaka Masih Kosong </h3>
                                 < p className="text-slate-500 mb-6" > Mulai buat desain atau biarkan AI men - generate jadwal Anda.</p>
                                 < button onClick={() => setCurrentView('dashboard')
-                                } className="px-6 py-3 bg-[#13c8ec] text-white rounded-xl font-bold text-sm hover:bg-[#0daecf] transition-colors" > Buat Desain Baru </button>
+                                } className="px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary-dark transition-colors" > Buat Desain Baru </button>
                             </div>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6" >
@@ -1310,7 +1310,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                     library.map(post => {
                                         const displayImage = post.type === 'carousel' && post.slides ? post.slides[0].image : post.image;
                                         return (
-                                            <div key={post.id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden group hover:shadow-lg hover:border-[#13c8ec]/30 transition-all flex flex-col" >
+                                            <div key={post.id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden group hover:shadow-lg hover:border-primary/30 transition-all flex flex-col" >
                                                 <div className="aspect-square relative overflow-hidden bg-slate-100" >
                                                     <img src={displayImage} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Post" />
 
@@ -1319,7 +1319,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                     </div>
 
                                                     < div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 backdrop-blur-[2px]" >
-                                                        <button onClick={() => setPreviewPost(post)} className="px-4 py-2 bg-[#13c8ec] text-white rounded-lg text-xs font-bold flex items-center gap-1.5 w-32 justify-center hover:scale-105 transition-transform" > <Eye className="w-3.5 h-3.5" /> Pratinjau </button>
+                                                        <button onClick={() => setPreviewPost(post)} className="px-4 py-2 bg-primary text-white rounded-lg text-xs font-bold flex items-center gap-1.5 w-32 justify-center hover:scale-105 transition-transform" > <Eye className="w-3.5 h-3.5" /> Pratinjau </button>
                                                         < button onClick={() => { setEditingPost(post); setCurrentView('editor'); }
                                                         } className="px-4 py-2 bg-white text-slate-900 rounded-lg text-xs font-bold flex items-center gap-1.5 w-32 justify-center hover:scale-105 transition-transform" > <Edit3 className="w-3.5 h-3.5" /> Edit </button>
                                                     </div>
@@ -1365,7 +1365,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                             <div className="flex items-center bg-slate-50 border border-slate-200/80 rounded-2xl p-1 shadow-[0_2px_10px_rgb(0,0,0,0.02)]">
                                                 <button
                                                     onClick={() => setCurrentCalendarDate(new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() - 1, 1))}
-                                                    className="p-2 hover:bg-white hover:text-[#13c8ec] text-slate-400 hover:shadow-sm rounded-[10px] transition-all"
+                                                    className="p-2 hover:bg-white hover:text-primary text-slate-400 hover:shadow-sm rounded-[10px] transition-all"
                                                     title="Bulan Sebelumnya"
                                                 ><ChevronLeft className="w-5 h-5" /></button>
                                                 <h2 className="text-xl font-black text-slate-800 px-4 min-w-[160px] text-center tracking-tight">
@@ -1373,13 +1373,13 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                 </h2>
                                                 <button
                                                     onClick={() => setCurrentCalendarDate(new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() + 1, 1))}
-                                                    className="p-2 hover:bg-white hover:text-[#13c8ec] text-slate-400 hover:shadow-sm rounded-[10px] transition-all"
+                                                    className="p-2 hover:bg-white hover:text-primary text-slate-400 hover:shadow-sm rounded-[10px] transition-all"
                                                     title="Bulan Berikutnya"
                                                 ><ChevronRight className="w-5 h-5" /></button>
                                             </div>
                                             <button
                                                 onClick={() => setCurrentCalendarDate(new Date())}
-                                                className="px-4 py-2.5 bg-white border border-slate-200/80 text-slate-600 font-bold text-sm rounded-xl hover:bg-slate-50 hover:text-[#13c8ec] hover:border-[#13c8ec]/30 transition-all shadow-[0_2px_10px_rgb(0,0,0,0.02)] hidden sm:block"
+                                                className="px-4 py-2.5 bg-white border border-slate-200/80 text-slate-600 font-bold text-sm rounded-xl hover:bg-slate-50 hover:text-primary hover:border-primary/30 transition-all shadow-[0_2px_10px_rgb(0,0,0,0.02)] hidden sm:block"
                                             >
                                                 Hari Ini
                                             </button>
@@ -1397,7 +1397,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                             ) : (
                                                 // === NORMAL MODE: tampilkan tombol generate AI + jadwalkan ===
                                                 <>
-                                                    <button onClick={() => setIsGenerateModalOpen(true)} className="px-4 py-2 bg-[#13c8ec] hover:bg-[#0daecf] text-white shadow-sm rounded-xl font-bold text-xs transition-all flex items-center gap-2" >
+                                                    <button onClick={() => setIsGenerateModalOpen(true)} className="px-4 py-2 bg-primary hover:bg-primary-dark text-white shadow-sm rounded-xl font-bold text-xs transition-all flex items-center gap-2" >
                                                         <Sparkles className="w-3.5 h-3.5" />
                                                         {hasPlanForCurrentMonth ? 'Tambahkan Konten AI' : 'Generate Konten Plan'}
                                                     </button>
@@ -1421,11 +1421,11 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                             <div className="flex items-center bg-slate-50 p-1 rounded-xl border border-slate-200">
                                                 <button
                                                     onClick={() => setCalendarViewType('grid')}
-                                                    className={`p-1.5 rounded-lg transition-all ${calendarViewType === 'grid' ? 'bg-white text-[#13c8ec] shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                                                    className={`p-1.5 rounded-lg transition-all ${calendarViewType === 'grid' ? 'bg-white text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                                                 ><Layout className="w-4 h-4" /></button>
                                                 <button
                                                     onClick={() => setCalendarViewType('list')}
-                                                    className={`p-1.5 rounded-lg transition-all ${calendarViewType === 'list' ? 'bg-white text-[#13c8ec] shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                                                    className={`p-1.5 rounded-lg transition-all ${calendarViewType === 'list' ? 'bg-white text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
                                                 ><List className="w-4 h-4" /></button>
                                             </div>
 
@@ -1434,34 +1434,34 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
 
                                     {/* STATUS CARD */}
                                     {isPlannerAlertVisible && !hasPlanForCurrentMonth && !isMonthScheduled && (
-                                        <div className="flex items-center justify-between px-4 py-3 bg-[#13c8ec]/[0.08] border border-[#13c8ec]/20 rounded-xl w-full mb-4">
+                                        <div className="flex items-center justify-between px-4 py-3 bg-primary/[0.08] border border-primary/20 rounded-xl w-full mb-4">
                                             <div className="flex items-center gap-3">
                                                 {isMonthScheduled ? (
                                                     <>
                                                         <div className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500/20">
                                                             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                                                         </div>
-                                                        <span className="font-bold text-[#098fae] text-sm tracking-wide">Postingan Terjadwal</span>
-                                                        <span className="text-[#098fae]/80 text-sm hidden sm:block">- Semua konten pada bulan ini sudah dikunci dan siap di-posting.</span>
+                                                        <span className="font-bold text-primary-darker text-sm tracking-wide">Postingan Terjadwal</span>
+                                                        <span className="text-primary-darker/80 text-sm hidden sm:block">- Semua konten pada bulan ini sudah dikunci dan siap di-posting.</span>
                                                     </>
                                                 ) : hasPlanForCurrentMonth ? (
                                                     <>
-                                                        <div className="flex items-center justify-center w-6 h-6 rounded-full bg-[#13c8ec]/20 animate-pulse">
-                                                            <div className="w-2.5 h-2.5 rounded-full bg-[#13c8ec]"></div>
+                                                        <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/20 animate-pulse">
+                                                            <div className="w-2.5 h-2.5 rounded-full bg-primary"></div>
                                                         </div>
-                                                        <span className="text-[#098fae] font-semibold text-sm">Terhubung secara otomatis</span>
+                                                        <span className="text-primary-darker font-semibold text-sm">Terhubung secara otomatis</span>
                                                     </>
                                                 ) : (
                                                     <>
                                                         <div className="flex items-center justify-center w-6 h-6 rounded-full bg-amber-400/20">
                                                             <CalendarDays className="w-3.5 h-3.5 text-amber-500" />
                                                         </div>
-                                                        <span className="font-semibold text-[#098fae] text-sm tracking-wide">Belum Ada Rencana Konten</span>
-                                                        <span className="text-[#098fae]/80 text-sm hidden sm:block">- Kalender Anda masih kosong bulan ini. Mari buat konten atau gunakan AI.</span>
+                                                        <span className="font-semibold text-primary-darker text-sm tracking-wide">Belum Ada Rencana Konten</span>
+                                                        <span className="text-primary-darker/80 text-sm hidden sm:block">- Kalender Anda masih kosong bulan ini. Mari buat konten atau gunakan AI.</span>
                                                     </>
                                                 )}
                                             </div>
-                                            <button onClick={() => setIsPlannerAlertVisible(false)} className="p-1.5 hover:bg-[#13c8ec]/10 rounded-lg text-[#098fae] transition-colors" title="Tutup">
+                                            <button onClick={() => setIsPlannerAlertVisible(false)} className="p-1.5 hover:bg-primary/10 rounded-lg text-primary-darker transition-colors" title="Tutup">
                                                 <X className="w-4 h-4" />
                                             </button>
                                         </div>
@@ -1509,7 +1509,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                             return (
                                                 <div className="space-y-6 mt-4">
                                                     {validListDays.map(day => (
-                                                        <div key={`list-d${day.dayNumber}`} className="bg-white border border-slate-200 rounded-[2rem] p-6 md:p-8 hover:border-[#13c8ec]/30 transition-colors shadow-sm">
+                                                        <div key={`list-d${day.dayNumber}`} className="bg-white border border-slate-200 rounded-[2rem] p-6 md:p-8 hover:border-primary/30 transition-colors shadow-sm">
                                                             <div className="flex items-center justify-between mb-6 border-b border-slate-50 pb-4">
                                                                 <h4 className="font-bold text-slate-800 flex items-center gap-2">
                                                                     <CalendarDays className="w-4 h-4 text-slate-400" />
@@ -1520,7 +1520,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                                         setActiveWeek(day.weekNumber);
                                                                         setPlannerViewMode('weekly_approval');
                                                                     }}
-                                                                    className="text-xs font-bold text-[#13c8ec] bg-[#13c8ec]/10 px-4 py-2 rounded-xl hover:bg-[#13c8ec]/20 transition-colors"
+                                                                    className="text-xs font-bold text-primary bg-primary/10 px-4 py-2 rounded-xl hover:bg-primary/20 transition-colors"
                                                                 >
                                                                     Review Minggu {day.weekNumber}
                                                                 </button>
@@ -1532,7 +1532,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                                         key={p.id}
                                                                         onClick={() => setEditingPlannerPost(p)}
                                                                         className={`p-4 rounded-xl border flex flex-col justify-between cursor-pointer hover:shadow-md transition-all group
-                                                                                    ${p.isApproved ? 'bg-slate-50 border-slate-200' : 'bg-white border-slate-100 hover:border-[#13c8ec]/30'}
+                                                                                    ${p.isApproved ? 'bg-slate-50 border-slate-200' : 'bg-white border-slate-100 hover:border-primary/30'}
                                                                                 `}
                                                                     >
                                                                         <div>
@@ -1560,7 +1560,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
 
                                                                         <div className="mt-4 pt-3 border-t border-slate-50 flex items-center justify-between text-xs font-semibold text-slate-500">
                                                                             <span className="flex items-center gap-1">{p.format === 'Carousel' ? <Layout className="w-3.5 h-3.5" /> : <ImageIcon className="w-3.5 h-3.5" />}{p.format}</span>
-                                                                            <span className="flex items-center gap-1 text-[#13c8ec] opacity-0 group-hover:opacity-100 transition-opacity"><Edit3 className="w-3.5 h-3.5" /> Edit</span>
+                                                                            <span className="flex items-center gap-1 text-primary opacity-0 group-hover:opacity-100 transition-opacity"><Edit3 className="w-3.5 h-3.5" /> Edit</span>
                                                                         </div>
                                                                     </div>
                                                                 ))}
@@ -1606,17 +1606,17 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                                         setSelectedDayModal({ day, year, month });
                                                                     }
                                                                 }}
-                                                                className={`min-h-[120px] lg:min-h-[150px] p-3 h-full flex flex-col relative rounded-[1.5rem] transition-all duration-300 ${!day.isEmpty ? 'bg-white border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-xl hover:-translate-y-1 hover:border-[#13c8ec]/30 cursor-pointer group' : 'bg-transparent'}`}
+                                                                className={`min-h-[120px] lg:min-h-[150px] p-3 h-full flex flex-col relative rounded-[1.5rem] transition-all duration-300 ${!day.isEmpty ? 'bg-white border border-slate-100 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-xl hover:-translate-y-1 hover:border-primary/30 cursor-pointer group' : 'bg-transparent'}`}
                                                             >
                                                                 {!day.isEmpty && (
                                                                     <>
                                                                         <div className="flex items-start justify-between mb-3">
-                                                                            <span className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold transition-colors ${isToday ? 'bg-[#13c8ec] text-white shadow-lg shadow-[#13c8ec]/30' : 'text-slate-600 group-hover:bg-[#13c8ec]/10 group-hover:text-[#13c8ec]'}`}>
+                                                                            <span className={`flex items-center justify-center w-8 h-8 rounded-full text-sm font-bold transition-colors ${isToday ? 'bg-primary text-white shadow-lg shadow-primary' : 'text-slate-600 group-hover:bg-primary/10 group-hover:text-primary'}`}>
                                                                                 {day.dayNumber}
                                                                             </span>
                                                                             {day.posts.length > 0 && (
                                                                                 <div className="flex flex-col gap-1 items-end mt-1.5">
-                                                                                    <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-slate-100 group-hover:bg-[#13c8ec]/10 text-[9px] font-black uppercase text-slate-500 group-hover:text-[#13c8ec] transition-colors">
+                                                                                    <span className="flex items-center justify-center px-2 py-0.5 rounded-md bg-slate-100 group-hover:bg-primary/10 text-[9px] font-black uppercase text-slate-500 group-hover:text-primary transition-colors">
                                                                                         {day.posts.length} Post
                                                                                     </span>
                                                                                 </div>
@@ -1738,7 +1738,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                     {!weekData.isApproved && !weekData.isGenerating && (
                                                         <button
                                                             onClick={() => handleApproveWeek(activeWeek)}
-                                                            className="px-6 py-2.5 bg-[#13c8ec] hover:bg-[#0daecf] text-white font-bold rounded-xl shadow-[#13c8ec]/20 shadow-lg flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5"
+                                                            className="px-6 py-2.5 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl shadow-primary shadow-lg flex items-center justify-center gap-2 transition-all hover:-translate-y-0.5"
                                                         >
                                                             <CheckCircle2 className="w-4 h-4" /> Setujui Semua
                                                         </button>
@@ -1761,8 +1761,8 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                             const dateObj = new Date(post.date);
                                                             const isDraft = !weekData.isApproved;
                                                             return (
-                                                                <div key={`wp-${post.id}`} className="relative bg-white border border-slate-200 rounded-2xl p-5 hover:border-[#13c8ec]/50 hover:shadow-md transition-all group">
-                                                                    <div className="absolute -left-[35px] md:-left-[43px] top-6 w-4 h-4 bg-white border-4 border-[#13c8ec] rounded-full shadow-sm" ></div>
+                                                                <div key={`wp-${post.id}`} className="relative bg-white border border-slate-200 rounded-2xl p-5 hover:border-primary/50 hover:shadow-md transition-all group">
+                                                                    <div className="absolute -left-[35px] md:-left-[43px] top-6 w-4 h-4 bg-white border-4 border-primary rounded-full shadow-sm" ></div>
 
                                                                     <div className="flex flex-col lg:flex-row gap-5">
                                                                         <div className="w-full lg:w-48 shrink-0 flex flex-row lg:flex-col items-center lg:items-start justify-between lg:justify-start gap-2 lg:gap-0 lg:border-r border-slate-100 pr-4">
@@ -1777,7 +1777,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                                                         <div className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Rekomendasi</div>
                                                                                         <input
                                                                                             type="time"
-                                                                                            className="bg-transparent text-[#13c8ec] font-bold text-sm outline-none w-full text-center"
+                                                                                            className="bg-transparent text-primary font-bold text-sm outline-none w-full text-center"
                                                                                             defaultValue={post.selectedTime || post.recommendedTime}
                                                                                             onChange={(e) => handleUpdatePostTime(post.id, activeWeek, e.target.value)}
                                                                                         />
@@ -1813,7 +1813,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                                             <div className="lg:pl-4 shrink-0 flex lg:flex-col justify-end gap-2 border-t lg:border-t-0 pt-4 lg:pt-0 border-slate-100">
                                                                                 <button
                                                                                     onClick={() => setPreviewPost(post)}
-                                                                                    className="px-3 py-2 bg-[#13c8ec]/10 hover:bg-[#13c8ec]/20 text-[#13c8ec] hover:text-[#0daecf] text-xs font-bold rounded-xl border border-[#13c8ec]/20 transition-colors flex items-center gap-1.5"
+                                                                                    className="px-3 py-2 bg-primary/10 hover:bg-primary/20 text-primary hover:text-primary-dark text-xs font-bold rounded-xl border border-primary/20 transition-colors flex items-center gap-1.5"
                                                                                 >
                                                                                     <Eye className="w-3.5 h-3.5" /> Preview
                                                                                 </button>
@@ -1855,7 +1855,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                     {/* Header */}
                                     <div className="flex items-center justify-between p-6 border-b border-slate-100 bg-white sticky top-0 z-20" >
                                         <div className="flex items-center gap-3" >
-                                            <div className="p-2 bg-[#13c8ec]/10 text-[#098fae] rounded-lg" > <Settings className="w-5 h-5" /> </div>
+                                            <div className="p-2 bg-primary/10 text-primary-darker rounded-lg" > <Settings className="w-5 h-5" /> </div>
                                             <h3 className="font-bold text-lg text-slate-800">Pengaturan</h3>
                                         </div>
                                         <button onClick={() => setIsSettingsOpen(false)} className="p-2 text-slate-400 hover:bg-slate-100 rounded-full transition-colors" > <X className="w-5 h-5" /> </button>
@@ -1894,7 +1894,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                 {autoPostConfig.times.length < 3 && (
                                                     <button
                                                         onClick={() => setAutoPostConfig(prev => ({ ...prev, times: [...prev.times, '12:00'] }))}
-                                                        className="flex items-center gap-1.5 text-xs font-bold text-[#098fae] bg-[#13c8ec]/10 hover:bg-[#13c8ec]/20 px-3 py-1.5 rounded-lg transition-colors"
+                                                        className="flex items-center gap-1.5 text-xs font-bold text-primary-darker bg-primary/10 hover:bg-primary/20 px-3 py-1.5 rounded-lg transition-colors"
                                                     >
                                                         <Plus className="w-3.5 h-3.5" /> Tambah Waktu
                                                     </button>
@@ -1934,7 +1934,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                     <div className="p-6 border-t border-slate-100 bg-white" >
                                         <button
                                             onClick={() => setIsSettingsOpen(false)}
-                                            className="w-full py-4 bg-[#13c8ec] hover:bg-[#0daecf] text-white font-bold rounded-xl transition-all shadow-[0_8px_20px_rgba(19,200,236,0.3)] hover:shadow-[#13c8ec]/40 hover:-translate-y-0.5"
+                                            className="w-full py-4 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl transition-all shadow-primary hover:shadow-primary-lg hover:-translate-y-0.5"
                                         >
                                             Simpan Pengaturan
                                         </button>
@@ -1953,7 +1953,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                 <div className="relative z-10 bg-white rounded-[2rem] shadow-2xl w-full max-w-lg overflow-hidden flex flex-col" >
                                     <div className="flex items-center justify-between p-6 border-b border-slate-100 bg-white" >
                                         <div className="flex items-center gap-3" >
-                                            <div className="p-2 bg-[#13c8ec]/10 text-[#098fae] rounded-lg" > <Sparkles className="w-5 h-5" /> </div>
+                                            <div className="p-2 bg-primary/10 text-primary-darker rounded-lg" > <Sparkles className="w-5 h-5" /> </div>
                                             <h3 className="font-bold text-lg text-slate-800" > Generate Konten bulan {currentCalendarDate.toLocaleDateString('id-ID', { month: 'long' })} </h3>
                                         </div>
                                         <button onClick={() => setIsGenerateModalOpen(false)} className="p-2 text-slate-400 hover:bg-slate-100 rounded-full transition-colors" > <X className="w-5 h-5" /> </button>
@@ -1963,20 +1963,20 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                         <div className="space-y-3">
                                             <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">1. Tujuan Bulan ini (Pilih lebih dari satu)</label>
                                             <div className="grid grid-cols-2 gap-3">
-                                                <label className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-[#13c8ec] transition-all">
-                                                    <input type="checkbox" className="accent-[#13c8ec] w-4 h-4 rounded text-[#13c8ec] focus:ring-[#13c8ec]" defaultChecked />
+                                                <label className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-primary transition-all">
+                                                    <input type="checkbox" className="accent-[#13c8ec] w-4 h-4 rounded text-primary focus:ring-primary" defaultChecked />
                                                     <span className="text-sm font-semibold text-slate-700">🔥 Jualan lebih banyak</span>
                                                 </label>
-                                                <label className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-[#13c8ec] transition-all">
-                                                    <input type="checkbox" className="accent-[#13c8ec] w-4 h-4 rounded text-[#13c8ec] focus:ring-[#13c8ec]" />
+                                                <label className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-primary transition-all">
+                                                    <input type="checkbox" className="accent-[#13c8ec] w-4 h-4 rounded text-primary focus:ring-primary" />
                                                     <span className="text-sm font-semibold text-slate-700">📈 Naikkan followers</span>
                                                 </label>
-                                                <label className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-[#13c8ec] transition-all">
-                                                    <input type="checkbox" className="accent-[#13c8ec] w-4 h-4 rounded text-[#13c8ec] focus:ring-[#13c8ec]" defaultChecked />
+                                                <label className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-primary transition-all">
+                                                    <input type="checkbox" className="accent-[#13c8ec] w-4 h-4 rounded text-primary focus:ring-primary" defaultChecked />
                                                     <span className="text-sm font-semibold text-slate-700">❤️ Tingkatkan engagement</span>
                                                 </label>
-                                                <label className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-[#13c8ec] transition-all">
-                                                    <input type="checkbox" className="accent-[#13c8ec] w-4 h-4 rounded text-[#13c8ec] focus:ring-[#13c8ec]" />
+                                                <label className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-primary transition-all">
+                                                    <input type="checkbox" className="accent-[#13c8ec] w-4 h-4 rounded text-primary focus:ring-primary" />
                                                     <span className="text-sm font-semibold text-slate-700">🏷 Bangun branding</span>
                                                 </label>
                                             </div>
@@ -1985,15 +1985,15 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                         <div className="space-y-3">
                                             <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">2. Intensitas Posting</label>
                                             <div className="grid grid-cols-3 gap-3">
-                                                <label className="flex flex-col items-center justify-center p-3 text-center bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-[#13c8ec] transition-colors relative">
+                                                <label className="flex flex-col items-center justify-center p-3 text-center bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-primary transition-colors relative">
                                                     <input type="radio" name="intensity" className="absolute top-2 right-2 accent-[#13c8ec]" />
                                                     <span className="text-sm font-bold text-slate-700 mt-2">3x per minggu</span>
                                                 </label>
-                                                <label className="flex flex-col items-center justify-center p-3 text-center bg-white border border-[#13c8ec] shadow-sm rounded-xl cursor-pointer transition-colors relative">
+                                                <label className="flex flex-col items-center justify-center p-3 text-center bg-white border border-primary shadow-sm rounded-xl cursor-pointer transition-colors relative">
                                                     <input type="radio" name="intensity" className="absolute top-2 right-2 accent-[#13c8ec]" defaultChecked />
                                                     <span className="text-sm font-bold text-slate-700 mt-2">4x per minggu</span>
                                                 </label>
-                                                <label className="flex flex-col items-center justify-center p-3 text-center bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-[#13c8ec] transition-colors relative">
+                                                <label className="flex flex-col items-center justify-center p-3 text-center bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-primary transition-colors relative">
                                                     <input type="radio" name="intensity" className="absolute top-2 right-2 accent-[#13c8ec]" />
                                                     <span className="text-sm font-bold text-slate-700 mt-2">5x per minggu</span>
                                                 </label>
@@ -2005,13 +2005,13 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                             <input
                                                 type="text"
                                                 placeholder="Contoh: 17 Agustus (Promo Kemerdekaan)..."
-                                                className="w-full p-4 rounded-xl border border-slate-200 bg-white focus:border-[#13c8ec] focus:ring-2 focus:ring-[#13c8ec]/20 outline-none text-sm text-slate-700"
+                                                className="w-full p-4 rounded-xl border border-slate-200 bg-white focus:border-primary/50 focus:ring-2 focus:ring-primary/10 outline-none text-sm text-slate-700"
                                             />
                                         </div>
 
                                         <button
                                             onClick={() => handleGenerateMonthPlan({})}
-                                            className="w-full text-center p-4 rounded-xl bg-[#13c8ec] text-white font-bold hover:bg-[#0daecf] hover:shadow-xl hover:shadow-[#13c8ec]/30 hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 mt-4"
+                                            className="w-full text-center p-4 rounded-xl bg-primary text-white font-bold hover:bg-primary-dark hover:shadow-xl hover:shadow-primary hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2 mt-4"
                                         >
                                             <CalendarDays className="w-5 h-5" /> Generate Konten Bulan ini
                                         </button>
@@ -2029,10 +2029,10 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                         <div className="fixed inset-0 z-[180] flex flex-col items-center justify-center bg-slate-950/95 backdrop-blur-md animation-fade-in">
                             {/* Animated rings */}
                             <div className="relative flex items-center justify-center mb-10">
-                                <div className="absolute w-48 h-48 rounded-full border-2 border-[#13c8ec]/10 animate-ping" style={{ animationDuration: '2s' }}></div>
-                                <div className="absolute w-36 h-36 rounded-full border-2 border-[#13c8ec]/20 animate-ping" style={{ animationDuration: '1.5s', animationDelay: '0.3s' }}></div>
-                                <div className="absolute w-24 h-24 rounded-full border-4 border-[#13c8ec]/30 animate-spin" style={{ animationDuration: '3s' }}></div>
-                                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#13c8ec] to-[#098fae] flex items-center justify-center shadow-[0_0_40px_rgba(19,200,236,0.5)]">
+                                <div className="absolute w-48 h-48 rounded-full border-2 border-primary/10 animate-ping" style={{ animationDuration: '2s' }}></div>
+                                <div className="absolute w-36 h-36 rounded-full border-2 border-primary/20 animate-ping" style={{ animationDuration: '1.5s', animationDelay: '0.3s' }}></div>
+                                <div className="absolute w-24 h-24 rounded-full border-4 border-primary/30 animate-spin" style={{ animationDuration: '3s' }}></div>
+                                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary-darker flex items-center justify-center shadow-[0_0_40px_rgba(19,200,236,0.5)]">
                                     <Sparkles className="w-9 h-9 text-white animate-bounce" />
                                 </div>
                             </div>
@@ -2043,7 +2043,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                             </p>
                             {/* Progress bar */}
                             <div className="w-64 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                                <div className="h-full bg-gradient-to-r from-[#13c8ec] to-[#098fae] rounded-full animate-pulse" style={{ width: '70%' }}></div>
+                                <div className="h-full bg-gradient-to-r from-primary to-primary-darker rounded-full animate-pulse" style={{ width: '70%' }}></div>
                             </div>
                         </div>
                     </ModalPortal>
@@ -2056,7 +2056,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                             {/* Header bar */}
                             <div className="flex-shrink-0 bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between shadow-sm">
                                 <div className="flex items-center gap-3">
-                                    <div className="p-2 bg-gradient-to-br from-[#13c8ec] to-[#098fae] rounded-xl shadow-md">
+                                    <div className="p-2 bg-gradient-to-br from-primary to-primary-darker rounded-xl shadow-md">
                                         <Sparkles className="w-5 h-5 text-white" />
                                     </div>
                                     <div>
@@ -2145,7 +2145,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                                     </div>
                                                                     <button
                                                                         onClick={() => setPreviewDetailPost(post)}
-                                                                        className="text-[11px] font-bold text-[#098fae] hover:text-[#13c8ec] transition-colors flex items-center gap-1"
+                                                                        className="text-[11px] font-bold text-primary-darker hover:text-primary transition-colors flex items-center gap-1"
                                                                     >
                                                                         Detail <ChevronRight className="w-3 h-3" />
                                                                     </button>
@@ -2176,13 +2176,13 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                         </button>
                                         <button
                                             onClick={handleSaveDraftPlan}
-                                            className="px-5 py-2.5 text-sm font-bold text-[#098fae] bg-[#13c8ec]/10 hover:bg-[#13c8ec]/20 border border-[#13c8ec]/30 rounded-xl transition-colors"
+                                            className="px-5 py-2.5 text-sm font-bold text-primary-darker bg-primary/10 hover:bg-primary/20 border border-primary/30 rounded-xl transition-colors"
                                         >
                                             Simpan Draft
                                         </button>
                                         <button
                                             onClick={handleSaveGeneratedPlan}
-                                            className="px-6 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-[#13c8ec] to-[#098fae] hover:opacity-90 hover:-translate-y-0.5 rounded-xl transition-all shadow-lg shadow-[#13c8ec]/30 flex items-center gap-2"
+                                            className="px-6 py-2.5 text-sm font-bold text-white bg-gradient-to-r from-primary to-primary-darker hover:opacity-90 hover:-translate-y-0.5 rounded-xl transition-all shadow-lg shadow-primary flex items-center gap-2"
                                         >
                                             <CheckCircle2 className="w-4 h-4" /> Simpan ke Kalender
                                         </button>
@@ -2398,7 +2398,7 @@ const ProfileView = ({ brandDNA, setBrandDNA, businesses, setBusinesses, setCurr
                 <button
                     onClick={() => setActiveTab('account')}
                     className={`px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 flex items-center gap-2 ${activeTab === 'account'
-                        ? 'bg-white text-[#098fae] shadow-sm ring-1 ring-slate-200/50'
+                        ? 'bg-white text-primary-darker shadow-sm ring-1 ring-slate-200/50'
                         : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
                         }`
                     }
@@ -2408,7 +2408,7 @@ const ProfileView = ({ brandDNA, setBrandDNA, businesses, setBusinesses, setCurr
                 < button
                     onClick={() => setActiveTab('business')}
                     className={`px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 flex items-center gap-2 ${activeTab === 'business'
-                        ? 'bg-white text-[#098fae] shadow-sm ring-1 ring-slate-200/50'
+                        ? 'bg-white text-primary-darker shadow-sm ring-1 ring-slate-200/50'
                         : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
                         }`}
                 >
@@ -2417,7 +2417,7 @@ const ProfileView = ({ brandDNA, setBrandDNA, businesses, setBusinesses, setCurr
             </div>
 
             < div className="bg-white rounded-[2.5rem] border border-slate-100/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 md:p-8 min-h-[450px] relative overflow-hidden" >
-                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-[#13c8ec]/5 to-transparent rounded-bl-full pointer-events-none -z-10" > </div>
+                <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-bl from-primary/5 to-transparent rounded-bl-full pointer-events-none -z-10" > </div>
 
                 {
                     activeTab === 'account' && (
@@ -2434,7 +2434,7 @@ const ProfileView = ({ brandDNA, setBrandDNA, businesses, setBusinesses, setCurr
                                 < div className="space-y-2" >
                                     <h3 className="text-lg font-bold text-slate-800" > Foto Profil </h3>
                                     < div className="flex gap-3 pt-2" >
-                                        <button className="px-5 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:text-[#13c8ec] hover:border-[#13c8ec]/50 hover:bg-slate-50 transition-all shadow-sm" > Ubah Foto </button>
+                                        <button className="px-5 py-2 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:text-primary hover:border-primary/50 hover:bg-slate-50 transition-all shadow-sm" > Ubah Foto </button>
                                         < button className="px-4 py-2 text-slate-400 hover:text-red-500 rounded-xl text-sm font-bold hover:bg-red-50 transition-colors" > Hapus </button>
                                     </div>
                                 </div>
@@ -2444,15 +2444,15 @@ const ProfileView = ({ brandDNA, setBrandDNA, businesses, setBusinesses, setCurr
                                 <div className="space-y-2" >
                                     <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1" > Nama Lengkap </label>
                                     < input type="text" value={user.name} onChange={e => setUser({ ...user, name: e.target.value })
-                                    } className="w-full p-4 rounded-2xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-4 focus:ring-[#13c8ec]/10 focus:border-[#13c8ec]/40 outline-none transition-all font-medium text-slate-800 placeholder-slate-400" />
+                                    } className="w-full p-4 rounded-2xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/40 outline-none transition-all font-medium text-slate-800 placeholder-slate-400" />
                                 </div>
                                 < div className="space-y-2" >
                                     <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1" > Nomor Telepon </label>
-                                    < input type="tel" value={user.phone} onChange={e => setUser({ ...user, phone: e.target.value })} className="w-full p-4 rounded-2xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-4 focus:ring-[#13c8ec]/10 focus:border-[#13c8ec]/40 outline-none transition-all font-medium text-slate-800 placeholder-slate-400" />
+                                    < input type="tel" value={user.phone} onChange={e => setUser({ ...user, phone: e.target.value })} className="w-full p-4 rounded-2xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/40 outline-none transition-all font-medium text-slate-800 placeholder-slate-400" />
                                 </div>
                                 < div className="space-y-2 md:col-span-2" >
                                     <label className="text-xs font-bold text-slate-500 uppercase tracking-wider ml-1" > Email Utama </label>
-                                    < input type="email" value={user.email} onChange={e => setUser({ ...user, email: e.target.value })} className="w-full p-4 rounded-2xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-4 focus:ring-[#13c8ec]/10 focus:border-[#13c8ec]/40 outline-none transition-all font-medium text-slate-800 placeholder-slate-400" />
+                                    < input type="email" value={user.email} onChange={e => setUser({ ...user, email: e.target.value })} className="w-full p-4 rounded-2xl border border-slate-200 bg-slate-50/50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/40 outline-none transition-all font-medium text-slate-800 placeholder-slate-400" />
                                 </div>
                             </div>
 
@@ -2462,7 +2462,7 @@ const ProfileView = ({ brandDNA, setBrandDNA, businesses, setBusinesses, setCurr
                                     disabled={saveStatus === 'saving-account'}
                                     className={`px-8 py-4 rounded-2xl font-bold shadow-sm transition-all flex items-center justify-center gap-2 min-w-[200px] ${saveStatus === 'saved-account'
                                         ? 'bg-emerald-500 text-white shadow-emerald-500/20'
-                                        : 'bg-[#13c8ec] hover:bg-[#0daecf] text-white shadow-[#13c8ec]/20 hover:shadow-md hover:-translate-y-0.5'
+                                        : 'bg-primary hover:bg-primary-dark text-white shadow-primary hover:shadow-md hover:-translate-y-0.5'
                                         }`}
                                 >
                                     {saveStatus === 'saving-account' && <Loader2 className="w-5 h-5 animate-spin" />}
@@ -2485,7 +2485,7 @@ const ProfileView = ({ brandDNA, setBrandDNA, businesses, setBusinesses, setCurr
                                 < button
                                     onClick={() => setCurrentView('onboarding')
                                     }
-                                    className="shrink-0 flex items-center justify-center gap-2 bg-[#13c8ec] hover:bg-[#0daecf] text-white px-5 py-3 rounded-xl font-bold text-sm transition-all shadow-sm hover:shadow-[#13c8ec]/20"
+                                    className="shrink-0 flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-5 py-3 rounded-xl font-bold text-sm transition-all shadow-sm hover:shadow-primary"
                                 >
                                     <Plus className="w-4 h-4" /> Tambah Bisnis
                                 </button>
@@ -2497,13 +2497,13 @@ const ProfileView = ({ brandDNA, setBrandDNA, businesses, setBusinesses, setCurr
                                         const isActive = brandDNA.name === biz.name;
                                         return (
                                             <div key={idx} className={`relative p-6 rounded-[2rem] border-2 transition-all group flex flex-col h-full ${isActive
-                                                ? 'border-[#13c8ec] bg-gradient-to-b from-[#13c8ec]/5 to-transparent shadow-md'
-                                                : 'border-slate-100 bg-white hover:border-[#13c8ec]/30 hover:shadow-sm hover:-translate-y-1'
+                                                ? 'border-primary bg-gradient-to-b from-primary/5 to-transparent shadow-md'
+                                                : 'border-slate-100 bg-white hover:border-primary/30 hover:shadow-sm hover:-translate-y-1'
                                                 }`
                                             }>
 
                                                 {isActive && (
-                                                    <div className="absolute -top-3 right-4 px-3 py-1 bg-[#13c8ec] text-white text-[10px] font-black tracking-widest uppercase rounded-full flex items-center gap-1 shadow-md shadow-[#13c8ec]/30" >
+                                                    <div className="absolute -top-3 right-4 px-3 py-1 bg-primary text-white text-[10px] font-black tracking-widest uppercase rounded-full flex items-center gap-1 shadow-md shadow-primary" >
                                                         <CheckCircle2 className="w-3.5 h-3.5" /> Aktif
                                                     </div>
                                                 )
@@ -2512,8 +2512,8 @@ const ProfileView = ({ brandDNA, setBrandDNA, businesses, setBusinesses, setCurr
                                                 < div className="flex items-start gap-4 mb-6" >
                                                     <div className={
                                                         `w-14 h-14 shrink-0 rounded-[1.25rem] flex items-center justify-center font-black text-xl transition-all shadow-sm ${isActive
-                                                            ? 'bg-gradient-to-br from-[#13c8ec] to-[#098fae] text-white'
-                                                            : 'bg-slate-50 border border-slate-100 text-slate-400 group-hover:bg-[#13c8ec]/10 group-hover:text-[#13c8ec]'
+                                                            ? 'bg-gradient-to-br from-primary to-primary-darker text-white'
+                                                            : 'bg-slate-50 border border-slate-100 text-slate-400 group-hover:bg-primary/10 group-hover:text-primary'
                                                         }`
                                                     }>
                                                         {biz.name.charAt(0)}
@@ -2530,14 +2530,14 @@ const ProfileView = ({ brandDNA, setBrandDNA, businesses, setBusinesses, setCurr
                                                     {!isActive && (
                                                         <button
                                                             onClick={() => setBrandDNA(biz)}
-                                                            className="flex-1 py-2.5 bg-slate-50 hover:bg-[#13c8ec] text-slate-600 hover:text-white text-xs font-bold rounded-xl transition-all border border-slate-200 hover:border-transparent"
+                                                            className="flex-1 py-2.5 bg-slate-50 hover:bg-primary text-slate-600 hover:text-white text-xs font-bold rounded-xl transition-all border border-slate-200 hover:border-transparent"
                                                         >
                                                             Pilih Profil
                                                         </button>
                                                     )}
 
                                                     <button
-                                                        className={`p-2.5 rounded-xl transition-colors border flex items-center justify-center ${isActive ? 'flex-1 border-slate-200 bg-white hover:bg-slate-50 hover:text-[#13c8ec] text-slate-600' : 'border-transparent text-slate-400 hover:text-[#13c8ec] hover:bg-[#13c8ec]/10'}`}
+                                                        className={`p-2.5 rounded-xl transition-colors border flex items-center justify-center ${isActive ? 'flex-1 border-slate-200 bg-white hover:bg-slate-50 hover:text-primary text-slate-600' : 'border-transparent text-slate-400 hover:text-primary hover:bg-primary/10'}`}
                                                         title="Detail Profil"
                                                     >
                                                         <Eye className="w-4 h-4" />
@@ -2592,13 +2592,13 @@ const ModelsView = () => {
             <div className="max-w-4xl mx-auto animation-fade-in pb-20 md:pb-0 px-4 md:px-0" >
                 <div className="flex items-center justify-between mb-8" >
                     <div>
-                        <button onClick={() => setViewState('list')} className="flex items-center gap-2 text-slate-500 hover:text-[#13c8ec] font-bold text-sm mb-2 transition-colors" >
+                        <button onClick={() => setViewState('list')} className="flex items-center gap-2 text-slate-500 hover:text-primary font-bold text-sm mb-2 transition-colors" >
                             <ChevronLeft className="w-4 h-4" /> Kembali
                         </button>
                         <div className="flex items-center gap-3">
                             <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Buat Model Konsisten</h1>
                             <div className="group relative flex items-center justify-center">
-                                <HelpCircle className="w-5 h-5 text-slate-400 cursor-help hover:text-[#13c8ec] transition-colors" />
+                                <HelpCircle className="w-5 h-5 text-slate-400 cursor-help hover:text-primary transition-colors" />
                                 <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-64 p-3 bg-slate-800 text-white text-xs rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all shadow-xl z-20 pointer-events-none">
                                     Sistem AI akan menganalisa dan menyimpan wajah model untuk digunakan di berbagai sudut.
                                     <div className="absolute bottom-full left-1/2 -translate-x-1/2 border-4 border-transparent border-b-slate-800" />
@@ -2612,30 +2612,30 @@ const ModelsView = () => {
                     <div className="lg:col-span-2 space-y-6" >
                         <div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100" >
                             <h3 className="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2" >
-                                <ScanFace className="w-4 h-4 text-[#13c8ec]" /> Detail Karakter
+                                <ScanFace className="w-4 h-4 text-primary" /> Detail Karakter
                             </h3>
                             < div className="space-y-4" >
                                 <div className="space-y-1.5" >
                                     <label className="text-xs font-bold text-slate-500 uppercase tracking-wider" > Nama Model </label>
-                                    < input type="text" placeholder="Contoh: Rina" value={newModel.name} onChange={e => setNewModel({ ...newModel, name: e.target.value })} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#13c8ec]/20 outline-none text-sm font-medium" />
+                                    < input type="text" placeholder="Contoh: Rina" value={newModel.name} onChange={e => setNewModel({ ...newModel, name: e.target.value })} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-primary/10 outline-none text-sm font-medium" />
                                 </div>
                                 < div className="space-y-1.5" >
                                     <label className="text-xs font-bold text-slate-500 uppercase tracking-wider" > Peran / Profesi </label>
-                                    < input type="text" placeholder="Contoh: Barista Wanita" value={newModel.role} onChange={e => setNewModel({ ...newModel, role: e.target.value })} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#13c8ec]/20 outline-none text-sm font-medium" />
+                                    < input type="text" placeholder="Contoh: Barista Wanita" value={newModel.role} onChange={e => setNewModel({ ...newModel, role: e.target.value })} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-primary/10 outline-none text-sm font-medium" />
                                 </div>
                                 < div className="space-y-1.5" >
                                     <label className="text-xs font-bold text-slate-500 uppercase tracking-wider" > Ciri - Ciri Spesifik </label>
-                                    < textarea rows="3" placeholder="Contoh: Rambut pendek, berhijab cokelat, atau memakai seragam merah..." value={newModel.description} onChange={e => setNewModel({ ...newModel, description: e.target.value })} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-[#13c8ec]/20 outline-none resize-none text-sm font-medium" />
+                                    < textarea rows="3" placeholder="Contoh: Rambut pendek, berhijab cokelat, atau memakai seragam merah..." value={newModel.description} onChange={e => setNewModel({ ...newModel, description: e.target.value })} className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-primary/10 outline-none resize-none text-sm font-medium" />
                                 </div>
                             </div>
                         </div>
 
                         < div className="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100" >
                             <h3 className="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2" >
-                                <Camera className="w-4 h-4 text-[#13c8ec]" /> Referensi Wajah(Opsional)
+                                <Camera className="w-4 h-4 text-primary" /> Referensi Wajah(Opsional)
                             </h3>
                             < div
-                                className={`w-full border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center text-center transition-all cursor-pointer ${newModel.imageRef ? 'border-[#13c8ec] bg-[#13c8ec]/5' : 'border-slate-300 bg-slate-50 hover:bg-slate-100 hover:border-[#13c8ec]/50'}`}
+                                className={`w-full border-2 border-dashed rounded-2xl p-6 flex flex-col items-center justify-center text-center transition-all cursor-pointer ${newModel.imageRef ? 'border-primary bg-primary/5' : 'border-slate-300 bg-slate-50 hover:bg-slate-100 hover:border-primary/50'}`}
                                 onClick={() => setNewModel({ ...newModel, imageRef: MOCK_IMAGES[0] })}
                             >
                                 {
@@ -2644,7 +2644,7 @@ const ModelsView = () => {
                                             <div className="w-16 h-16 rounded-full overflow-hidden mb-2 border-2 border-white shadow-sm">
                                                 <img src={newModel.imageRef} alt="Ref" className="w-full h-full object-cover" />
                                             </div>
-                                            < span className="text-[#13c8ec] font-bold text-xs flex items-center gap-1" > <CheckCircle2 className="w-3.5 h-3.5" /> Referensi Terpasang </span>
+                                            < span className="text-primary font-bold text-xs flex items-center gap-1" > <CheckCircle2 className="w-3.5 h-3.5" /> Referensi Terpasang </span>
                                         </div>
                                     ) : (
                                         <>
@@ -2659,7 +2659,7 @@ const ModelsView = () => {
                         < button
                             onClick={handleGenerateModel}
                             disabled={isGenerating || !newModel.name}
-                            className="w-full py-4 bg-[#13c8ec] hover:bg-[#0daecf] disabled:bg-slate-300 text-white font-bold rounded-2xl transition-all shadow-sm flex items-center justify-center gap-2"
+                            className="w-full py-4 bg-primary hover:bg-primary-dark disabled:bg-slate-300 text-white font-bold rounded-2xl transition-all shadow-sm flex items-center justify-center gap-2"
                         >
                             {isGenerating ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sparkles className="w-5 h-5" />}
                             {isGenerating ? 'Memproses Sudut Pandang...' : 'Generate Model 360°'}
@@ -2677,9 +2677,9 @@ const ModelsView = () => {
                                 isGenerating ? (
                                     <div className="h-full min-h-[300px] flex flex-col items-center justify-center text-center" >
                                         <div className="relative w-20 h-20 mb-6" >
-                                            <div className="absolute inset-0 border-4 border-[#13c8ec]/30 rounded-full animate-pulse" > </div>
-                                            < div className="absolute inset-0 border-4 border-[#13c8ec] rounded-full border-t-transparent animate-spin" > </div>
-                                            < ScanFace className="absolute inset-0 m-auto w-8 h-8 text-[#13c8ec] animate-bounce" />
+                                            <div className="absolute inset-0 border-4 border-primary/30 rounded-full animate-pulse" > </div>
+                                            < div className="absolute inset-0 border-4 border-primary rounded-full border-t-transparent animate-spin" > </div>
+                                            < ScanFace className="absolute inset-0 m-auto w-8 h-8 text-primary animate-bounce" />
                                         </div>
                                         < h4 className="font-bold text-slate-800 text-lg" > Menganalisa Struktur Wajah...</h4>
                                         < p className="text-sm text-slate-500 mt-1 max-w-xs mx-auto" > Menerapkan konsistensi karakter ke berbagai pose: Senyum, Menunjuk, dan Memegang Produk.</p>
@@ -2694,7 +2694,7 @@ const ModelsView = () => {
                                                 { label: 'Pegang Produk', icon: <Package /> }
                                             ].map((item, i) => (
                                                 <div key={i} className="aspect-square bg-white border border-slate-200 border-dashed rounded-[1.5rem] flex flex-col items-center justify-center text-slate-300 p-4 text-center group" >
-                                                    <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mb-3 group-hover:bg-[#13c8ec]/5 group-hover:text-[#13c8ec] transition-colors" >
+                                                    <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mb-3 group-hover:bg-primary/5 group-hover:text-primary transition-colors" >
                                                         {React.cloneElement(item.icon, { className: 'w-6 h-6' })}
                                                     </div>
                                                     < span className="text-xs font-bold text-slate-500" > {item.label} </span>
@@ -2717,10 +2717,10 @@ const ModelsView = () => {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10" >
                 <div className="flex items-center gap-3 mb-2">
                     <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-                        Database Model <span className="px-3 py-1 bg-[#13c8ec]/10 text-[#098fae] border border-[#13c8ec]/20 text-[10px] font-black uppercase tracking-widest rounded-full">PRO</span>
+                        Database Model <span className="px-3 py-1 bg-primary/10 text-primary-darker border border-primary/20 text-[10px] font-black uppercase tracking-widest rounded-full">PRO</span>
                     </h1>
                     <div className="group relative flex items-center justify-center">
-                        <HelpCircle className="w-5 h-5 text-slate-400 cursor-help hover:text-[#13c8ec] transition-colors" />
+                        <HelpCircle className="w-5 h-5 text-slate-400 cursor-help hover:text-primary transition-colors" />
                         <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-64 p-3 bg-slate-800 text-white text-xs rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all shadow-xl z-20 pointer-events-none">
                             Gunakan karakter yang konsisten di setiap desain Anda. AI mengingat wajah model dari berbagai sudut pandang.
                             <div className="absolute bottom-full left-1/2 -translate-x-1/2 border-4 border-transparent border-b-slate-800" />
@@ -2729,7 +2729,7 @@ const ModelsView = () => {
                 </div>
                 < button
                     onClick={() => setViewState('create')}
-                    className="shrink-0 flex items-center justify-center gap-2 bg-[#13c8ec] hover:bg-[#0daecf] text-white px-5 py-3 rounded-xl font-bold text-sm transition-all shadow-sm hover:shadow-[#13c8ec]/20 hover:-translate-y-0.5"
+                    className="shrink-0 flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white px-5 py-3 rounded-xl font-bold text-sm transition-all shadow-sm hover:shadow-primary hover:-translate-y-0.5"
                 >
                     <Plus className="w-4 h-4" /> Tambah Model Baru
                 </button>
@@ -2738,7 +2738,7 @@ const ModelsView = () => {
             < div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" >
                 {
                     MOCK_MODELS_DB.map(model => (
-                        <div key={model.id} className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden group hover:border-[#13c8ec]/30 transition-colors flex flex-col" >
+                        <div key={model.id} className="bg-white rounded-[2rem] border border-slate-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden group hover:border-primary/30 transition-colors flex flex-col" >
                             <div className="p-5 flex items-start gap-4 border-b border-slate-50" >
                                 <div className="w-16 h-16 rounded-[1.25rem] bg-slate-100 overflow-hidden shrink-0 border border-slate-200" >
                                     <img src={model.mainImage} alt={model.name} className="w-full h-full object-cover" />
@@ -2755,7 +2755,7 @@ const ModelsView = () => {
                             < div className="p-5 bg-slate-50/50 flex-1" >
                                 <div className="flex items-center justify-between mb-3" >
                                     <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider" > Sudut Tersedia </span>
-                                    < span className="text-xs font-bold text-[#13c8ec] bg-[#13c8ec]/10 px-2 py-0.5 rounded-full" > {model.angles.length} Pose </span>
+                                    < span className="text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded-full" > {model.angles.length} Pose </span>
                                 </div>
                                 < div className="grid grid-cols-4 gap-2" >
                                     {
@@ -2775,7 +2775,7 @@ const ModelsView = () => {
                                 <button className="flex-1 py-2.5 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 text-sm font-bold rounded-xl transition-colors" >
                                     Edit Detail
                                 </button>
-                                < button className="flex-1 py-2.5 bg-[#13c8ec]/10 hover:bg-[#13c8ec]/20 text-[#098fae] text-sm font-bold rounded-xl transition-colors" >
+                                < button className="flex-1 py-2.5 bg-primary/10 hover:bg-primary/20 text-primary-darker text-sm font-bold rounded-xl transition-colors" >
                                     Gunakan Model
                                 </button>
                             </div>
@@ -2784,12 +2784,12 @@ const ModelsView = () => {
 
                 <div
                     onClick={() => setViewState('create')}
-                    className="bg-slate-50 rounded-[2rem] border-2 border-dashed border-slate-200 hover:border-[#13c8ec] hover:bg-[#13c8ec]/5 transition-all flex flex-col items-center justify-center p-8 text-center cursor-pointer min-h-[300px] group"
+                    className="bg-slate-50 rounded-[2rem] border-2 border-dashed border-slate-200 hover:border-primary hover:bg-primary/5 transition-all flex flex-col items-center justify-center p-8 text-center cursor-pointer min-h-[300px] group"
                 >
-                    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 transition-transform text-slate-400 group-hover:text-[#13c8ec]" >
+                    <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 transition-transform text-slate-400 group-hover:text-primary" >
                         <Plus className="w-8 h-8" />
                     </div>
-                    <h3 className="text-lg font-bold text-slate-800 mb-1 group-hover:text-[#13c8ec] transition-colors">Latih Model Baru</h3>
+                    <h3 className="text-lg font-bold text-slate-800 mb-1 group-hover:text-primary transition-colors">Latih Model Baru</h3>
                     <p className="text-sm text-slate-500 max-w-xs">Buat karakter baru dengan wajah konsisten untuk kebutuhan promosi brand Anda.</p>
                 </div>
             </div>
@@ -2859,10 +2859,10 @@ const VideoEditorView = ({ handleSaveToLibrary }) => {
             <div className="mb-8">
                 <div className="flex items-center gap-3 mb-2">
                     <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-                        Auto-Edit Video <span className="px-3 py-1 bg-[#13c8ec]/10 text-[#098fae] border border-[#13c8ec]/20 text-[10px] font-black uppercase tracking-widest rounded-full">PRO</span>
+                        Auto-Edit Video <span className="px-3 py-1 bg-primary/10 text-primary-darker border border-primary/20 text-[10px] font-black uppercase tracking-widest rounded-full">PRO</span>
                     </h1>
                     <div className="group relative flex items-center justify-center">
-                        <HelpCircle className="w-5 h-5 text-slate-400 cursor-help hover:text-[#13c8ec] transition-colors" />
+                        <HelpCircle className="w-5 h-5 text-slate-400 cursor-help hover:text-primary transition-colors" />
                         <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-64 p-3 bg-slate-800 text-white text-xs rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all shadow-xl z-20 pointer-events-none">
                             Unggah raw footage (klip mentah) terbaik Anda. AI akan memotong, menambahkan transisi, dan menyesuaikan musik otomatis untuk dijadikan 1 video menarik.
                             <div className="absolute bottom-full left-1/2 -translate-x-1/2 border-4 border-transparent border-b-slate-800" />
@@ -2877,7 +2877,7 @@ const VideoEditorView = ({ handleSaveToLibrary }) => {
                     <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-6 lg:p-8">
                         <div className="flex items-center justify-between mb-4">
                             <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                                <Film className="w-5 h-5 text-[#13c8ec]" /> 1. Unggah Raw Footage
+                                <Film className="w-5 h-5 text-primary" /> 1. Unggah Raw Footage
                             </h2>
                             <span className="text-xs font-bold text-slate-400 bg-slate-100 px-3 py-1 rounded-full">{uploadedFootages.length} / 10 klip</span>
                         </div>
@@ -2885,10 +2885,10 @@ const VideoEditorView = ({ handleSaveToLibrary }) => {
                         {uploadedFootages.length === 0 ? (
                             <div
                                 onClick={handleUploadClick}
-                                className="w-full border-2 border-dashed border-slate-200 hover:border-[#13c8ec] bg-slate-50 hover:bg-[#13c8ec]/5 rounded-3xl p-10 flex flex-col items-center justify-center text-center transition-all cursor-pointer group"
+                                className="w-full border-2 border-dashed border-slate-200 hover:border-primary bg-slate-50 hover:bg-primary/5 rounded-3xl p-10 flex flex-col items-center justify-center text-center transition-all cursor-pointer group"
                             >
                                 <div className="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                                    <Upload className="w-7 h-7 text-slate-400 group-hover:text-[#13c8ec]" />
+                                    <Upload className="w-7 h-7 text-slate-400 group-hover:text-primary" />
                                 </div>
                                 <h3 className="font-bold text-slate-700 mb-1">Pilih atau Tarik Video Kesini</h3>
                                 <p className="text-xs text-slate-400 max-w-xs">Mendukung MP4, MOV maksimal 50MB per klip. Disarankan menggunakan klip 3-10 detik.</p>
@@ -2912,7 +2912,7 @@ const VideoEditorView = ({ handleSaveToLibrary }) => {
                                     {uploadedFootages.length < 10 && (
                                         <button
                                             onClick={handleUploadClick}
-                                            className="w-28 h-28 rounded-2xl border-2 border-dashed border-slate-200 hover:border-[#13c8ec] bg-slate-50 hover:bg-[#13c8ec]/5 flex flex-col items-center justify-center text-slate-400 hover:text-[#098fae] transition-all group"
+                                            className="w-28 h-28 rounded-2xl border-2 border-dashed border-slate-200 hover:border-primary bg-slate-50 hover:bg-primary/5 flex flex-col items-center justify-center text-slate-400 hover:text-primary-darker transition-all group"
                                         >
                                             <Plus className="w-6 h-6 mb-1 group-hover:scale-110 transition-transform" />
                                             <span className="text-[10px] font-bold">Tambah Klip</span>
@@ -2927,7 +2927,7 @@ const VideoEditorView = ({ handleSaveToLibrary }) => {
                         {/* Format Selection */}
                         <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-6">
                             <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-4">
-                                <Layout className="w-5 h-5 text-[#13c8ec]" /> 2. Format Video
+                                <Layout className="w-5 h-5 text-primary" /> 2. Format Video
                             </h2>
                             <div className="grid grid-cols-2 gap-3">
                                 {[
@@ -2939,11 +2939,11 @@ const VideoEditorView = ({ handleSaveToLibrary }) => {
                                     <button
                                         key={fmt.id}
                                         onClick={() => setVideoFormat(fmt.id)}
-                                        className={`p-3 rounded-2xl border-2 text-left transition-all ${videoFormat === fmt.id ? 'border-[#13c8ec] bg-[#13c8ec]/5 shadow-sm shadow-[#13c8ec]/10' : 'border-slate-100 hover:border-slate-200 bg-white'}`}
+                                        className={`p-3 rounded-2xl border-2 text-left transition-all ${videoFormat === fmt.id ? 'border-primary bg-primary/5 shadow-sm shadow-primary' : 'border-slate-100 hover:border-slate-200 bg-white'}`}
                                     >
                                         <div className="flex items-center justify-between mb-1">
-                                            <span className={`font-bold text-sm ${videoFormat === fmt.id ? 'text-[#098fae]' : 'text-slate-700'}`}>{fmt.label}</span>
-                                            {videoFormat === fmt.id && <CheckCircle2 className="w-4 h-4 text-[#13c8ec]" />}
+                                            <span className={`font-bold text-sm ${videoFormat === fmt.id ? 'text-primary-darker' : 'text-slate-700'}`}>{fmt.label}</span>
+                                            {videoFormat === fmt.id && <CheckCircle2 className="w-4 h-4 text-primary" />}
                                         </div>
                                         <span className="text-[10px] text-slate-400 font-medium block">{fmt.ratio} • {fmt.desc}</span>
                                     </button>
@@ -2955,7 +2955,7 @@ const VideoEditorView = ({ handleSaveToLibrary }) => {
                         <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-6 flex flex-col justify-between">
                             <div>
                                 <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2 mb-4">
-                                    <Palette className="w-5 h-5 text-[#13c8ec]" /> 3. Gaya Editan AI
+                                    <Palette className="w-5 h-5 text-primary" /> 3. Gaya Editan AI
                                 </h2>
 
                                 <div className="space-y-4">
@@ -2997,7 +2997,7 @@ const VideoEditorView = ({ handleSaveToLibrary }) => {
                         onClick={handleProcessVideo}
                         disabled={uploadedFootages.length === 0}
                         className={`w-full py-4 rounded-2xl font-extrabold text-sm flex items-center justify-center gap-2 transition-all ${uploadedFootages.length > 0
-                            ? 'bg-gradient-to-r from-[#13c8ec] to-[#098fae] text-white hover:opacity-90 hover:-translate-y-0.5 shadow-xl shadow-[#13c8ec]/30'
+                            ? 'bg-gradient-to-r from-primary to-primary-darker text-white hover:opacity-90 hover:-translate-y-0.5 shadow-xl shadow-primary'
                             : 'bg-slate-100 text-slate-400 cursor-not-allowed'
                             }`}
                     >
@@ -3012,10 +3012,10 @@ const VideoEditorView = ({ handleSaveToLibrary }) => {
                     <div className="fixed inset-0 z-[180] flex flex-col items-center justify-center bg-slate-950/95 backdrop-blur-md animation-fade-in">
                         {/* Animated rings */}
                         <div className="relative flex items-center justify-center mb-10">
-                            <div className="absolute w-48 h-48 rounded-full border-2 border-[#13c8ec]/10 animate-ping" style={{ animationDuration: '2s' }}></div>
-                            <div className="absolute w-36 h-36 rounded-full border-2 border-[#13c8ec]/20 animate-ping" style={{ animationDuration: '1.5s', animationDelay: '0.3s' }}></div>
-                            <div className="absolute w-24 h-24 rounded-full border-4 border-[#13c8ec]/30 animate-spin" style={{ animationDuration: '3s' }}></div>
-                            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#13c8ec] to-[#098fae] flex items-center justify-center shadow-[0_0_40px_rgba(19,200,236,0.5)]">
+                            <div className="absolute w-48 h-48 rounded-full border-2 border-primary/10 animate-ping" style={{ animationDuration: '2s' }}></div>
+                            <div className="absolute w-36 h-36 rounded-full border-2 border-primary/20 animate-ping" style={{ animationDuration: '1.5s', animationDelay: '0.3s' }}></div>
+                            <div className="absolute w-24 h-24 rounded-full border-4 border-primary/30 animate-spin" style={{ animationDuration: '3s' }}></div>
+                            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary-darker flex items-center justify-center shadow-[0_0_40px_rgba(19,200,236,0.5)]">
                                 <Sparkles className="w-9 h-9 text-white animate-bounce" />
                             </div>
                         </div>
@@ -3033,14 +3033,14 @@ const VideoEditorView = ({ handleSaveToLibrary }) => {
                             <div className="flex items-center gap-3 text-sm font-bold text-slate-300">
                                 <CheckCircle2 className="w-5 h-5 text-emerald-500" /> Sinkronisasi audio '{videoConfig.mood}'
                             </div>
-                            <div className="flex items-center gap-3 text-sm font-bold text-[#13c8ec] animate-pulse">
+                            <div className="flex items-center gap-3 text-sm font-bold text-primary animate-pulse">
                                 <Loader2 className="w-5 h-5 animate-spin" /> Render transisi dan efek
                             </div>
                         </div>
 
                         {/* Progress bar */}
                         <div className="w-72 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                            <div className="h-full bg-gradient-to-r from-[#13c8ec] to-[#098fae] rounded-full animate-pulse" style={{ width: '85%' }}></div>
+                            <div className="h-full bg-gradient-to-r from-primary to-primary-darker rounded-full animate-pulse" style={{ width: '85%' }}></div>
                         </div>
                     </div>
                 </ModalPortal>
@@ -3073,7 +3073,7 @@ const VideoEditorView = ({ handleSaveToLibrary }) => {
                             {/* Info overlay */}
                             <div className="absolute bottom-4 left-4 right-4 z-10">
                                 <div className="flex items-center gap-2 mb-2">
-                                    <span className="bg-[#13c8ec] text-white text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider">{videoFormat}</span>
+                                    <span className="bg-primary text-white text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider">{videoFormat}</span>
                                     <span className="bg-black/50 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-0.5 rounded-md">00:15</span>
                                 </div>
                                 <p className="text-white text-xs font-medium line-clamp-2 leading-snug">{processedResult.caption.split('#')[0]}</p>
@@ -3105,12 +3105,12 @@ const VideoEditorView = ({ handleSaveToLibrary }) => {
                             </div>
 
                             <div className="pt-4 flex gap-3">
-                                <button className="flex-1 py-3.5 bg-white border-2 border-[#13c8ec] text-[#098fae] hover:bg-[#13c8ec]/5 font-bold rounded-xl transition-all flex items-center justify-center gap-2">
+                                <button className="flex-1 py-3.5 bg-white border-2 border-primary text-primary-darker hover:bg-primary/5 font-bold rounded-xl transition-all flex items-center justify-center gap-2">
                                     <Download className="w-4 h-4" /> Unduh Video
                                 </button>
                                 <button
                                     onClick={handleSave}
-                                    className="flex-1 py-3.5 bg-[#13c8ec] hover:bg-[#0daecf] text-white font-bold rounded-xl transition-all shadow-lg shadow-[#13c8ec]/30 flex items-center justify-center gap-2 hover:-translate-y-0.5"
+                                    className="flex-1 py-3.5 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl transition-all shadow-lg shadow-primary flex items-center justify-center gap-2 hover:-translate-y-0.5"
                                 >
                                     <Library className="w-4 h-4" /> Simpan & Post
                                 </button>
@@ -3127,20 +3127,20 @@ const NavItem = ({ icon, label, active, onClick, isSidebarExpanded }) => (
     <button
         onClick={onClick}
         className={`w-full flex items-center ${isSidebarExpanded ? 'gap-3.5 px-4' : 'justify-center px-0'} py-3.5 rounded-[1.25rem] transition-all font-bold text-sm group relative ${active
-            ? 'bg-[#13c8ec]/10 text-[#0daecf] shadow-sm'
+            ? 'bg-primary/10 text-primary-dark shadow-sm'
             : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
             }`}
         title={!isSidebarExpanded ? label : ""}
     >
         <div className={`transition-transform duration-300 ${active ? 'scale-110' : 'group-hover:scale-110'}`}>
-            {React.cloneElement(icon, { className: `w-5 h-5 ${active ? 'text-[#13c8ec]' : 'text-slate-400 group-hover:text-slate-600'}` })}
+            {React.cloneElement(icon, { className: `w-5 h-5 ${active ? 'text-primary' : 'text-slate-400 group-hover:text-slate-600'}` })}
         </div>
         {isSidebarExpanded && <span className="whitespace-nowrap animation-fade-in" > {label} </span>}
     </button>
 );
 
 const MobileNavItem = ({ icon, label, active, onClick }) => (
-    <button onClick={onClick} className={`flex flex-col items-center gap-1 p-2 min-w-[64px] ${active ? 'text-[#13c8ec]' : 'text-slate-400'}`}>
+    <button onClick={onClick} className={`flex flex-col items-center gap-1 p-2 min-w-[64px] ${active ? 'text-primary' : 'text-slate-400'}`}>
         {React.cloneElement(icon, { className: 'w-6 h-6' })} < span className="text-[10px] font-bold" > {label} </span>
     </button>
 );
