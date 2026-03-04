@@ -3721,7 +3721,7 @@ function App() {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
     const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
-    const showNav = currentView !== 'signup' && currentView !== 'onboarding';
+    const showNav = currentView !== 'signup' && currentView !== 'onboarding' && currentView !== 'design-system';
 
     const handleConfirmLogout = () => {
         setIsLogoutModalOpen(false);
@@ -3903,6 +3903,8 @@ function App() {
             {showNav && <MobileNav currentView={currentView} setCurrentView={setCurrentView} />}
 
             {location.pathname === '/' && <Navigate to="/buat_konten" replace />}
+            {currentView === 'design-system' && <DesignSystemView />}
+            {currentView !== 'design-system' && (
             <main className={`${showNav ? (isSidebarExpanded ? 'md:ml-72' : 'md:ml-24') : ''} p-4 md:p-8 min-h-screen transition-all duration-300`}>
                 {currentView === 'signup' && <SignUpView setCurrentView={setCurrentView} />}
                 {
@@ -3983,8 +3985,9 @@ function App() {
                         />
                     )
                 }
-                {currentView === 'design-system' && <DesignSystemView />}
+                
             </main>
+            )}
 
             {/* Full Screen Preview Modal */}
             {
