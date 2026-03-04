@@ -18,6 +18,7 @@ import SignUpView from './SignUpView';
 import OnboardingView from './OnboardingView';
 import CanvasEditor from './CanvasEditor';
 import DesignSystemView from './DesignSystemView';
+import LoginView from './LoginView';
 import postibleLogo from './assets/postibel-logo.svg';
 
 // Renders children into document.body to guarantee full-viewport overlay
@@ -3737,6 +3738,7 @@ function App() {
         'onboarding': '/onboarding',
         'generating': '/generating',
         'design-system': '/design-system',
+        'login': '/login',
         'loading-preview': '/loading-preview',
     };
 
@@ -3764,11 +3766,11 @@ function App() {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
     const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
-    const showNav = currentView !== 'signup' && currentView !== 'onboarding' && currentView !== 'design-system' && currentView !== 'loading-preview';
+    const showNav = currentView !== 'signup' && currentView !== 'login' && currentView !== 'onboarding' && currentView !== 'design-system' && currentView !== 'loading-preview';
 
     const handleConfirmLogout = () => {
         setIsLogoutModalOpen(false);
-        setCurrentView('signup');
+        setCurrentView('login');
     };
 
     const handleGenerate = () => {
@@ -3972,6 +3974,7 @@ function App() {
             {currentView !== 'design-system' && currentView !== 'loading-preview' && (
             <main className={`${showNav ? (isSidebarExpanded ? 'md:ml-72' : 'md:ml-24') : ''} p-4 md:p-8 min-h-screen transition-all duration-300`}>
                 {currentView === 'signup' && <SignUpView setCurrentView={setCurrentView} />}
+                {currentView === 'login' && <LoginView setCurrentView={setCurrentView} />}
                 {
                     currentView === 'onboarding' && (
                         <OnboardingView
