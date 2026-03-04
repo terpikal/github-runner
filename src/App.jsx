@@ -1,9 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate, useLocation, Routes, Route, Navigate } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import {
     Sparkles, Image as ImageIcon, Layout, Settings, Library,
-    ChevronRight, ChevronLeft, ChevronDown, CheckCircle2, Sliders, Palette, Type,
+    ChevronRight, ChevronLeft, ChevronDown, CheckCircle2, CheckCircle, Sliders, Palette, Type,
     MessageSquare, Upload, Loader2, Heart, MessageCircle,
     Send, Bookmark, MoreHorizontal, Edit3, RotateCcw,
     Download, Plus, Search, Filter, Trash2, Copy,
@@ -641,11 +641,78 @@ const ResultsView = ({ generatedResults, setCurrentView, setPreviewPost, setEdit
     );
 };
 
+const TOAST_TYPES = {
+    success: { icon: <CheckCircle className="w-5 h-5" />, title: 'Berhasil!', msg: 'Konten berhasil disimpan ke Bank Konten.', accent: '#22c55e', iconBg: 'bg-green-100', iconColor: 'text-green-600', progressColor: 'bg-green-400', ringColor: 'ring-green-100' },
+    error: { icon: <X className="w-5 h-5" />, title: 'Gagal!', msg: 'Terjadi kesalahan saat menyimpan.', accent: '#ef4444', iconBg: 'bg-red-100', iconColor: 'text-red-600', progressColor: 'bg-red-400', ringColor: 'ring-red-100' },
+};
+
+const ToastNotification = ({ type, exiting, onDismiss }) => {
+    const cfg = TOAST_TYPES[type] || TOAST_TYPES.success;
+    const [progress, setProgress] = useState(100);
+
+    useEffect(() => {
+        if (exiting) return;
+        const start = Date.now();
+        const interval = setInterval(() => {
+            const remaining = Math.max(0, 100 - ((Date.now() - start) / 3000) * 100);
+            setProgress(remaining);
+            if (remaining <= 0) clearInterval(interval);
+        }, 30);
+        return () => clearInterval(interval);
+    }, [exiting]);
+
+    return (
+        <div
+            className={`pointer-events-auto relative overflow-hidden flex items-start gap-3.5 p-4 pr-5 rounded-2xl bg-white/95 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)] ring-1 ${cfg.ringColor} min-w-[320px] max-w-[420px] ${exiting ? 'toast-exit' : 'toast-enter'}`}
+            style={{ borderLeft: `3px solid ${cfg.accent}` }}
+        >
+            <div className={`shrink-0 w-9 h-9 rounded-xl ${cfg.iconBg} ${cfg.iconColor} flex items-center justify-center`}>
+                {cfg.icon}
+            </div>
+            <div className="flex-1 min-w-0 pt-0.5">
+                <p className="text-[13px] font-extrabold text-slate-800 tracking-tight">{cfg.title}</p>
+                <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{cfg.msg}</p>
+            </div>
+            <button onClick={onDismiss} className="shrink-0 mt-0.5 p-1.5 rounded-xl hover:bg-slate-100 transition-all duration-200 active:scale-90">
+                <X className="w-3.5 h-3.5 text-slate-400" />
+            </button>
+            <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-slate-100/60">
+                <div className={`h-full ${cfg.progressColor} rounded-full transition-none`} style={{ width: `${progress}%`, opacity: 0.7 }} />
+            </div>
+        </div>
+    );
+};
+
 const EditorView = ({ editingPost, setCurrentView, handleSaveToLibrary, brandDNA }) => {
     const [localPost, setLocalPost] = useState(editingPost || {});
     const [activeSlideIdx, setActiveSlideIdx] = useState(0);
     const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
     const [scheduleDate, setScheduleDate] = useState('');
+    const [showSaveConfirm, setShowSaveConfirm] = useState(false);
+    const [toasts, setToasts] = useState([]);
+
+    const showToast = (type = 'success') => {
+        const id = Date.now();
+        setToasts(prev => [...prev, { id, type, exiting: false }]);
+        setTimeout(() => {
+            setToasts(prev => prev.map(t => t.id === id ? { ...t, exiting: true } : t));
+            setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 350);
+        }, 3000);
+    };
+
+    const dismissToast = (id) => {
+        setToasts(prev => prev.map(t => t.id === id ? { ...t, exiting: true } : t));
+        setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 350);
+    };
+
+    const confirmSave = () => {
+        setShowSaveConfirm(false);
+        showToast('success');
+        // Delay navigation so user can see the toast
+        setTimeout(() => {
+            handleSaveToLibrary(localPost);
+        }, 1800);
+    };
 
     if (!editingPost) return null;
 
@@ -711,6 +778,37 @@ const EditorView = ({ editingPost, setCurrentView, handleSaveToLibrary, brandDNA
                 </ModalPortal>
             )}
 
+            {/* Save Confirmation Modal */}
+            {showSaveConfirm && (
+                <ModalPortal>
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                        <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setShowSaveConfirm(false)}></div>
+                        <div className="bg-white rounded-[2rem] p-8 w-full max-w-sm relative z-10 shadow-2xl animation-fade-in text-center">
+                            <div className="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5">
+                                <Download className="w-7 h-7 text-primary-darker" />
+                            </div>
+                            <h3 className="text-xl font-black text-slate-900 mb-2 tracking-tight">Simpan Konten?</h3>
+                            <p className="text-sm text-slate-500 mb-8 leading-relaxed">Konten akan disimpan ke Bank Konten Anda dan bisa diakses kapan saja.</p>
+                            <div className="flex gap-3">
+                                <button onClick={() => setShowSaveConfirm(false)} className="flex-1 px-5 py-3 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors">
+                                    Batal
+                                </button>
+                                <button onClick={confirmSave} className="flex-1 px-5 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary-darker shadow-primary-sm hover:shadow-primary-lg transition-all">
+                                    Ya, Simpan
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </ModalPortal>
+            )}
+
+            {/* Toast Notifications */}
+            <div className="fixed top-6 right-6 z-[9999] flex flex-col gap-3 pointer-events-none">
+                {toasts.map(t => (
+                    <ToastNotification key={t.id} type={t.type} exiting={t.exiting} onDismiss={() => dismissToast(t.id)} />
+                ))}
+            </div>
+
             <div className="max-w-5xl mx-auto animation-fade-in pb-20 md:pb-0 h-[calc(100vh-6rem)] md:h-auto overflow-y-auto">
                 {/* ── Playful Header ── */}
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 px-4 md:px-0 gap-4">
@@ -732,7 +830,7 @@ const EditorView = ({ editingPost, setCurrentView, handleSaveToLibrary, brandDNA
                         <button onClick={() => setIsScheduleModalOpen(true)} className="px-4 py-2.5 bg-white hover:bg-primary/5 border-2 border-primary/30 hover:border-primary text-primary-darker rounded-xl font-bold flex items-center gap-2 transition-all text-sm">
                             <Calendar className="w-3.5 h-3.5" /> Jadwalkan
                         </button>
-                        <button onClick={() => handleSaveToLibrary(localPost)} className="px-4 py-2.5 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary-darker text-white rounded-xl font-bold transition-all text-sm shadow-primary-sm hover:shadow-primary-lg flex items-center gap-2">
+                        <button onClick={() => setShowSaveConfirm(true)} className="px-4 py-2.5 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary-darker text-white rounded-xl font-bold transition-all text-sm shadow-primary-sm hover:shadow-primary-lg flex items-center gap-2">
                             <Download className="w-3.5 h-3.5" /> Simpan
                         </button>
                     </div>
