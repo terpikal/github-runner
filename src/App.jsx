@@ -3946,7 +3946,7 @@ function App() {
             }
             {showNav && <MobileNav currentView={currentView} setCurrentView={setCurrentView} />}
 
-            {location.pathname === '/' && <Navigate to="/buat_konten" replace />}
+            {location.pathname === '/' && <Navigate to="/login" replace />}
             {currentView === 'design-system' && <DesignSystemView />}
             {currentView === 'loading-preview' && (
                 <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-slate-950/95 backdrop-blur-md">
