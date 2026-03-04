@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Copy, Check, Sparkles, Mail, Lock, Eye, EyeOff, User, Search, Plus, Download, Trash2, Edit3, ChevronRight, Heart, Star, Bell, Settings, Filter, Upload, X, ChevronDown } from 'lucide-react';
+import { ArrowLeft, Copy, Check, Sparkles, Mail, Lock, Eye, EyeOff, User, Search, Plus, Download, Trash2, Edit3, ChevronRight, Heart, Star, Bell, Settings, Filter, Upload, X, ChevronDown, Layout, CalendarDays } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const COLORS = [
@@ -52,6 +52,7 @@ const DesignSystemView = () => {
   const DEMO_DROPDOWN_OPTIONS = ['Opsi Pertama', 'Opsi Kedua', 'Opsi Ketiga', 'Opsi Keempat'];
   const [demoDropdownIcon, setDemoDropdownIcon] = useState('');
   const [isDropdownIconOpen, setIsDropdownIconOpen] = useState(false);
+  const [demoTab, setDemoTab] = useState('tab1');
   const DEMO_DROPDOWN_ICON_OPTIONS = [
     { label: 'Pengguna', icon: <User className="w-4 h-4" /> },
     { label: 'Email', icon: <Mail className="w-4 h-4" /> },
@@ -418,7 +419,47 @@ const DesignSystemView = () => {
           </div>
         </Section>
 
-        {/* ── BADGES ── */}
+        {/* ── TABLIST ── */}
+        <Section title="TabList">
+          <div className="bg-white rounded-2xl border border-slate-100 p-8 shadow-sm space-y-8">
+            {/* Default 2-tab */}
+            <div>
+              <h3 className="text-sm font-bold text-slate-700 mb-4">Default (2 Tabs)</h3>
+              <div className="flex flex-col items-start gap-1.5">
+                <div className="flex p-1.5 bg-white/80 backdrop-blur-sm rounded-2xl w-fit border border-slate-200/50 shadow-sm">
+                  <button
+                    onClick={() => setDemoTab('tab1')}
+                    className={`px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 flex items-center gap-2 ${demoTab === 'tab1' ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-primary-sm' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'}`}
+                  >
+                    <Layout className="w-4 h-4" /> <span>Bank Konten</span>
+                  </button>
+                  <button
+                    onClick={() => setDemoTab('tab2')}
+                    className={`px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 flex items-center gap-2 ${demoTab === 'tab2' ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-primary-sm' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'}`}
+                  >
+                    <CalendarDays className="w-4 h-4" /> <span>Konten Planner</span>
+                  </button>
+                </div>
+                <code className="text-[10px] text-slate-400 font-mono">.tablist</code>
+              </div>
+            </div>
+
+            {/* Structure */}
+            <div>
+              <h3 className="text-sm font-bold text-slate-700 mb-3">Struktur</h3>
+              <div className="bg-slate-50 rounded-xl p-4 font-mono text-xs text-slate-600 space-y-1 leading-relaxed">
+                <p>&lt;div className="flex p-1.5 bg-white/80 backdrop-blur-sm rounded-2xl w-fit border border-slate-200/50 shadow-sm"&gt;</p>
+                <p className="pl-4 text-primary-darker">&lt;button className="px-6 py-2.5 font-bold text-sm rounded-xl ..."&gt;</p>
+                <p className="pl-8 text-slate-400">{'// Active: bg-gradient-to-r from-primary to-primary-dark text-white shadow-primary-sm'}</p>
+                <p className="pl-8 text-slate-400">{'// Inactive: text-slate-500 hover:text-slate-700 hover:bg-slate-100'}</p>
+                <p className="pl-4 text-primary-darker">&lt;/button&gt;</p>
+                <p>&lt;/div&gt;</p>
+              </div>
+            </div>
+          </div>
+        </Section>
+
+
         <Section title="Badges & Tags">
           <div className="bg-white rounded-2xl border border-slate-100 p-8 shadow-sm">
             <div className="flex flex-wrap gap-4">
