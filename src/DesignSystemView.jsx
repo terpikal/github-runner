@@ -50,6 +50,14 @@ const DesignSystemView = () => {
   const [demoDropdown, setDemoDropdown] = useState('');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const DEMO_DROPDOWN_OPTIONS = ['Opsi Pertama', 'Opsi Kedua', 'Opsi Ketiga', 'Opsi Keempat'];
+  const [demoDropdownIcon, setDemoDropdownIcon] = useState('');
+  const [isDropdownIconOpen, setIsDropdownIconOpen] = useState(false);
+  const DEMO_DROPDOWN_ICON_OPTIONS = [
+    { label: 'Pengguna', icon: <User className="w-4 h-4" /> },
+    { label: 'Email', icon: <Mail className="w-4 h-4" /> },
+    { label: 'Pengaturan', icon: <Settings className="w-4 h-4" /> },
+    { label: 'Notifikasi', icon: <Bell className="w-4 h-4" /> },
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-cyan-50/20 to-slate-100">
@@ -365,6 +373,46 @@ const DesignSystemView = () => {
                 )}
               </div>
               <code className="text-[10px] text-slate-400 font-mono">.dropdown</code>
+            </div>
+
+            {/* Dropdown with Icons */}
+            <div className="space-y-1.5">
+              <label className="text-sm font-semibold text-slate-700">Dropdown with Icon</label>
+              <div className="relative">
+                <button
+                  onClick={() => setIsDropdownIconOpen(!isDropdownIconOpen)}
+                  className={`w-full flex items-center gap-3 py-3 px-4 rounded-xl border transition-all text-left ${demoDropdownIcon ? 'border-primary/50 bg-white' : 'border-slate-200 bg-slate-50'}`}
+                >
+                  {demoDropdownIcon ? (
+                    <>
+                      <span className="text-primary-darker">{DEMO_DROPDOWN_ICON_OPTIONS.find(o => o.label === demoDropdownIcon)?.icon}</span>
+                      <span className="text-sm font-medium text-slate-800 flex-1">{demoDropdownIcon}</span>
+                    </>
+                  ) : (
+                    <span className="text-sm text-slate-400 flex-1">Pilih opsi...</span>
+                  )}
+                  <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isDropdownIconOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {isDropdownIconOpen && (
+                  <>
+                    <div className="fixed inset-0 z-10" onClick={() => setIsDropdownIconOpen(false)} />
+                    <div className="absolute z-20 mt-2 w-full bg-white border border-slate-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] rounded-xl py-2 animation-fade-in">
+                      {DEMO_DROPDOWN_ICON_OPTIONS.map(opt => (
+                        <button
+                          key={opt.label}
+                          onClick={() => { setDemoDropdownIcon(opt.label); setIsDropdownIconOpen(false); }}
+                          className={`w-full flex items-center gap-3 text-left px-4 py-2.5 text-sm transition-colors ${demoDropdownIcon === opt.label ? 'bg-primary/10 text-primary-darker font-bold' : 'text-slate-600 hover:bg-slate-50 font-medium'}`}
+                        >
+                          <span className={demoDropdownIcon === opt.label ? 'text-primary-darker' : 'text-slate-400'}>{opt.icon}</span>
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+              <code className="text-[10px] text-slate-400 font-mono">.dropdown-icon</code>
             </div>
           </div>
         </Section>
