@@ -1783,32 +1783,6 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                                 >
                                                                     <MoreVertical className="w-4 h-4" />
                                                                 </button>
-                                                                {moreMenuId === post.id && (
-                                                                    <>
-                                                                        <div className="fixed inset-0 z-40" onClick={() => setMoreMenuId(null)} />
-                                                                        <div className="absolute right-0 bottom-full mb-2 w-44 bg-white rounded-2xl border border-slate-100 shadow-xl z-50 overflow-hidden animation-fade-in">
-                                                                            <button 
-                                                                                onClick={() => { setMoreMenuId(null); setPreviewPost(post); }}
-                                                                                className="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
-                                                                            >
-                                                                                <Eye className="w-4 h-4 text-slate-400" /> Pratinjau
-                                                                            </button>
-                                                                            <button 
-                                                                                onClick={() => { setMoreMenuId(null); setEditingPost(post); setCurrentView('editor'); }}
-                                                                                className="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
-                                                                            >
-                                                                                <Edit3 className="w-4 h-4 text-primary" /> Edit
-                                                                            </button>
-                                                                            <div className="border-t border-slate-100" />
-                                                                            <button 
-                                                                                onClick={() => { setMoreMenuId(null); setLibrary(library.filter(p => p.id !== post.id)); }}
-                                                                                className="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-red-500 hover:bg-red-50 transition-colors"
-                                                                            >
-                                                                                <Trash2 className="w-4 h-4" /> Hapus
-                                                                            </button>
-                                                                        </div>
-                                                                    </>
-                                                                )}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -1816,6 +1790,43 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                             </div>
                                         )
                                     })}
+
+                            {/* More Menu Portal */}
+                            {moreMenuId && (() => {
+                                const post = filteredLibrary.find(p => p.id === moreMenuId);
+                                if (!post) return null;
+                                return (
+                                    <ModalPortal>
+                                        <div className="fixed inset-0 z-50" onClick={() => setMoreMenuId(null)}>
+                                            <div 
+                                                className="fixed z-50 w-48 bg-white rounded-2xl border border-slate-100 shadow-2xl overflow-hidden animation-fade-in"
+                                                style={{ top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}
+                                                onClick={(e) => e.stopPropagation()}
+                                            >
+                                                <button 
+                                                    onClick={() => { setMoreMenuId(null); setPreviewPost(post); }}
+                                                    className="w-full flex items-center gap-3 px-4 py-3.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                                                >
+                                                    <Eye className="w-4 h-4 text-slate-400" /> Pratinjau
+                                                </button>
+                                                <button 
+                                                    onClick={() => { setMoreMenuId(null); setEditingPost(post); setCurrentView('editor'); }}
+                                                    className="w-full flex items-center gap-3 px-4 py-3.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                                                >
+                                                    <Edit3 className="w-4 h-4 text-primary" /> Edit
+                                                </button>
+                                                <div className="border-t border-slate-100" />
+                                                <button 
+                                                    onClick={() => { setMoreMenuId(null); setLibrary(library.filter(p => p.id !== post.id)); }}
+                                                    className="w-full flex items-center gap-3 px-4 py-3.5 text-sm font-semibold text-red-500 hover:bg-red-50 transition-colors"
+                                                >
+                                                    <Trash2 className="w-4 h-4" /> Hapus
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </ModalPortal>
+                                );
+                            })()}
                             </div>
                                     )}
                                 </div>
