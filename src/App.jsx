@@ -1451,7 +1451,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                             );
                         })()
                     )}
-                    )}
+
 
                 {activeTab === 'calendar' && (
                     <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-6 md:p-8 min-h-[500px]" >
