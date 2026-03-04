@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import {
     Sparkles, ArrowRight, ArrowLeft, Check, CheckCircle2,
     Coffee, Utensils, ShoppingBag, Flower2, Briefcase,
-    Palette, Type, Sliders, User, Image as ImageIcon, Upload, X, ChevronDown
+    Palette, Type, Sliders, User, Image as ImageIcon, Upload, X, ChevronDown,
+    Heart, Home, Dumbbell, GraduationCap, Stethoscope, Car, Wrench, Laptop, PawPrint, Baby
 } from 'lucide-react';
 
 const COLOR_SCHEMAS = [
@@ -27,6 +28,16 @@ const CATEGORIES = [
     { id: 'beauty', label: 'Kecantikan', icon: <Flower2 className="w-6 h-6" /> },
     { id: 'fashion', label: 'Fashion', icon: <User className="w-6 h-6" /> },
     { id: 'business', label: 'Bisnis & Jasa', icon: <Briefcase className="w-6 h-6" /> },
+    { id: 'health', label: 'Kesehatan & Medis', icon: <Stethoscope className="w-6 h-6" /> },
+    { id: 'education', label: 'Pendidikan & Kursus', icon: <GraduationCap className="w-6 h-6" /> },
+    { id: 'tech', label: 'Teknologi & IT', icon: <Laptop className="w-6 h-6" /> },
+    { id: 'fitness', label: 'Fitness & Olahraga', icon: <Dumbbell className="w-6 h-6" /> },
+    { id: 'property', label: 'Properti & Interior', icon: <Home className="w-6 h-6" /> },
+    { id: 'automotive', label: 'Otomotif', icon: <Car className="w-6 h-6" /> },
+    { id: 'pet', label: 'Hewan & Pet Shop', icon: <PawPrint className="w-6 h-6" /> },
+    { id: 'baby', label: 'Ibu & Anak', icon: <Baby className="w-6 h-6" /> },
+    { id: 'handcraft', label: 'Kerajinan & Handmade', icon: <Heart className="w-6 h-6" /> },
+    { id: 'service', label: 'Servis & Reparasi', icon: <Wrench className="w-6 h-6" /> },
 ];
 
 const PRODUCT_SUGGESTIONS = {
@@ -36,6 +47,16 @@ const PRODUCT_SUGGESTIONS = {
     'Kecantikan': ['Skincare', 'Makeup', 'Haircare', 'Parfum', 'Perawatan Tubuh', 'Nail Art', 'Jasa Salon'],
     'Fashion': ['Pakaian Wanita', 'Pakaian Pria', 'Hijab & Muslim Wear', 'Sepatu & Sandal', 'Tas & Dompet', 'Aksesoris', 'Streetwear'],
     'Bisnis & Jasa': ['Konsultan', 'Desain Grafis', 'Digital Marketing', 'Fotografi', 'Wedding Organizer', 'Jasa Cleaning', 'Jasa Pengiriman'],
+    'Kesehatan & Medis': ['Klinik', 'Apotek', 'Suplemen', 'Alat Kesehatan', 'Terapi & Pijat', 'Dokter Gigi', 'Laboratorium'],
+    'Pendidikan & Kursus': ['Les Privat', 'Kursus Bahasa', 'Bimbel', 'Kursus Musik', 'Pelatihan IT', 'Workshop Seni', 'E-Learning'],
+    'Teknologi & IT': ['Software House', 'Web Development', 'Aplikasi Mobile', 'Jasa IT Support', 'Cloud Services', 'Cyber Security', 'Data Analytics'],
+    'Fitness & Olahraga': ['Gym & Fitness Center', 'Yoga Studio', 'Personal Trainer', 'Suplemen Fitness', 'Alat Olahraga', 'Martial Arts', 'Renang'],
+    'Properti & Interior': ['Agen Properti', 'Desain Interior', 'Kontraktor', 'Furniture', 'Dekorasi Rumah', 'Jasa Renovasi', 'Smart Home'],
+    'Otomotif': ['Bengkel Mobil', 'Bengkel Motor', 'Aksesoris Kendaraan', 'Cuci Mobil', 'Rental Mobil', 'Detailing', 'Spare Part'],
+    'Hewan & Pet Shop': ['Makanan Hewan', 'Aksesoris Hewan', 'Grooming', 'Pet Hotel', 'Klinik Hewan', 'Adopsi Hewan', 'Pet Training'],
+    'Ibu & Anak': ['Perlengkapan Bayi', 'Mainan Edukasi', 'Pakaian Anak', 'Daycare', 'MPASI', 'Ibu Hamil', 'Stroller & Car Seat'],
+    'Kerajinan & Handmade': ['Kerajinan Kayu', 'Rajutan & Crochet', 'Lilin & Aromaterapi', 'Keramik', 'Resin Art', 'Bordir & Sulam', 'Custom Gift'],
+    'Servis & Reparasi': ['Service Elektronik', 'Service AC', 'Tukang Ledeng', 'Tukang Listrik', 'Service Laptop', 'Reparasi Jam', 'Service Mesin'],
 };
 
 const TONES = [
