@@ -802,22 +802,26 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                         <div className="space-y-4 animation-fade-in">
                             {/* Upload Desain — always shown as default */}
                             <div className="space-y-4">
-                                <div className="flex flex-col items-center justify-center py-12 gap-4 border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50">
-                                    <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl">📁</div>
-                                    <div className="text-center">
-                                        <p className="font-bold text-slate-700 text-sm">Upload file desain Anda</p>
-                                        <p className="text-xs text-slate-400 mt-1">PNG, JPG, atau PDF — maks. 10MB</p>
-                                    </div>
-                                    <label className="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-xl cursor-pointer hover:bg-primary-dark transition-colors">
-                                        Pilih File
-                                        <input type="file" accept="image/*,.pdf" className="hidden" />
-                                    </label>
-                                </div>
+                                {(localBrand.designTemplate || []).length === 0 && (
+                                    <>
+                                        <div className="flex flex-col items-center justify-center py-12 gap-4 border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50">
+                                            <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl">📁</div>
+                                            <div className="text-center">
+                                                <p className="font-bold text-slate-700 text-sm">Upload file desain Anda</p>
+                                                <p className="text-xs text-slate-400 mt-1">PNG, JPG, atau PDF — maks. 10MB</p>
+                                            </div>
+                                            <label className="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-xl cursor-pointer hover:bg-primary-dark transition-colors">
+                                                Pilih File
+                                                <input type="file" accept="image/*,.pdf" className="hidden" />
+                                            </label>
+                                        </div>
 
-                                <div className="relative">
-                                    <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-200" /></div>
-                                    <div className="relative flex justify-center"><span className="bg-white px-3 text-xs text-slate-400 font-medium">atau</span></div>
-                                </div>
+                                        <div className="relative">
+                                            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-200" /></div>
+                                            <div className="relative flex justify-center"><span className="bg-white px-3 text-xs text-slate-400 font-medium">atau</span></div>
+                                        </div>
+                                    </>
+                                )}
 
                                 <button
                                     onClick={handleGenerateTemplate}
