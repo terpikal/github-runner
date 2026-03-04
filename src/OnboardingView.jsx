@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
     Sparkles, ArrowRight, ArrowLeft, Check, CheckCircle2,
     Coffee, Utensils, ShoppingBag, Flower2, Briefcase,
-    Palette, Type, Sliders, User, Image as ImageIcon, Upload
+    Palette, Type, Sliders, User, Image as ImageIcon, Upload, X
 } from 'lucide-react';
 
 const COLOR_SCHEMAS = [
@@ -28,6 +28,15 @@ const CATEGORIES = [
     { id: 'fashion', label: 'Fashion', icon: <User className="w-6 h-6" /> },
     { id: 'business', label: 'Bisnis & Jasa', icon: <Briefcase className="w-6 h-6" /> },
 ];
+
+const PRODUCT_SUGGESTIONS = {
+    'Kuliner & F&B': ['Kopi & Minuman', 'Makanan Ringan', 'Kue & Pastry', 'Catering', 'Frozen Food', 'Sambal & Bumbu', 'Jus & Smoothie'],
+    'Restoran': ['Makanan Indonesia', 'Makanan Western', 'Makanan Jepang', 'Makanan Korea', 'Seafood', 'Steak House', 'Vegetarian'],
+    'Toko & Retail': ['Elektronik', 'Peralatan Rumah', 'Aksesoris HP', 'Mainan Anak', 'Buku & Alat Tulis', 'Oleh-oleh', 'Perlengkapan Bayi'],
+    'Kecantikan': ['Skincare', 'Makeup', 'Haircare', 'Parfum', 'Perawatan Tubuh', 'Nail Art', 'Jasa Salon'],
+    'Fashion': ['Pakaian Wanita', 'Pakaian Pria', 'Hijab & Muslim Wear', 'Sepatu & Sandal', 'Tas & Dompet', 'Aksesoris', 'Streetwear'],
+    'Bisnis & Jasa': ['Konsultan', 'Desain Grafis', 'Digital Marketing', 'Fotografi', 'Wedding Organizer', 'Jasa Cleaning', 'Jasa Pengiriman'],
+};
 
 const TONES = [
     { id: 'friendly', label: 'Ramah & Hangat', desc: 'Akrab, menyapa, dekat dengan pelanggan' },
@@ -236,6 +245,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
     const [localBrand, setLocalBrand] = useState({
         name: '',
         category: '',
+        product: '',
         colorSchema: 'ocean-breeze',
         primaryColor: '#0891B2',
         secondaryColor: '#14B8A6',
@@ -254,6 +264,8 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
     const [generatedPalettes, setGeneratedPalettes] = useState([]);
     const [selectedPaletteIdx, setSelectedPaletteIdx] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
+    const [productSearch, setProductSearch] = useState('');
+    const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false);
 
     const handleNext = () => {
         if (step < STEPS.length) setStep(step + 1);
@@ -412,6 +424,76 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                         </button>
                                     ))}
                                 </div>
+                            </div>
+
+                            {/* Produk / Jasa */}
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Produk / Jasa yang Ditawarkan</label>
+                                <div className="relative">
+                                    <div className="relative flex items-center">
+                                        <ShoppingBag className="absolute left-3.5 w-4 h-4 text-slate-400 pointer-events-none" />
+                                        <input
+                                            type="text"
+                                            value={productSearch}
+                                            onChange={e => {
+                                                setProductSearch(e.target.value);
+                                                setIsProductDropdownOpen(true);
+                                            }}
+                                            onFocus={() => setIsProductDropdownOpen(true)}
+                                            placeholder={localBrand.category ? `Cari produk/jasa di ${localBrand.category}...` : 'Pilih kategori dulu, lalu ketik produk/jasa'}
+                                            className="w-full pl-10 pr-4 py-3.5 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/40 outline-none transition-all font-medium text-slate-800 placeholder-slate-400 text-sm"
+                                        />
+                                    </div>
+
+                                    {isProductDropdownOpen && (localBrand.category || productSearch) && (
+                                        <>
+                                            <div className="fixed inset-0 z-10" onClick={() => setIsProductDropdownOpen(false)} />
+                                            <div className="absolute z-20 mt-2 w-full bg-white border border-slate-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] rounded-2xl py-2 max-h-48 overflow-y-auto animation-fade-in">
+                                                {(PRODUCT_SUGGESTIONS[localBrand.category] || [])
+                                                    .filter(p => !productSearch || p.toLowerCase().includes(productSearch.toLowerCase()))
+                                                    .map(suggestion => (
+                                                        <button
+                                                            key={suggestion}
+                                                            onClick={() => {
+                                                                setLocalBrand({ ...localBrand, product: suggestion });
+                                                                setProductSearch(suggestion);
+                                                                setIsProductDropdownOpen(false);
+                                                            }}
+                                                            className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${localBrand.product === suggestion ? 'bg-primary/10 text-primary-darker font-bold' : 'text-slate-600 hover:bg-slate-50 font-medium'}`}
+                                                        >
+                                                            {suggestion}
+                                                        </button>
+                                                    ))
+                                                }
+                                                {productSearch && !(PRODUCT_SUGGESTIONS[localBrand.category] || []).some(p => p.toLowerCase() === productSearch.toLowerCase()) && (
+                                                    <button
+                                                        onClick={() => {
+                                                            setLocalBrand({ ...localBrand, product: productSearch });
+                                                            setIsProductDropdownOpen(false);
+                                                        }}
+                                                        className="w-full text-left px-4 py-2.5 text-sm text-primary font-bold hover:bg-primary/5 transition-colors flex items-center gap-2"
+                                                    >
+                                                        <span className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center text-primary text-xs">+</span>
+                                                        Gunakan "{productSearch}"
+                                                    </button>
+                                                )}
+                                                {!productSearch && !(PRODUCT_SUGGESTIONS[localBrand.category] || []).length && (
+                                                    <p className="px-4 py-3 text-xs text-slate-400">Pilih kategori bisnis terlebih dahulu.</p>
+                                                )}
+                                            </div>
+                                        </>
+                                    )}
+                                </div>
+                                {localBrand.product && (
+                                    <div className="flex items-center gap-2 animation-fade-in">
+                                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary-darker text-xs font-bold">
+                                            {localBrand.product}
+                                            <button onClick={() => { setLocalBrand({ ...localBrand, product: '' }); setProductSearch(''); }} className="hover:text-red-500 transition-colors">
+                                                <X className="w-3 h-3" />
+                                            </button>
+                                        </span>
+                                    </div>
+                                )}
                             </div>
 
                             <div className="space-y-2">
