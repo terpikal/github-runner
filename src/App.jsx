@@ -3695,6 +3695,7 @@ function App() {
         'onboarding': '/onboarding',
         'generating': '/generating',
         'design-system': '/design-system',
+        'loading-preview': '/loading-preview',
     };
 
     const PATH_TO_VIEW = Object.fromEntries(
@@ -3721,7 +3722,7 @@ function App() {
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
     const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
-    const showNav = currentView !== 'signup' && currentView !== 'onboarding' && currentView !== 'design-system';
+    const showNav = currentView !== 'signup' && currentView !== 'onboarding' && currentView !== 'design-system' && currentView !== 'loading-preview';
 
     const handleConfirmLogout = () => {
         setIsLogoutModalOpen(false);
@@ -3904,7 +3905,29 @@ function App() {
 
             {location.pathname === '/' && <Navigate to="/buat_konten" replace />}
             {currentView === 'design-system' && <DesignSystemView />}
-            {currentView !== 'design-system' && (
+            {currentView === 'loading-preview' && (
+                <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-slate-950/95 backdrop-blur-md">
+                    {/* Animated rings */}
+                    <div className="relative flex items-center justify-center mb-10">
+                        <div className="absolute w-48 h-48 rounded-full border-2 border-primary/10 animate-ping" style={{ animationDuration: '2s' }} />
+                        <div className="absolute w-36 h-36 rounded-full border-2 border-primary/20 animate-ping" style={{ animationDuration: '1.5s', animationDelay: '0.3s' }} />
+                        <div className="absolute w-24 h-24 rounded-full border-4 border-primary/30 animate-spin" style={{ animationDuration: '3s' }} />
+                        <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary-darker flex items-center justify-center shadow-[0_0_40px_rgba(19,200,236,0.5)]">
+                            <Sparkles className="w-9 h-9 text-white animate-bounce" />
+                        </div>
+                    </div>
+                    {/* Text */}
+                    <h2 className="text-2xl font-extrabold text-white mb-3 tracking-tight">AI sedang merancang konten...</h2>
+                    <p className="text-slate-400 text-sm max-w-xs text-center leading-relaxed mb-8">
+                        Menganalisa brand DNA, tren pasar, dan merancang strategi konten terbaik untuk bulan ini.
+                    </p>
+                    {/* Progress bar */}
+                    <div className="w-64 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-primary to-primary-darker rounded-full animate-pulse" style={{ width: '70%' }} />
+                    </div>
+                </div>
+            )}
+            {currentView !== 'design-system' && currentView !== 'loading-preview' && (
             <main className={`${showNav ? (isSidebarExpanded ? 'md:ml-72' : 'md:ml-24') : ''} p-4 md:p-8 min-h-screen transition-all duration-300`}>
                 {currentView === 'signup' && <SignUpView setCurrentView={setCurrentView} />}
                 {
