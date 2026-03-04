@@ -411,20 +411,19 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                 <div className="relative">
                                     <button
                                         onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
-                                        className={`w-full flex items-center gap-3 py-3.5 px-4 rounded-2xl border transition-all text-left ${localBrand.category ? 'border-primary/40 bg-white' : 'border-slate-200 bg-slate-50'}`}
+                                        className={`w-full flex items-center gap-3 py-3 px-4 rounded-xl border transition-all text-left ${localBrand.category ? 'border-primary/50 bg-white' : 'border-slate-200 bg-slate-50'}`}
                                     >
-                                        {localBrand.category ? (
-                                            <span className="font-medium text-slate-800 text-sm flex-1">{localBrand.category}</span>
-                                        ) : (
-                                            <span className="text-slate-400 font-medium text-sm flex-1">Pilih kategori bisnis...</span>
-                                        )}
+                                        <Briefcase className="w-4 h-4 text-slate-400" />
+                                        <span className={`text-sm flex-1 ${localBrand.category ? 'font-medium text-slate-800' : 'text-slate-400'}`}>
+                                            {localBrand.category || 'Pilih kategori bisnis...'}
+                                        </span>
                                         <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isCategoryDropdownOpen ? 'rotate-180' : ''}`} />
                                     </button>
 
                                     {isCategoryDropdownOpen && (
                                         <>
                                             <div className="fixed inset-0 z-10" onClick={() => setIsCategoryDropdownOpen(false)} />
-                                            <div className="absolute z-20 mt-2 w-full bg-white border border-slate-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] rounded-2xl py-2 max-h-48 overflow-y-auto animation-fade-in">
+                                            <div className="absolute z-20 mt-2 w-full bg-white border border-slate-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] rounded-xl py-2 max-h-48 overflow-y-auto animation-fade-in">
                                                 {CATEGORIES.map(cat => (
                                                     <button
                                                         key={cat.id}
@@ -448,7 +447,8 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                             <div className="space-y-2">
                                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Produk / Jasa yang Ditawarkan</label>
                                 <div className="relative">
-                                    <div className="relative">
+                                    <div className="relative flex items-center">
+                                        <ShoppingBag className="absolute left-4 w-4 h-4 text-slate-400 pointer-events-none" />
                                         <input
                                             type="text"
                                             value={productSearch}
@@ -458,14 +458,14 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                             }}
                                             onFocus={() => setIsProductDropdownOpen(true)}
                                             placeholder={localBrand.category ? `Cari produk/jasa di ${localBrand.category}...` : 'Pilih kategori dulu, lalu ketik produk/jasa'}
-                                            className="w-full px-4 py-3.5 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/40 outline-none transition-all font-medium text-slate-800 placeholder-slate-400 text-sm"
+                                            className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all font-medium text-slate-800 placeholder-slate-400 text-sm"
                                         />
                                     </div>
 
                                     {isProductDropdownOpen && (localBrand.category || productSearch) && (
                                         <>
                                             <div className="fixed inset-0 z-10" onClick={() => setIsProductDropdownOpen(false)} />
-                                            <div className="absolute z-20 mt-2 w-full bg-white border border-slate-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] rounded-2xl py-2 max-h-48 overflow-y-auto animation-fade-in">
+                                            <div className="absolute z-20 mt-2 w-full bg-white border border-slate-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] rounded-xl py-2 max-h-48 overflow-y-auto animation-fade-in">
                                                 {(PRODUCT_SUGGESTIONS[localBrand.category] || [])
                                                     .filter(p => !productSearch || p.toLowerCase().includes(productSearch.toLowerCase()))
                                                     .map(suggestion => (
