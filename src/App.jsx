@@ -1868,14 +1868,18 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                             )}
 
                             {/* Library Toasts */}
-                            <div className="fixed top-6 right-6 z-[9999] flex flex-col gap-3 pointer-events-none">
-                                {libToasts.map(t => (
-                                    <ToastNotification key={t.id} type={t.type} exiting={t.exiting} onDismiss={() => {
-                                        setLibToasts(prev => prev.map(x => x.id === t.id ? { ...x, exiting: true } : x));
-                                        setTimeout(() => setLibToasts(prev => prev.filter(x => x.id !== t.id)), 350);
-                                    }} customMsg={t.msg} />
-                                ))}
-                            </div>
+                            {libToasts.length > 0 && (
+                                <ModalPortal>
+                                    <div className="fixed top-6 right-6 z-[9999] flex flex-col gap-3 pointer-events-none">
+                                        {libToasts.map(t => (
+                                            <ToastNotification key={t.id} type={t.type} exiting={t.exiting} onDismiss={() => {
+                                                setLibToasts(prev => prev.map(x => x.id === t.id ? { ...x, exiting: true } : x));
+                                                setTimeout(() => setLibToasts(prev => prev.filter(x => x.id !== t.id)), 350);
+                                            }} customMsg={t.msg} />
+                                        ))}
+                                    </div>
+                                </ModalPortal>
+                            )}
                             </div>
                                     )}
                                 </div>
