@@ -1273,6 +1273,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
     // -----------------------------
 
     const [openActionMenuId, setOpenActionMenuId] = useState(null);
+    const [moreMenuId, setMoreMenuId] = useState(null);
     const [isDraftingPlan, setIsDraftingPlan] = useState(false);
     const [editingPlannerPost, setEditingPlannerPost] = useState(null);
 
@@ -1769,9 +1770,47 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                     <p className="text-sm text-slate-700 line-clamp-2 mb-4 flex-1 leading-relaxed">{post.caption}</p>
                                                     <div className="border-t border-slate-100 pt-3 flex items-center justify-between">
                                                         <span className="text-[11px] font-bold text-slate-400">{post.status === 'scheduled' ? formatDate(post.scheduledDate) : '💾 Tersimpan'}</span>
-                                                        <button className={`p-2 rounded-xl transition-all ${isIgConnected ? 'text-slate-400 hover:text-pink-500 hover:bg-pink-50' : 'text-slate-300 cursor-not-allowed'}`} title={isIgConnected ? "Posting ke IG" : "Hubungkan IG terlebih dahulu"}>
-                                                            <Instagram className="w-4 h-4" />
-                                                        </button>
+                                                        <div className="flex items-center gap-1">
+                                                            <button className={`p-2 rounded-xl transition-all ${isIgConnected ? 'text-slate-400 hover:text-pink-500 hover:bg-pink-50' : 'text-slate-300 cursor-not-allowed'}`} title={isIgConnected ? "Posting ke IG" : "Hubungkan IG terlebih dahulu"}>
+                                                                <Instagram className="w-4 h-4" />
+                                                            </button>
+                                                            {/* More Menu */}
+                                                            <div className="relative">
+                                                                <button 
+                                                                    onClick={(e) => { e.stopPropagation(); setMoreMenuId(moreMenuId === post.id ? null : post.id); }}
+                                                                    className="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-all"
+                                                                    title="Lainnya"
+                                                                >
+                                                                    <MoreVertical className="w-4 h-4" />
+                                                                </button>
+                                                                {moreMenuId === post.id && (
+                                                                    <>
+                                                                        <div className="fixed inset-0 z-40" onClick={() => setMoreMenuId(null)} />
+                                                                        <div className="absolute right-0 bottom-full mb-2 w-44 bg-white rounded-2xl border border-slate-100 shadow-xl z-50 overflow-hidden animation-fade-in">
+                                                                            <button 
+                                                                                onClick={() => { setMoreMenuId(null); setPreviewPost(post); }}
+                                                                                className="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                                                                            >
+                                                                                <Eye className="w-4 h-4 text-slate-400" /> Pratinjau
+                                                                            </button>
+                                                                            <button 
+                                                                                onClick={() => { setMoreMenuId(null); setEditingPost(post); setCurrentView('editor'); }}
+                                                                                className="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                                                                            >
+                                                                                <Edit3 className="w-4 h-4 text-primary" /> Edit
+                                                                            </button>
+                                                                            <div className="border-t border-slate-100" />
+                                                                            <button 
+                                                                                onClick={() => { setMoreMenuId(null); setLibrary(library.filter(p => p.id !== post.id)); }}
+                                                                                className="w-full flex items-center gap-3 px-4 py-3 text-sm font-semibold text-red-500 hover:bg-red-50 transition-colors"
+                                                                            >
+                                                                                <Trash2 className="w-4 h-4" /> Hapus
+                                                                            </button>
+                                                                        </div>
+                                                                    </>
+                                                                )}
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
