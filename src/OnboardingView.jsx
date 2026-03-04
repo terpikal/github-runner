@@ -290,6 +290,15 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
     const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false);
     const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
     const [showTemplateModal, setShowTemplateModal] = useState(false);
+    const [isGeneratingTemplate, setIsGeneratingTemplate] = useState(false);
+
+    const handleGenerateTemplate = () => {
+        setIsGeneratingTemplate(true);
+        setTimeout(() => {
+            setIsGeneratingTemplate(false);
+            setShowTemplateModal(true);
+        }, 2500);
+    };
 
     const handleNext = () => {
         if (step < STEPS.length) setStep(step + 1);
@@ -810,12 +819,65 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                 </div>
 
                                 <button
-                                    onClick={() => setShowTemplateModal(true)}
-                                    className="w-full flex items-center justify-center gap-2 py-3 px-8 bg-primary/10 hover:bg-primary/20 text-primary-darker font-bold rounded-2xl transition-colors text-[15px]"
+                                    onClick={handleGenerateTemplate}
+                                    disabled={isGeneratingTemplate}
+                                    className="w-full flex items-center justify-center gap-2 py-3 px-8 bg-primary/10 hover:bg-primary/20 text-primary-darker font-bold rounded-2xl transition-colors text-[15px] disabled:opacity-60"
                                 >
                                     <Sparkles className="w-4 h-4" />
                                     Generate Template Desain
                                 </button>
+
+                                {/* Dramatic generating loading */}
+                                {isGeneratingTemplate && ReactDOM.createPortal(
+                                    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white/95 backdrop-blur-md animate-fade-in">
+                                        <div className="flex flex-col items-center gap-6 animate-fade-in">
+                                            {/* Spinning rings */}
+                                            <div className="relative w-20 h-20">
+                                                <div className="absolute inset-0 rounded-full border-4 border-primary/15" />
+                                                <div className="absolute inset-0 rounded-full border-4 border-t-primary border-r-transparent border-b-transparent border-l-transparent animate-spin" />
+                                                <div className="absolute inset-2 rounded-full border-4 border-t-transparent border-r-primary/60 border-b-transparent border-l-transparent animate-spin" style={{ animationDirection: 'reverse', animationDuration: '0.7s' }} />
+                                                <div className="absolute inset-4 rounded-full border-4 border-t-transparent border-r-transparent border-b-primary/30 border-l-transparent animate-spin" style={{ animationDuration: '1.5s' }} />
+                                                <div className="absolute inset-0 flex items-center justify-center">
+                                                    <Sparkles className="w-6 h-6 text-primary animate-pulse" />
+                                                </div>
+                                            </div>
+
+                                            {/* Text */}
+                                            <div className="text-center">
+                                                <p className="font-black text-slate-800 text-lg">Generating template...</p>
+                                                <p className="text-sm text-slate-400 mt-1.5">Menganalisis brand DNA & membuat rekomendasi desain</p>
+                                            </div>
+
+                                            {/* Animated color bars */}
+                                            <div className="flex gap-2">
+                                                {[
+                                                    localBrand.primaryColor || '#0891B2',
+                                                    localBrand.secondaryColor || '#14B8A6',
+                                                    localBrand.tertiaryColor || '#ECFEFF',
+                                                    '#94a3b8'
+                                                ].map((c, i) => (
+                                                    <div
+                                                        key={i}
+                                                        className="w-10 h-2.5 rounded-full animate-pulse"
+                                                        style={{ backgroundColor: c, animationDelay: `${i * 0.2}s` }}
+                                                    />
+                                                ))}
+                                            </div>
+
+                                            {/* Progress dots */}
+                                            <div className="flex gap-1.5 mt-2">
+                                                {[0, 1, 2].map(i => (
+                                                    <div
+                                                        key={i}
+                                                        className="w-2 h-2 rounded-full bg-primary animate-bounce"
+                                                        style={{ animationDelay: `${i * 0.15}s` }}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>,
+                                    document.body
+                                )}
 
                                 {/* Selected templates indicator */}
                                 {(localBrand.designTemplate || []).length > 0 && (
