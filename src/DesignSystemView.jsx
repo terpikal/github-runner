@@ -42,10 +42,88 @@ const Section = ({ title, children }) => (
 );
 
 const TOAST_CONFIG = {
-  success: { icon: <CheckCircle className="w-5 h-5 text-green-500" />, title: 'Berhasil!', msg: 'Konten berhasil disimpan.', border: 'border-green-200', bg: 'bg-green-50' },
-  error: { icon: <XCircle className="w-5 h-5 text-red-500" />, title: 'Gagal!', msg: 'Terjadi kesalahan saat menyimpan.', border: 'border-red-200', bg: 'bg-red-50' },
-  warning: { icon: <AlertTriangle className="w-5 h-5 text-amber-500" />, title: 'Perhatian', msg: 'Kuota hampir habis.', border: 'border-amber-200', bg: 'bg-amber-50' },
-  info: { icon: <Info className="w-5 h-5 text-primary" />, title: 'Info', msg: 'Fitur baru telah tersedia.', border: 'border-sky-200', bg: 'bg-sky-50' },
+  success: { 
+    icon: <CheckCircle className="w-5 h-5" />, 
+    title: 'Berhasil!', 
+    msg: 'Konten berhasil disimpan.', 
+    accent: '#22c55e',
+    iconBg: 'bg-green-100',
+    iconColor: 'text-green-600',
+    progressColor: 'bg-green-400',
+    ringColor: 'ring-green-100',
+  },
+  error: { 
+    icon: <XCircle className="w-5 h-5" />, 
+    title: 'Gagal!', 
+    msg: 'Terjadi kesalahan saat menyimpan.', 
+    accent: '#ef4444',
+    iconBg: 'bg-red-100',
+    iconColor: 'text-red-600',
+    progressColor: 'bg-red-400',
+    ringColor: 'ring-red-100',
+  },
+  warning: { 
+    icon: <AlertTriangle className="w-5 h-5" />, 
+    title: 'Perhatian', 
+    msg: 'Kuota hampir habis.', 
+    accent: '#f59e0b',
+    iconBg: 'bg-amber-100',
+    iconColor: 'text-amber-600',
+    progressColor: 'bg-amber-400',
+    ringColor: 'ring-amber-100',
+  },
+  info: { 
+    icon: <Info className="w-5 h-5" />, 
+    title: 'Info', 
+    msg: 'Fitur baru telah tersedia.', 
+    accent: '#13c8ec',
+    iconBg: 'bg-sky-100',
+    iconColor: 'text-primary-darker',
+    progressColor: 'bg-primary',
+    ringColor: 'ring-sky-100',
+  },
+};
+
+const ToastItem = ({ cfg, exiting, onDismiss, duration = 3000 }) => {
+  const [progress, setProgress] = useState(100);
+  
+  useEffect(() => {
+    if (exiting) return;
+    const start = Date.now();
+    const interval = setInterval(() => {
+      const elapsed = Date.now() - start;
+      const remaining = Math.max(0, 100 - (elapsed / duration) * 100);
+      setProgress(remaining);
+      if (remaining <= 0) clearInterval(interval);
+    }, 30);
+    return () => clearInterval(interval);
+  }, [exiting, duration]);
+
+  return (
+    <div
+      className={`pointer-events-auto relative overflow-hidden flex items-start gap-3.5 p-4 pr-5 rounded-2xl bg-white/95 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)] ring-1 ${cfg.ringColor} min-w-[320px] max-w-[420px] ${exiting ? 'toast-exit' : 'toast-enter'}`}
+      style={{ borderLeft: `3px solid ${cfg.accent}` }}
+    >
+      {/* Icon with colored bg */}
+      <div className={`shrink-0 w-9 h-9 rounded-xl ${cfg.iconBg} ${cfg.iconColor} flex items-center justify-center`}>
+        {cfg.icon}
+      </div>
+      <div className="flex-1 min-w-0 pt-0.5">
+        <p className="text-[13px] font-extrabold text-slate-800 tracking-tight">{cfg.title}</p>
+        <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{cfg.msg}</p>
+      </div>
+      <button onClick={onDismiss} className="shrink-0 mt-0.5 p-1.5 rounded-xl hover:bg-slate-100 transition-all duration-200 active:scale-90">
+        <X className="w-3.5 h-3.5 text-slate-400" />
+      </button>
+      {/* Progress bar */}
+      <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-slate-100/60">
+        <div 
+          className={`h-full ${cfg.progressColor} rounded-full transition-none`} 
+          style={{ width: `${progress}%`, opacity: 0.7 }} 
+        />
+      </div>
+    </div>
+  );
 };
 
 const ToastTrigger = ({ type, label }) => {
@@ -56,44 +134,31 @@ const ToastTrigger = ({ type, label }) => {
     setToasts(prev => [...prev, { id, exiting: false }]);
     setTimeout(() => {
       setToasts(prev => prev.map(t => t.id === id ? { ...t, exiting: true } : t));
-      setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 300);
+      setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 350);
     }, 3000);
   };
 
   const dismiss = (id) => {
     setToasts(prev => prev.map(t => t.id === id ? { ...t, exiting: true } : t));
-    setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 300);
+    setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 350);
   };
 
   const cfg = TOAST_CONFIG[type];
-  const btnColors = {
-    success: 'bg-green-500 hover:bg-green-600',
-    error: 'bg-red-500 hover:bg-red-600',
-    warning: 'bg-amber-500 hover:bg-amber-600',
-    info: 'bg-primary hover:bg-primary-dark',
+  const btnStyles = {
+    success: 'bg-green-500 hover:bg-green-600 shadow-green-500/25',
+    error: 'bg-red-500 hover:bg-red-600 shadow-red-500/25',
+    warning: 'bg-amber-500 hover:bg-amber-600 shadow-amber-500/25',
+    info: 'bg-primary hover:bg-primary-dark shadow-primary-sm',
   };
 
   return (
     <>
-      <button onClick={showToast} className={`px-5 py-2.5 ${btnColors[type]} text-white font-bold rounded-xl text-sm transition-colors`}>
+      <button onClick={showToast} className={`px-5 py-2.5 ${btnStyles[type]} text-white font-bold rounded-xl text-sm transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0 active:shadow-md`}>
         {label}
       </button>
-      {/* Toast portal */}
       <div className="fixed top-6 right-6 z-[9999] flex flex-col gap-3 pointer-events-none">
         {toasts.map(t => (
-          <div
-            key={t.id}
-            className={`pointer-events-auto flex items-start gap-3 p-4 rounded-2xl border ${cfg.border} ${cfg.bg} shadow-lg backdrop-blur-sm min-w-[300px] max-w-[400px] ${t.exiting ? 'toast-exit' : 'toast-enter'}`}
-          >
-            {cfg.icon}
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-slate-800">{cfg.title}</p>
-              <p className="text-xs text-slate-500 mt-0.5">{cfg.msg}</p>
-            </div>
-            <button onClick={() => dismiss(t.id)} className="p-1 rounded-lg hover:bg-white/60 transition-colors shrink-0">
-              <X className="w-3.5 h-3.5 text-slate-400" />
-            </button>
-          </div>
+          <ToastItem key={t.id} cfg={cfg} exiting={t.exiting} onDismiss={() => dismiss(t.id)} />
         ))}
       </div>
     </>
@@ -630,29 +695,34 @@ const DesignSystemView = () => {
 
         {/* ── TOAST ── */}
         <Section title="Toast / Notification">
-          <div className="bg-white rounded-2xl border border-slate-100 p-8 shadow-sm space-y-8">
+          <div className="bg-white rounded-2xl border border-slate-100 p-8 shadow-sm space-y-10">
+            
             {/* Toast Variants Preview */}
             <div>
-              <h3 className="text-sm font-bold text-slate-700 mb-4">Variants</h3>
-              <div className="space-y-3 max-w-md">
-                {[
-                  { type: 'success', icon: <CheckCircle className="w-5 h-5 text-green-500 shrink-0" />, title: 'Berhasil!', msg: 'Konten berhasil disimpan.', border: 'border-green-200', bg: 'bg-green-50' },
-                  { type: 'error', icon: <XCircle className="w-5 h-5 text-red-500 shrink-0" />, title: 'Gagal!', msg: 'Terjadi kesalahan saat menyimpan.', border: 'border-red-200', bg: 'bg-red-50' },
-                  { type: 'warning', icon: <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />, title: 'Perhatian', msg: 'Kuota hampir habis.', border: 'border-amber-200', bg: 'bg-amber-50' },
-                  { type: 'info', icon: <Info className="w-5 h-5 text-primary shrink-0" />, title: 'Info', msg: 'Fitur baru telah tersedia.', border: 'border-sky-200', bg: 'bg-sky-50' },
-                ].map(t => (
-                  <div key={t.type} className="flex flex-col items-start gap-1.5">
-                    <div className={`w-full flex items-start gap-3 p-4 rounded-2xl border ${t.border} ${t.bg} shadow-sm`}>
-                      {t.icon}
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-bold text-slate-800">{t.title}</p>
-                        <p className="text-xs text-slate-500 mt-0.5">{t.msg}</p>
+              <h3 className="text-sm font-bold text-slate-700 mb-2">Variants</h3>
+              <p className="text-xs text-slate-400 mb-5">Toast dengan progress bar, accent border, dan glassmorphism backdrop.</p>
+              <div className="space-y-4 max-w-[420px]">
+                {Object.entries(TOAST_CONFIG).map(([type, cfg]) => (
+                  <div key={type} className="flex flex-col items-start gap-2">
+                    <div 
+                      className={`w-full relative overflow-hidden flex items-start gap-3.5 p-4 pr-5 rounded-2xl bg-white/95 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)] ring-1 ${cfg.ringColor}`}
+                      style={{ borderLeft: `3px solid ${cfg.accent}` }}
+                    >
+                      <div className={`shrink-0 w-9 h-9 rounded-xl ${cfg.iconBg} ${cfg.iconColor} flex items-center justify-center`}>
+                        {cfg.icon}
                       </div>
-                      <button className="p-1 rounded-lg hover:bg-white/60 transition-colors shrink-0">
+                      <div className="flex-1 min-w-0 pt-0.5">
+                        <p className="text-[13px] font-extrabold text-slate-800 tracking-tight">{cfg.title}</p>
+                        <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{cfg.msg}</p>
+                      </div>
+                      <button className="shrink-0 mt-0.5 p-1.5 rounded-xl hover:bg-slate-100 transition-all duration-200">
                         <X className="w-3.5 h-3.5 text-slate-400" />
                       </button>
+                      <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-slate-100/60">
+                        <div className={`h-full ${cfg.progressColor} rounded-full`} style={{ width: '65%', opacity: 0.7 }} />
+                      </div>
                     </div>
-                    <code className="text-[10px] text-slate-400 font-mono">.toast-{t.type}</code>
+                    <code className="text-[10px] text-slate-400 font-mono ml-1">.toast-{type}</code>
                   </div>
                 ))}
               </div>
@@ -660,20 +730,46 @@ const DesignSystemView = () => {
 
             {/* Interactive Demo */}
             <div>
-              <h3 className="text-sm font-bold text-slate-700 mb-4">Interactive Demo</h3>
+              <h3 className="text-sm font-bold text-slate-700 mb-2">Interactive Demo</h3>
+              <p className="text-xs text-slate-400 mb-5">Klik tombol untuk melihat toast dengan animasi slide-in dan auto-dismiss.</p>
               <div className="flex flex-wrap gap-3">
-                <ToastTrigger type="success" label="Success Toast" />
-                <ToastTrigger type="error" label="Error Toast" />
-                <ToastTrigger type="warning" label="Warning Toast" />
-                <ToastTrigger type="info" label="Info Toast" />
+                <ToastTrigger type="success" label="✓ Success" />
+                <ToastTrigger type="error" label="✕ Error" />
+                <ToastTrigger type="warning" label="⚠ Warning" />
+                <ToastTrigger type="info" label="ℹ Info" />
+              </div>
+            </div>
+
+            {/* Anatomy */}
+            <div>
+              <h3 className="text-sm font-bold text-slate-700 mb-4">Anatomy</h3>
+              <div className="bg-slate-50 rounded-2xl p-6 border border-slate-100">
+                <div className="flex items-center gap-6 flex-wrap text-xs text-slate-500">
+                  {[
+                    { label: 'Accent Border', desc: '3px left border' },
+                    { label: 'Icon Badge', desc: '36px rounded-xl' },
+                    { label: 'Glassmorphism', desc: 'bg-white/95 + blur' },
+                    { label: 'Progress Bar', desc: '3px bottom bar' },
+                    { label: 'Auto Dismiss', desc: '3s default' },
+                  ].map(a => (
+                    <div key={a.label} className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-gradient-to-r from-primary to-primary-dark" />
+                      <div>
+                        <span className="font-bold text-slate-700">{a.label}</span>
+                        <span className="text-slate-400 ml-1.5">{a.desc}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 
             {/* Animation CSS Reference */}
             <div>
               <h3 className="text-sm font-bold text-slate-700 mb-4">Animation CSS</h3>
-              <div className="bg-slate-900 rounded-xl p-5 overflow-x-auto">
-                <pre className="text-xs text-slate-300 font-mono leading-relaxed whitespace-pre">{`@keyframes toast-slide-in {
+              <div className="bg-slate-900 rounded-2xl p-5 overflow-x-auto border border-slate-700/30">
+                <pre className="text-xs text-slate-300 font-mono leading-relaxed whitespace-pre"><span className="text-primary">/* Toast Animations */</span>{`
+@keyframes toast-slide-in {
   from { opacity: 0; transform: translateX(100%) scale(0.95); }
   to   { opacity: 1; transform: translateX(0) scale(1); }
 }
@@ -682,8 +778,12 @@ const DesignSystemView = () => {
   to   { opacity: 0; transform: translateX(100%) scale(0.95); }
 }
 
-.toast-enter { animation: toast-slide-in 0.35s cubic-bezier(0.21,1.02,0.73,1) forwards; }
-.toast-exit  { animation: toast-slide-out 0.25s ease-in forwards; }`}</pre>
+`}<span className="text-green-400">.toast-enter</span>{` { 
+  animation: toast-slide-in 0.35s cubic-bezier(0.21,1.02,0.73,1) forwards; 
+}
+`}<span className="text-red-400">.toast-exit</span>{`  { 
+  animation: toast-slide-out 0.25s ease-in forwards; 
+}`}</pre>
               </div>
             </div>
           </div>
