@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { useNavigate, useLocation, Routes, Route, Navigate } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import {
     Sparkles, Image as ImageIcon, Layout, Settings, Library,
@@ -16,6 +17,7 @@ import {
 import SignUpView from './SignUpView';
 import OnboardingView from './OnboardingView';
 import CanvasEditor from './CanvasEditor';
+import DesignSystemView from './DesignSystemView';
 
 // Renders children into document.body to guarantee full-viewport overlay
 const ModalPortal = ({ children }) => ReactDOM.createPortal(children, document.body);
@@ -3678,7 +3680,33 @@ const MobileHeader = ({ brandDNA, setBrandDNA, businesses, setCurrentView }) => 
 };
 
 function App() {
-    const [currentView, setCurrentView] = useState('dashboard');
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const VIEW_TO_PATH = {
+        'dashboard': '/buat_konten',
+        'results': '/results',
+        'editor': '/editor',
+        'library': '/library',
+        'foto-model': '/foto-model',
+        'video-editor': '/video-editor',
+        'profile': '/profile',
+        'signup': '/signup',
+        'onboarding': '/onboarding',
+        'generating': '/generating',
+        'design-system': '/design-system',
+    };
+
+    const PATH_TO_VIEW = Object.fromEntries(
+        Object.entries(VIEW_TO_PATH).map(([v, p]) => [p, v])
+    );
+
+    const currentView = PATH_TO_VIEW[location.pathname] || 'dashboard';
+
+    const setCurrentView = useCallback((view) => {
+        const path = VIEW_TO_PATH[view] || '/buat_konten';
+        navigate(path);
+    }, [navigate]);
     const [brandDNA, setBrandDNA] = useState(DEFAULT_BRAND_DNA);
     const [businesses, setBusinesses] = useState([DEFAULT_BRAND_DNA, SECONDARY_BRAND_DNA]);
     const [library, setLibrary] = useState(MOCK_LIBRARY);
@@ -3874,6 +3902,7 @@ function App() {
             }
             {showNav && <MobileNav currentView={currentView} setCurrentView={setCurrentView} />}
 
+            {location.pathname === '/' && <Navigate to="/buat_konten" replace />}
             <main className={`${showNav ? (isSidebarExpanded ? 'md:ml-72' : 'md:ml-24') : ''} p-4 md:p-8 min-h-screen transition-all duration-300`}>
                 {currentView === 'signup' && <SignUpView setCurrentView={setCurrentView} />}
                 {
@@ -3954,6 +3983,7 @@ function App() {
                         />
                     )
                 }
+                {currentView === 'design-system' && <DesignSystemView />}
             </main>
 
             {/* Full Screen Preview Modal */}
