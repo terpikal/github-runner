@@ -416,12 +416,12 @@ const DashboardView = ({
                     <h3 className="text-sm font-bold text-slate-800 mb-4 flex items-center gap-2" >
                         <Layout className="w-4 h-4 text-primary" /> Format Postingan
                     </h3>
-                    < div className="grid grid-cols-1 sm:grid-cols-2 gap-3" >
+                    < div className="grid grid-cols-2 gap-3" >
                         <button onClick={() => setPostType('single')} className={`w-full p-4 rounded-2xl border-2 flex items-center justify-between transition-all ${postType === 'single' ? 'border-primary bg-primary/10' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
                             <div className="flex items-center gap-3" >
                                 <div className={`p-2 rounded-xl ${postType === 'single' ? 'bg-primary/20 text-primary-dark' : 'bg-slate-100 text-slate-500'}`}> <ImageIcon className="w-5 h-5" /> </div>
                                 < div className="text-left" >
-                                    <p className={`font-semibold ${postType === 'single' ? 'text-primary-darker' : 'text-slate-700'}`}> Satu Gambar </p>
+                                    <p className={`font-semibold text-sm ${postType === 'single' ? 'text-primary-darker' : 'text-slate-700'}`}> Satu Gambar </p>
                                     < p className="text-xs text-slate-500 mt-0.5" > Feed standar </p>
                                 </div>
                             </div>
@@ -431,11 +431,31 @@ const DashboardView = ({
                             <div className="flex items-center gap-3" >
                                 <div className={`p-2 rounded-xl ${postType === 'carousel' ? 'bg-primary/20 text-primary-dark' : 'bg-slate-100 text-slate-500'}`}> <Layout className="w-5 h-5" /> </div>
                                 < div className="text-left" >
-                                    <p className={`font-semibold ${postType === 'carousel' ? 'text-primary-darker' : 'text-slate-700'}`}> Karosel </p>
-                                    < p className="text-xs text-slate-500 mt-0.5" > Konten geser multi - slide </p>
+                                    <p className={`font-semibold text-sm ${postType === 'carousel' ? 'text-primary-darker' : 'text-slate-700'}`}> Karosel </p>
+                                    < p className="text-xs text-slate-500 mt-0.5" > Multi-slide </p>
                                 </div>
                             </div>
                             < div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${postType === 'carousel' ? 'border-primary' : 'border-slate-300'}`}> {postType === 'carousel' && <div className="w-2.5 h-2.5 bg-primary rounded-full" />}</div>
+                        </button>
+                        < button onClick={() => setPostType('story')} className={`w-full p-4 rounded-2xl border-2 flex items-center justify-between transition-all ${postType === 'story' ? 'border-primary bg-primary/10' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
+                            <div className="flex items-center gap-3" >
+                                <div className={`p-2 rounded-xl ${postType === 'story' ? 'bg-primary/20 text-primary-dark' : 'bg-slate-100 text-slate-500'}`}> <Film className="w-5 h-5" /> </div>
+                                < div className="text-left" >
+                                    <p className={`font-semibold text-sm ${postType === 'story' ? 'text-primary-darker' : 'text-slate-700'}`}> Story </p>
+                                    < p className="text-xs text-slate-500 mt-0.5" > Format 9:16 </p>
+                                </div>
+                            </div>
+                            < div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${postType === 'story' ? 'border-primary' : 'border-slate-300'}`}> {postType === 'story' && <div className="w-2.5 h-2.5 bg-primary rounded-full" />}</div>
+                        </button>
+                        < button onClick={() => setPostType('thumbnail')} className={`w-full p-4 rounded-2xl border-2 flex items-center justify-between transition-all ${postType === 'thumbnail' ? 'border-primary bg-primary/10' : 'border-slate-100 hover:border-slate-200 bg-white'}`}>
+                            <div className="flex items-center gap-3" >
+                                <div className={`p-2 rounded-xl ${postType === 'thumbnail' ? 'bg-primary/20 text-primary-dark' : 'bg-slate-100 text-slate-500'}`}> <Video className="w-5 h-5" /> </div>
+                                < div className="text-left" >
+                                    <p className={`font-semibold text-sm ${postType === 'thumbnail' ? 'text-primary-darker' : 'text-slate-700'}`}> Thumbnail Reels </p>
+                                    < p className="text-xs text-slate-500 mt-0.5" > Cover video </p>
+                                </div>
+                            </div>
+                            < div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${postType === 'thumbnail' ? 'border-primary' : 'border-slate-300'}`}> {postType === 'thumbnail' && <div className="w-2.5 h-2.5 bg-primary rounded-full" />}</div>
                         </button>
                     </div>
                 </div>
