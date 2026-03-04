@@ -441,7 +441,7 @@ const DashboardView = ({
                 </div>
 
                 < div className="pt-4 sticky bottom-20 md:static z-20" >
-                    <button onClick={handleGenerate} disabled={!prompt.trim()} className="w-full bg-gradient-to-r from-[#13c8ec] to-[#0daecf] hover:from-[#0daecf] hover:to-[#098fae] disabled:opacity-60 text-white font-bold py-4 md:py-5 rounded-2xl transition-all shadow-[0_8px_20px_rgba(19,200,236,0.3)] disabled:shadow-none flex items-center justify-center gap-2 text-lg active:scale-[0.98]" >
+                    <button onClick={handleGenerate} disabled={!prompt.trim()} className="w-full bg-primary hover:bg-primary-dark disabled:opacity-60 text-white font-bold py-4 md:py-5 rounded-2xl transition-all shadow-primary disabled:shadow-none flex items-center justify-center gap-2 text-lg active:scale-[0.98]" >
                         <Sparkles className="w-6 h-6" /> Buat Desain Sekarang
                     </button>
                 </div>
