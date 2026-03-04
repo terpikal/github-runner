@@ -518,16 +518,25 @@ const DashboardView = ({
 };
 
 const GeneratingView = ({ brandDNA }) => (
-    <div className="flex flex-col items-center justify-center h-[70vh] animation-fade-in text-center px-4" >
-        <div className="relative w-24 h-24 mb-8" >
-            <div className="absolute inset-0 border-4 border-primary/30 rounded-full animate-pulse" > </div>
-            < div className="absolute inset-0 border-4 border-primary rounded-full border-t-transparent animate-spin" > </div>
-            < div className="absolute inset-0 flex items-center justify-center" >
-                <Sparkles className="w-8 h-8 text-primary animate-bounce" />
+    <div className="fixed inset-0 z-[180] flex flex-col items-center justify-center bg-slate-950/95 backdrop-blur-md animation-fade-in">
+        {/* Animated rings */}
+        <div className="relative flex items-center justify-center mb-10">
+            <div className="absolute w-48 h-48 rounded-full border-2 border-primary/10 animate-ping" style={{ animationDuration: '2s' }}></div>
+            <div className="absolute w-36 h-36 rounded-full border-2 border-primary/20 animate-ping" style={{ animationDuration: '1.5s', animationDelay: '0.3s' }}></div>
+            <div className="absolute w-24 h-24 rounded-full border-4 border-primary/30 animate-spin" style={{ animationDuration: '3s' }}></div>
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary-darker flex items-center justify-center shadow-[0_0_40px_rgba(19,200,236,0.5)]">
+                <img src={postibleLogo} alt="Postibel" className="w-11 h-11 animate-bounce" />
             </div>
         </div>
-        < h2 className="text-2xl font-bold text-slate-900 mb-2" > Merancang konten Anda...</h2>
-        < p className="text-slate-500 max-w-md" > Menerapkan Brand DNA dari {brandDNA.name}, menganalisa instruksi, dan meracik desain terbaik.</p>
+        {/* Text */}
+        <h2 className="text-2xl font-extrabold text-white mb-3 tracking-tight">AI sedang merancang konten...</h2>
+        <p className="text-slate-400 text-sm max-w-xs text-center leading-relaxed mb-8">
+            Menerapkan Brand DNA dari {brandDNA.name}, menganalisa instruksi, dan meracik desain terbaik.
+        </p>
+        {/* Progress bar */}
+        <div className="w-64 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+            <div className="h-full bg-gradient-to-r from-primary to-primary-darker rounded-full animate-pulse" style={{ width: '70%' }}></div>
+        </div>
     </div>
 );
 
