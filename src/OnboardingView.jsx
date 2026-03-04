@@ -3,7 +3,7 @@ import {
     Sparkles, ArrowRight, ArrowLeft, Check, CheckCircle2,
     Coffee, Utensils, ShoppingBag, Flower2, Briefcase,
     Palette, Type, Sliders, User, Image as ImageIcon, Upload, X, ChevronDown,
-    Heart, Home, Dumbbell, GraduationCap, Stethoscope, Car, Wrench, Laptop, PawPrint, Baby
+    Heart, Home, Dumbbell, GraduationCap, Stethoscope, Car, Wrench, Laptop, PawPrint, Baby, Globe
 } from 'lucide-react';
 
 const COLOR_SCHEMAS = [
@@ -532,6 +532,20 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                         </span>
                                     </div>
                                 )}
+                            </div>
+
+                            <div className="space-y-2">
+                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Website Bisnis <span className="text-slate-400 font-medium normal-case">(Opsional)</span></label>
+                                <div className="relative">
+                                    <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                    <input
+                                        type="url"
+                                        value={localBrand.website || ''}
+                                        onChange={e => setLocalBrand({ ...localBrand, website: e.target.value })}
+                                        placeholder="https://www.contoh.com"
+                                        className="w-full pl-10 pr-4 py-3.5 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/40 outline-none transition-all font-medium text-slate-800 placeholder-slate-400 text-sm"
+                                    />
+                                </div>
                             </div>
 
                             <div className="space-y-2">
