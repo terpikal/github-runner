@@ -152,22 +152,24 @@ const DesignSystemView = () => {
             <div>
               <h3 className="text-sm font-bold text-slate-700 mb-4">Primary</h3>
               <div className="flex flex-wrap gap-4 items-center">
-                <button
-                  className="py-3 px-8 bg-primary hover:bg-primary-dark text-white font-bold rounded-2xl transition-all shadow-primary flex items-center gap-2 text-[15px]"
-                >
-                  <Sparkles className="w-4 h-4" /> Primary Button
-                </button>
-                <button
-                  className="py-3 px-8 bg-primary text-white font-bold rounded-2xl shadow-primary flex items-center gap-2 text-[15px] opacity-50 cursor-not-allowed"
-                  disabled
-                >
-                  Disabled
-                </button>
-                <button
-                  className="py-2.5 px-6 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl transition-all shadow-primary text-sm"
-                >
-                  Small
-                </button>
+                <div className="flex flex-col items-center gap-1.5">
+                  <button className="py-3 px-8 bg-primary hover:bg-primary-dark text-white font-bold rounded-2xl transition-all shadow-primary flex items-center gap-2 text-[15px]">
+                    <Sparkles className="w-4 h-4" /> Primary Button
+                  </button>
+                  <code className="text-[10px] text-slate-400 font-mono">.btn-primary</code>
+                </div>
+                <div className="flex flex-col items-center gap-1.5">
+                  <button className="py-3 px-8 bg-primary text-white font-bold rounded-2xl shadow-primary flex items-center gap-2 text-[15px] opacity-50 cursor-not-allowed" disabled>
+                    Disabled
+                  </button>
+                  <code className="text-[10px] text-slate-400 font-mono">.btn-primary:disabled</code>
+                </div>
+                <div className="flex flex-col items-center gap-1.5">
+                  <button className="py-2.5 px-6 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl transition-all shadow-primary text-sm">
+                    Small
+                  </button>
+                  <code className="text-[10px] text-slate-400 font-mono">.btn-primary-sm</code>
+                </div>
               </div>
             </div>
 
@@ -175,12 +177,18 @@ const DesignSystemView = () => {
             <div>
               <h3 className="text-sm font-bold text-slate-700 mb-4">Secondary</h3>
               <div className="flex flex-wrap gap-4 items-center">
-                <button className="py-3 px-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition-colors text-[15px]">
-                  Secondary
-                </button>
-                <button className="py-3 px-8 bg-primary/10 hover:bg-primary/20 text-primary-darker font-bold rounded-2xl transition-colors text-[15px]">
-                  Tinted
-                </button>
+                <div className="flex flex-col items-center gap-1.5">
+                  <button className="py-3 px-8 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-2xl transition-colors text-[15px]">
+                    Secondary
+                  </button>
+                  <code className="text-[10px] text-slate-400 font-mono">.btn-secondary</code>
+                </div>
+                <div className="flex flex-col items-center gap-1.5">
+                  <button className="py-3 px-8 bg-primary/10 hover:bg-primary/20 text-primary-darker font-bold rounded-2xl transition-colors text-[15px]">
+                    Tinted
+                  </button>
+                  <code className="text-[10px] text-slate-400 font-mono">.btn-tinted</code>
+                </div>
               </div>
             </div>
 
@@ -188,12 +196,18 @@ const DesignSystemView = () => {
             <div>
               <h3 className="text-sm font-bold text-slate-700 mb-4">Outline & Ghost</h3>
               <div className="flex flex-wrap gap-4 items-center">
-                <button className="py-3 px-8 border-2 border-slate-200 hover:border-primary hover:text-primary-darker text-slate-600 font-bold rounded-2xl transition-all text-[15px]">
-                  Outline
-                </button>
-                <button className="py-3 px-8 text-primary-darker hover:bg-primary/5 font-bold rounded-2xl transition-colors text-[15px]">
-                  Ghost
-                </button>
+                <div className="flex flex-col items-center gap-1.5">
+                  <button className="py-3 px-8 border-2 border-slate-200 hover:border-primary hover:text-primary-darker text-slate-600 font-bold rounded-2xl transition-all text-[15px]">
+                    Outline
+                  </button>
+                  <code className="text-[10px] text-slate-400 font-mono">.btn-outline</code>
+                </div>
+                <div className="flex flex-col items-center gap-1.5">
+                  <button className="py-3 px-8 text-primary-darker hover:bg-primary/5 font-bold rounded-2xl transition-colors text-[15px]">
+                    Ghost
+                  </button>
+                  <code className="text-[10px] text-slate-400 font-mono">.btn-ghost</code>
+                </div>
               </div>
             </div>
 
@@ -201,9 +215,12 @@ const DesignSystemView = () => {
             <div>
               <h3 className="text-sm font-bold text-slate-700 mb-4">Destructive</h3>
               <div className="flex flex-wrap gap-4 items-center">
-                <button className="py-3 px-8 bg-red-500 hover:bg-red-600 text-white font-bold rounded-2xl transition-colors shadow-sm shadow-red-500/30 text-[15px]">
-                  <Trash2 className="w-4 h-4 inline mr-2" /> Delete
-                </button>
+                <div className="flex flex-col items-center gap-1.5">
+                  <button className="py-3 px-8 bg-red-500 hover:bg-red-600 text-white font-bold rounded-2xl transition-colors shadow-sm shadow-red-500/30 text-[15px]">
+                    <Trash2 className="w-4 h-4 inline mr-2" /> Delete
+                  </button>
+                  <code className="text-[10px] text-slate-400 font-mono">.btn-destructive</code>
+                </div>
               </div>
             </div>
 
@@ -211,10 +228,22 @@ const DesignSystemView = () => {
             <div>
               <h3 className="text-sm font-bold text-slate-700 mb-4">Icon Buttons</h3>
               <div className="flex flex-wrap gap-3 items-center">
-                {[Plus, Search, Filter, Download, Upload, Edit3, Settings, Bell].map((Icon, i) => (
-                  <button key={i} className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-primary-darker transition-all border border-slate-100">
-                    <Icon className="w-5 h-5" />
-                  </button>
+                {[
+                  { Icon: Plus, name: 'icon-add' },
+                  { Icon: Search, name: 'icon-search' },
+                  { Icon: Filter, name: 'icon-filter' },
+                  { Icon: Download, name: 'icon-download' },
+                  { Icon: Upload, name: 'icon-upload' },
+                  { Icon: Edit3, name: 'icon-edit' },
+                  { Icon: Settings, name: 'icon-settings' },
+                  { Icon: Bell, name: 'icon-bell' },
+                ].map(({ Icon, name }) => (
+                  <div key={name} className="flex flex-col items-center gap-1.5">
+                    <button className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-primary-darker transition-all border border-slate-100">
+                      <Icon className="w-5 h-5" />
+                    </button>
+                    <code className="text-[10px] text-slate-400 font-mono">.{name}</code>
+                  </div>
                 ))}
               </div>
             </div>
