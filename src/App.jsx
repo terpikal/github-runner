@@ -1300,7 +1300,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                 <div className="flex flex-col xl:flex-row xl:items-start justify-between gap-6 mb-8" >
                     <div className="flex items-center gap-3 mb-2">
                         <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-                            Konten Post & Planner <span className="px-3 py-1 bg-primary/10 text-primary-darker border border-primary/20 text-[10px] font-black uppercase tracking-widest rounded-full">PRO</span>
+                            Konten Post & Planner <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary-darker border border-primary/20">PRO</span>
                         </h1>
                         <div className="group relative flex items-center justify-center">
                             <HelpCircle className="w-5 h-5 text-slate-400 cursor-help hover:text-primary transition-colors" />
@@ -2817,7 +2817,7 @@ const ModelsView = () => {
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10" >
                 <div className="flex items-center gap-3 mb-2">
                     <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-                        Database Model <span className="px-3 py-1 bg-primary/10 text-primary-darker border border-primary/20 text-[10px] font-black uppercase tracking-widest rounded-full">PRO</span>
+                        Database Model <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary-darker border border-primary/20">PRO</span>
                     </h1>
                     <div className="group relative flex items-center justify-center">
                         <HelpCircle className="w-5 h-5 text-slate-400 cursor-help hover:text-primary transition-colors" />
@@ -2959,7 +2959,7 @@ const VideoEditorView = ({ handleSaveToLibrary }) => {
             <div className="mb-8">
                 <div className="flex items-center gap-3 mb-2">
                     <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-                        Auto-Edit Video <span className="px-3 py-1 bg-primary/10 text-primary-darker border border-primary/20 text-[10px] font-black uppercase tracking-widest rounded-full">PRO</span>
+                        Auto-Edit Video <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary-darker border border-primary/20">PRO</span>
                     </h1>
                     <div className="group relative flex items-center justify-center">
                         <HelpCircle className="w-5 h-5 text-slate-400 cursor-help hover:text-primary transition-colors" />
