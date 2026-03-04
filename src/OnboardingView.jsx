@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
     Sparkles, ArrowRight, ArrowLeft, Check, CheckCircle2,
     Coffee, Utensils, ShoppingBag, Flower2, Briefcase,
-    Palette, Type, Sliders, User, Image as ImageIcon, Upload, X
+    Palette, Type, Sliders, User, Image as ImageIcon, Upload, X, ChevronDown
 } from 'lucide-react';
 
 const COLOR_SCHEMAS = [
@@ -266,6 +266,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
     const [isSaving, setIsSaving] = useState(false);
     const [productSearch, setProductSearch] = useState('');
     const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false);
+    const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
 
     const handleNext = () => {
         if (step < STEPS.length) setStep(step + 1);
