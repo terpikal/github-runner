@@ -663,41 +663,158 @@ const EditorView = ({ editingPost, setCurrentView, handleSaveToLibrary, brandDNA
                 </ModalPortal>
             )}
 
-            <div className="max-w-5xl mx-auto animation-fade-in pb-20 md:pb-0 h-[calc(100vh-6rem)] md:h-auto overflow-y-auto" >
-                <div className="flex items-center justify-between mb-6 px-4 md:px-0" >
-                    <button onClick={() => setCurrentView('library')} className="flex items-center gap-2 text-slate-500 hover:text-slate-800" > <ChevronLeft className="w-5 h-5" /> Kembali </button>
-                    <div className="flex items-center gap-3">
-                        <button onClick={() => alert('Fitur posting langsung ke Instagram sedang dalam pengembangan.')} className="px-5 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl font-medium flex items-center gap-2 transition-colors"> <Send className="w-4 h-4" /> Posting Sekarang </button>
-                        <button onClick={() => setIsScheduleModalOpen(true)} className="px-5 py-2.5 bg-white hover:bg-primary/5 border border-primary text-primary rounded-xl font-medium flex items-center gap-2 transition-colors"> <Calendar className="w-4 h-4" /> Jadwalkan </button>
-                        <button onClick={() => handleSaveToLibrary(localPost)} className="px-5 py-2.5 bg-primary hover:bg-primary-dark text-white rounded-xl font-medium transition-colors" > Simpan Pustaka </button>
+            <div className="max-w-5xl mx-auto animation-fade-in pb-20 md:pb-0 h-[calc(100vh-6rem)] md:h-auto overflow-y-auto">
+                {/* ── Playful Header ── */}
+                <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 px-4 md:px-0 gap-4">
+                    <div className="flex items-center gap-4">
+                        <button onClick={() => setCurrentView('library')} className="p-3 rounded-xl bg-white hover:bg-slate-50 text-slate-500 hover:text-slate-800 transition-all border border-slate-100 shadow-sm">
+                            <ChevronLeft className="w-5 h-5" />
+                        </button>
+                        <div>
+                            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary-darker text-xs font-bold mb-1">
+                                <Edit3 className="w-3 h-3" /> Editor Studio
+                            </div>
+                            <h1 className="text-2xl font-black text-slate-900 tracking-tight">Edit Konten ✨</h1>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                        <button onClick={() => alert('Fitur posting langsung ke Instagram sedang dalam pengembangan.')} className="px-4 py-2.5 bg-slate-800 hover:bg-slate-900 text-white rounded-xl font-bold flex items-center gap-2 transition-all text-sm shadow-sm hover:shadow-md">
+                            <Send className="w-3.5 h-3.5" /> Posting
+                        </button>
+                        <button onClick={() => setIsScheduleModalOpen(true)} className="px-4 py-2.5 bg-white hover:bg-primary/5 border-2 border-primary/30 hover:border-primary text-primary-darker rounded-xl font-bold flex items-center gap-2 transition-all text-sm">
+                            <Calendar className="w-3.5 h-3.5" /> Jadwalkan
+                        </button>
+                        <button onClick={() => handleSaveToLibrary(localPost)} className="px-4 py-2.5 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary-darker text-white rounded-xl font-bold transition-all text-sm shadow-primary-sm hover:shadow-primary-lg flex items-center gap-2">
+                            <Download className="w-3.5 h-3.5" /> Simpan
+                        </button>
                     </div>
                 </div>
-                <div className="flex flex-col lg:flex-row gap-8 px-4 md:px-0 pb-10" >
-                    <div className="w-full lg:w-1/2 flex flex-col items-center" >
-                        <CanvasEditor post={localPost} brand={brandDNA} slideOverride={activeSlideIdx} />
+
+                {/* ── Main Content ── */}
+                <div className="flex flex-col lg:flex-row gap-6 px-4 md:px-0 pb-10">
+
+                    {/* Left: Canvas Preview */}
+                    <div className="w-full lg:w-[55%] flex flex-col items-center">
+                        <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-5 w-full">
+                            <div className="flex items-center justify-between mb-4">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center">
+                                        <Layers className="w-4 h-4 text-primary-darker" />
+                                    </div>
+                                    <span className="text-sm font-bold text-slate-700">Pratinjau Desain</span>
+                                </div>
+                                {localPost.goal && (
+                                    <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold border ${localPost.goal.color}`}>
+                                        {localPost.goal.name}
+                                    </span>
+                                )}
+                            </div>
+                            <CanvasEditor post={localPost} brand={brandDNA} slideOverride={activeSlideIdx} />
+                        </div>
+
+                        {/* Carousel Slide Selector */}
                         {isCarousel && localPost.slides && (
-                            <div className="mt-4 flex gap-2" >
-                                {
-                                    localPost.slides.map((_, i) => (
-                                        <button key={i} onClick={() => setActiveSlideIdx(i)} className={`px-4 py-2 rounded-lg text-sm font-bold ${activeSlideIdx === i ? 'bg-primary text-white' : 'bg-slate-200 text-slate-600'}`}> Slide {i + 1} </button>
-                                    ))}
+                            <div className="mt-4 flex items-center gap-2 bg-white rounded-2xl border border-slate-100 p-2 shadow-sm">
+                                {localPost.slides.map((slide, i) => (
+                                    <button
+                                        key={i}
+                                        onClick={() => setActiveSlideIdx(i)}
+                                        className={`relative px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                                            activeSlideIdx === i
+                                                ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-primary-sm'
+                                                : 'bg-slate-50 text-slate-500 hover:bg-slate-100 hover:text-slate-700'
+                                        }`}
+                                    >
+                                        {activeSlideIdx === i && <span className="absolute -top-1 -right-1 w-3 h-3 bg-white border-2 border-primary rounded-full" />}
+                                        Slide {i + 1}
+                                    </button>
+                                ))}
                             </div>
                         )}
                     </div>
-                    <div className="w-full lg:w-1/2 bg-white rounded-3xl border border-slate-100 shadow-sm p-6 space-y-6" >
-                        <h3 className="font-bold text-slate-800 flex items-center gap-2" > <Edit3 className="w-4 h-4 text-primary" /> Edit Konten {isCarousel ? `(Slide ${activeSlideIdx + 1})` : ''} </h3>
-                        <div className="space-y-4" >
-                            <div className="space-y-2" >
-                                <label className="text-sm font-bold text-slate-700" > Headline </label>
-                                <input type="text" value={currentSlide.headline || ''} onChange={(e) => updateSlideContent('headline', e.target.value)} className="w-full p-3 rounded-xl border border-slate-100 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-primary/10 outline-none" />
+
+                    {/* Right: Edit Panel */}
+                    <div className="w-full lg:w-[45%] space-y-4">
+                        {/* Content Editor Card */}
+                        <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden">
+                            <div className="p-5 pb-4 border-b border-slate-100/80 flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center">
+                                    <Type className="w-4 h-4 text-primary-darker" />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-slate-800 text-sm">Edit Teks {isCarousel ? `· Slide ${activeSlideIdx + 1}` : ''}</h3>
+                                    <p className="text-xs text-slate-400">Ubah headline, body, dan caption</p>
+                                </div>
                             </div>
-                            <div className="space-y-2" >
-                                <label className="text-sm font-bold text-slate-700" > Sub - headline </label>
-                                <input type="text" value={currentSlide.body || ''} onChange={(e) => updateSlideContent('body', e.target.value)} className="w-full p-3 rounded-xl border border-slate-100 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-primary/10 outline-none" />
+                            <div className="p-5 space-y-4">
+                                <div className="space-y-1.5">
+                                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Headline</label>
+                                    <input
+                                        type="text"
+                                        value={currentSlide.headline || ''}
+                                        onChange={(e) => updateSlideContent('headline', e.target.value)}
+                                        className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all text-sm text-slate-800 font-semibold placeholder-slate-400"
+                                        placeholder="Tulis headline yang menarik..."
+                                    />
+                                </div>
+                                <div className="space-y-1.5">
+                                    <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Sub-headline</label>
+                                    <input
+                                        type="text"
+                                        value={currentSlide.body || ''}
+                                        onChange={(e) => updateSlideContent('body', e.target.value)}
+                                        className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
+                                        placeholder="Tambahkan sub-headline..."
+                                    />
+                                </div>
                             </div>
-                            <div className="space-y-2" >
-                                <label className="text-sm font-bold text-slate-700" > Caption Postingan </label>
-                                <textarea rows="4" value={localPost.caption || ''} onChange={(e) => setLocalPost({ ...localPost, caption: e.target.value })} className="w-full p-3 rounded-xl border border-slate-100 bg-slate-50 focus:bg-white resize-none text-sm outline-none" />
+                        </div>
+
+                        {/* Caption Card */}
+                        <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden">
+                            <div className="p-5 pb-4 border-b border-slate-100/80 flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-pink-500/15 to-pink-500/5 flex items-center justify-center">
+                                    <MessageSquare className="w-4 h-4 text-pink-600" />
+                                </div>
+                                <div>
+                                    <h3 className="font-bold text-slate-800 text-sm">Caption</h3>
+                                    <p className="text-xs text-slate-400">Teks yang muncul di bawah postingan</p>
+                                </div>
+                            </div>
+                            <div className="p-5">
+                                <textarea
+                                    rows="5"
+                                    value={localPost.caption || ''}
+                                    onChange={(e) => setLocalPost({ ...localPost, caption: e.target.value })}
+                                    className="w-full p-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 resize-none text-sm outline-none transition-all text-slate-800 placeholder-slate-400 leading-relaxed"
+                                    placeholder="Tulis caption yang engaging..."
+                                />
+                                <div className="flex items-center justify-between mt-3">
+                                    <span className="text-[11px] text-slate-400">{(localPost.caption || '').length} karakter</span>
+                                    <button
+                                        onClick={() => {
+                                            if (localPost.caption) {
+                                                navigator.clipboard.writeText(localPost.caption);
+                                            }
+                                        }}
+                                        className="text-[11px] font-bold text-primary-darker hover:text-primary transition-colors flex items-center gap-1"
+                                    >
+                                        <Copy className="w-3 h-3" /> Salin
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Quick Tips Card */}
+                        <div className="bg-gradient-to-br from-primary/5 to-primary-dark/5 rounded-[2rem] border border-primary/10 p-5">
+                            <div className="flex items-start gap-3">
+                                <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                    <Lightbulb className="w-4 h-4 text-primary-darker" />
+                                </div>
+                                <div>
+                                    <h4 className="text-sm font-bold text-slate-700 mb-1">Tips 💡</h4>
+                                    <p className="text-xs text-slate-500 leading-relaxed">Gunakan emoji di headline untuk menarik perhatian. Caption yang panjang 150-300 karakter biasanya mendapatkan engagement terbaik.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
