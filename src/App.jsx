@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import SignUpView from './SignUpView';
 import OnboardingView from './OnboardingView';
+import CanvasEditor from './CanvasEditor';
 
 // Renders children into document.body to guarantee full-viewport overlay
 const ModalPortal = ({ children }) => ReactDOM.createPortal(children, document.body);
@@ -641,7 +642,7 @@ const EditorView = ({ editingPost, setCurrentView, handleSaveToLibrary, brandDNA
                 </div>
                 <div className="flex flex-col lg:flex-row gap-8 px-4 md:px-0 pb-10" >
                     <div className="w-full lg:w-1/2 flex flex-col items-center" >
-                        <InstagramPostMock post={localPost} brand={brandDNA} slideOverride={activeSlideIdx} onSlideChange={setActiveSlideIdx} />
+                        <CanvasEditor post={localPost} brand={brandDNA} slideOverride={activeSlideIdx} />
                         {isCarousel && localPost.slides && (
                             <div className="mt-4 flex gap-2" >
                                 {
