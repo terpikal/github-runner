@@ -962,6 +962,9 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
 
 
     const [isGenerateModalOpen, setIsGenerateModalOpen] = useState(false);
+    const [selectedGoals, setSelectedGoals] = useState(['sales', 'engagement']);
+    const goalDefaults = { sales: 12, entertain: 9, education: 6, branding: 5 };
+    const [contentDistribution, setContentDistribution] = useState({ ...goalDefaults });
     const [isConnectWarningOpen, setIsConnectWarningOpen] = useState(false);
     const [isAILoading, setIsAILoading] = useState(false);        // dramatic loading overlay
     const [generatedPreviewPosts, setGeneratedPreviewPosts] = useState(null); // { planMonth, weeks }
@@ -2088,24 +2091,51 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                         <div className="space-y-3">
                                             <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">1. Tujuan Bulan ini (Pilih lebih dari satu)</label>
                                             <div className="grid grid-cols-2 gap-3">
-                                                <label className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-primary transition-all">
-                                                    <input type="checkbox" className="accent-[#13c8ec] w-4 h-4 rounded text-primary focus:ring-primary" defaultChecked />
-                                                    <span className="text-sm font-semibold text-slate-700">🔥 Jualan lebih banyak</span>
-                                                </label>
-                                                <label className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-primary transition-all">
-                                                    <input type="checkbox" className="accent-[#13c8ec] w-4 h-4 rounded text-primary focus:ring-primary" />
-                                                    <span className="text-sm font-semibold text-slate-700">📈 Naikkan followers</span>
-                                                </label>
-                                                <label className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-primary transition-all">
-                                                    <input type="checkbox" className="accent-[#13c8ec] w-4 h-4 rounded text-primary focus:ring-primary" defaultChecked />
-                                                    <span className="text-sm font-semibold text-slate-700">❤️ Tingkatkan engagement</span>
-                                                </label>
-                                                <label className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-primary transition-all">
-                                                    <input type="checkbox" className="accent-[#13c8ec] w-4 h-4 rounded text-primary focus:ring-primary" />
-                                                    <span className="text-sm font-semibold text-slate-700">🏷 Bangun branding</span>
-                                                </label>
+                                                {[
+                                                    { key: 'sales', emoji: '🔥', label: 'Jualan lebih banyak' },
+                                                    { key: 'growth', emoji: '📈', label: 'Naikkan followers' },
+                                                    { key: 'engagement', emoji: '❤️', label: 'Tingkatkan engagement' },
+                                                    { key: 'branding', emoji: '🏷', label: 'Bangun branding' },
+                                                ].map(g => (
+                                                    <label key={g.key} className={`flex items-center gap-3 p-3 bg-white border rounded-xl cursor-pointer transition-all ${selectedGoals.includes(g.key) ? 'border-primary shadow-sm' : 'border-slate-200 hover:border-primary'}`}>
+                                                        <input type="checkbox" className="accent-[#13c8ec] w-4 h-4 rounded text-primary focus:ring-primary"
+                                                            checked={selectedGoals.includes(g.key)}
+                                                            onChange={() => {
+                                                                setSelectedGoals(prev => prev.includes(g.key) ? prev.filter(x => x !== g.key) : [...prev, g.key]);
+                                                            }}
+                                                        />
+                                                        <span className="text-sm font-semibold text-slate-700">{g.emoji} {g.label}</span>
+                                                    </label>
+                                                ))}
                                             </div>
                                         </div>
+
+                                        {selectedGoals.length > 0 && (
+                                            <div className="space-y-3">
+                                                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Jumlah Konten per Bulan (berdasarkan goals)</label>
+                                                <div className="grid grid-cols-2 gap-3">
+                                                    {selectedGoals.map(key => {
+                                                        const info = { sales: { emoji: '🔥', label: 'Sales' }, growth: { emoji: '📈', label: 'Growth' }, engagement: { emoji: '❤️', label: 'Engagement' }, branding: { emoji: '🏷', label: 'Branding' } }[key];
+                                                        return (
+                                                            <div key={key} className="flex items-center gap-3 p-3 bg-white border border-slate-200 rounded-xl">
+                                                                <span className="text-lg">{info.emoji}</span>
+                                                                <div className="flex-1">
+                                                                    <span className="text-xs font-semibold text-slate-500">{info.label}</span>
+                                                                </div>
+                                                                <input
+                                                                    type="number"
+                                                                    min={0}
+                                                                    value={contentDistribution[key] || 0}
+                                                                    onChange={e => setContentDistribution(prev => ({ ...prev, [key]: parseInt(e.target.value) || 0 }))}
+                                                                    className="w-14 text-center p-1.5 rounded-lg border border-slate-200 text-sm font-bold text-slate-700 focus:border-primary/50 focus:ring-2 focus:ring-primary/10 outline-none"
+                                                                />
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
+                                                <p className="text-xs text-slate-400 text-right">Total: <span className="font-bold text-slate-600">{selectedGoals.reduce((sum, k) => sum + (contentDistribution[k] || 0), 0)} konten</span></p>
+                                            </div>
+                                        )}
 
                                         <div className="space-y-3">
                                             <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">2. Intensitas Posting</label>
