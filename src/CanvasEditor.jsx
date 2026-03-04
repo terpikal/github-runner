@@ -212,6 +212,7 @@ const DraggableElement = ({ element, isSelected, onSelect, onUpdate, canvasRect,
             }}
             onMouseDown={handleMouseDown}
             onTouchStart={handleTouchStart}
+            onClick={(e) => e.stopPropagation()}
         >
             {renderContent()}
 
