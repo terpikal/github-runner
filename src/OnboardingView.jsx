@@ -398,7 +398,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                     placeholder="Contoh: Kopi Nusantara, Gaya Fashion, dll."
                                     className="w-full pl-4 pr-4 py-3.5 rounded-2xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/40 outline-none transition-all font-medium text-slate-800 placeholder-slate-400 text-sm"
                                 />
-                                {localBrand.name && (
+                                {false && localBrand.name && (
                                     <div className="px-4 py-2 bg-primary/5 rounded-xl border border-primary/20 animation-fade-in flex items-center gap-2">
                                         <span className="text-xs text-slate-500">Instagram:</span>
                                         <span className="font-black text-primary text-sm">@{localBrand.name.toLowerCase().replace(/\s+/g, '_')}</span>
