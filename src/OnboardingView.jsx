@@ -811,7 +811,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
 
                                 <button
                                     onClick={() => setShowTemplateModal(true)}
-                                    className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-primary/10 to-cyan-100/40 text-primary-darker text-sm font-black rounded-2xl border-2 border-primary/20 hover:border-primary/40 hover:shadow-md transition-all active:scale-[0.98]"
+                                    className="w-full flex items-center justify-center gap-2 py-3 px-8 bg-primary/10 hover:bg-primary/20 text-primary-darker font-bold rounded-2xl transition-colors text-[15px]"
                                 >
                                     <Sparkles className="w-4 h-4" />
                                     Generate Template Desain
