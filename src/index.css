@@ -89,3 +89,15 @@ body {
 .shadow-primary { box-shadow: 0 8px 20px rgba(19, 200, 236, 0.3) !important; }
 .shadow-primary-sm { box-shadow: 0 4px 14px rgba(19, 200, 236, 0.35) !important; }
 .shadow-primary-lg { box-shadow: 0 6px 18px rgba(19, 200, 236, 0.45) !important; }
+
+/* ── Toast animations ── */
+@keyframes toast-slide-in {
+  from { opacity: 0; transform: translateX(100%) scale(0.95); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes toast-slide-out {
+  from { opacity: 1; transform: translateX(0) scale(1); }
+  to   { opacity: 0; transform: translateX(100%) scale(0.95); }
+}
+.toast-enter { animation: toast-slide-in 0.35s cubic-bezier(0.21, 1.02, 0.73, 1) forwards; }
+.toast-exit  { animation: toast-slide-out 0.25s ease-in forwards; }

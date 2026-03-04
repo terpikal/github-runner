@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ArrowLeft, Copy, Check, Sparkles, Mail, Lock, Eye, EyeOff, User, Search, Plus, Download, Trash2, Edit3, ChevronRight, Heart, Star, Bell, Settings, Filter, Upload, X, ChevronDown, Layout, CalendarDays } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ArrowLeft, Copy, Check, Sparkles, Mail, Lock, Eye, EyeOff, User, Search, Plus, Download, Trash2, Edit3, ChevronRight, Heart, Star, Bell, Settings, Filter, Upload, X, ChevronDown, Layout, CalendarDays, CheckCircle, AlertTriangle, Info, XCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const COLORS = [
@@ -40,6 +40,65 @@ const Section = ({ title, children }) => (
     {children}
   </section>
 );
+
+const TOAST_CONFIG = {
+  success: { icon: <CheckCircle className="w-5 h-5 text-green-500" />, title: 'Berhasil!', msg: 'Konten berhasil disimpan.', border: 'border-green-200', bg: 'bg-green-50' },
+  error: { icon: <XCircle className="w-5 h-5 text-red-500" />, title: 'Gagal!', msg: 'Terjadi kesalahan saat menyimpan.', border: 'border-red-200', bg: 'bg-red-50' },
+  warning: { icon: <AlertTriangle className="w-5 h-5 text-amber-500" />, title: 'Perhatian', msg: 'Kuota hampir habis.', border: 'border-amber-200', bg: 'bg-amber-50' },
+  info: { icon: <Info className="w-5 h-5 text-primary" />, title: 'Info', msg: 'Fitur baru telah tersedia.', border: 'border-sky-200', bg: 'bg-sky-50' },
+};
+
+const ToastTrigger = ({ type, label }) => {
+  const [toasts, setToasts] = useState([]);
+
+  const showToast = () => {
+    const id = Date.now();
+    setToasts(prev => [...prev, { id, exiting: false }]);
+    setTimeout(() => {
+      setToasts(prev => prev.map(t => t.id === id ? { ...t, exiting: true } : t));
+      setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 300);
+    }, 3000);
+  };
+
+  const dismiss = (id) => {
+    setToasts(prev => prev.map(t => t.id === id ? { ...t, exiting: true } : t));
+    setTimeout(() => setToasts(prev => prev.filter(t => t.id !== id)), 300);
+  };
+
+  const cfg = TOAST_CONFIG[type];
+  const btnColors = {
+    success: 'bg-green-500 hover:bg-green-600',
+    error: 'bg-red-500 hover:bg-red-600',
+    warning: 'bg-amber-500 hover:bg-amber-600',
+    info: 'bg-primary hover:bg-primary-dark',
+  };
+
+  return (
+    <>
+      <button onClick={showToast} className={`px-5 py-2.5 ${btnColors[type]} text-white font-bold rounded-xl text-sm transition-colors`}>
+        {label}
+      </button>
+      {/* Toast portal */}
+      <div className="fixed top-6 right-6 z-[9999] flex flex-col gap-3 pointer-events-none">
+        {toasts.map(t => (
+          <div
+            key={t.id}
+            className={`pointer-events-auto flex items-start gap-3 p-4 rounded-2xl border ${cfg.border} ${cfg.bg} shadow-lg backdrop-blur-sm min-w-[300px] max-w-[400px] ${t.exiting ? 'toast-exit' : 'toast-enter'}`}
+          >
+            {cfg.icon}
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-bold text-slate-800">{cfg.title}</p>
+              <p className="text-xs text-slate-500 mt-0.5">{cfg.msg}</p>
+            </div>
+            <button onClick={() => dismiss(t.id)} className="p-1 rounded-lg hover:bg-white/60 transition-colors shrink-0">
+              <X className="w-3.5 h-3.5 text-slate-400" />
+            </button>
+          </div>
+        ))}
+      </div>
+    </>
+  );
+};
 
 const DesignSystemView = () => {
   const navigate = useNavigate();
@@ -565,6 +624,67 @@ const DesignSystemView = () => {
                   <span className="text-[10px] text-slate-400 font-mono">{s * 4}px</span>
                 </div>
               ))}
+            </div>
+          </div>
+        </Section>
+
+        {/* ── TOAST ── */}
+        <Section title="Toast / Notification">
+          <div className="bg-white rounded-2xl border border-slate-100 p-8 shadow-sm space-y-8">
+            {/* Toast Variants Preview */}
+            <div>
+              <h3 className="text-sm font-bold text-slate-700 mb-4">Variants</h3>
+              <div className="space-y-3 max-w-md">
+                {[
+                  { type: 'success', icon: <CheckCircle className="w-5 h-5 text-green-500 shrink-0" />, title: 'Berhasil!', msg: 'Konten berhasil disimpan.', border: 'border-green-200', bg: 'bg-green-50' },
+                  { type: 'error', icon: <XCircle className="w-5 h-5 text-red-500 shrink-0" />, title: 'Gagal!', msg: 'Terjadi kesalahan saat menyimpan.', border: 'border-red-200', bg: 'bg-red-50' },
+                  { type: 'warning', icon: <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0" />, title: 'Perhatian', msg: 'Kuota hampir habis.', border: 'border-amber-200', bg: 'bg-amber-50' },
+                  { type: 'info', icon: <Info className="w-5 h-5 text-primary shrink-0" />, title: 'Info', msg: 'Fitur baru telah tersedia.', border: 'border-sky-200', bg: 'bg-sky-50' },
+                ].map(t => (
+                  <div key={t.type} className="flex flex-col items-start gap-1.5">
+                    <div className={`w-full flex items-start gap-3 p-4 rounded-2xl border ${t.border} ${t.bg} shadow-sm`}>
+                      {t.icon}
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-bold text-slate-800">{t.title}</p>
+                        <p className="text-xs text-slate-500 mt-0.5">{t.msg}</p>
+                      </div>
+                      <button className="p-1 rounded-lg hover:bg-white/60 transition-colors shrink-0">
+                        <X className="w-3.5 h-3.5 text-slate-400" />
+                      </button>
+                    </div>
+                    <code className="text-[10px] text-slate-400 font-mono">.toast-{t.type}</code>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Interactive Demo */}
+            <div>
+              <h3 className="text-sm font-bold text-slate-700 mb-4">Interactive Demo</h3>
+              <div className="flex flex-wrap gap-3">
+                <ToastTrigger type="success" label="Success Toast" />
+                <ToastTrigger type="error" label="Error Toast" />
+                <ToastTrigger type="warning" label="Warning Toast" />
+                <ToastTrigger type="info" label="Info Toast" />
+              </div>
+            </div>
+
+            {/* Animation CSS Reference */}
+            <div>
+              <h3 className="text-sm font-bold text-slate-700 mb-4">Animation CSS</h3>
+              <div className="bg-slate-900 rounded-xl p-5 overflow-x-auto">
+                <pre className="text-xs text-slate-300 font-mono leading-relaxed whitespace-pre">{`@keyframes toast-slide-in {
+  from { opacity: 0; transform: translateX(100%) scale(0.95); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes toast-slide-out {
+  from { opacity: 1; transform: translateX(0) scale(1); }
+  to   { opacity: 0; transform: translateX(100%) scale(0.95); }
+}
+
+.toast-enter { animation: toast-slide-in 0.35s cubic-bezier(0.21,1.02,0.73,1) forwards; }
+.toast-exit  { animation: toast-slide-out 0.25s ease-in forwards; }`}</pre>
+              </div>
             </div>
           </div>
         </Section>
