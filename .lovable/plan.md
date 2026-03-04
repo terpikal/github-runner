@@ -1,21 +1,40 @@
+## Plan: Implementasi React Router
+
+### Perubahan
+
+**1. `src/main.jsx**` — Hapus route `/design-system` yang terpisah, biarkan semua routing di dalam `App`.
+
+**2. `src/App.jsx**` — Import `useNavigate`, `useLocation`, `Routes`, `Route` dari `react-router-dom`. Ganti `currentView` state dengan `useLocation().pathname` untuk mendeteksi halaman aktif. Ganti semua `setCurrentView('xxx')` dengan `navigate('/xxx')`.
+
+### Route Mapping
 
 
-# Get Your Postible App Running
+| Halaman                    | Path             |
+| -------------------------- | ---------------- |
+| Buat Konten (Dashboard)    | `/buat_konten`   |
+| Hasil Generate             | `/results`       |
+| Edit Konten                | `/editor`        |
+| Konten Post (Bank/Planner) | `/library`       |
+| Foto Model                 | `/foto-model`    |
+| Edit Video                 | `/video-editor`  |
+| Profil                     | `/profile`       |
+| Signup                     | `/signup`        |
+| Onboarding                 | `/onboarding`    |
+| Generating (loading)       | `/generating`    |
+| Design System              | `/design-system` |
 
-## Problem
-Your code from `terpikal/github-runner` is fully synced. The app shows a blank page because the Vite build cache is stale — the browser is trying to load dependency files that no longer exist at their cached paths (404 on `react.js` and `react-dom_client.js`).
 
-## Solution
-Make a single trivial edit to trigger a clean rebuild. No code logic changes needed.
+### Implementasi Detail
 
-### Step 1: Touch `src/main.jsx` to trigger rebuild
-Add a harmless comment to `src/main.jsx` (e.g., `// Postible App`). This forces Vite to regenerate the dependency cache with correct file hashes.
+- Buat wrapper `navigate` function yang menggantikan semua `setCurrentView` calls (~226 occurrences)
+- Setiap view component tetap sama, hanya cara navigasi yang berubah
+- `currentView` dihitung dari `location.pathname` (e.g., `/library` → `'library'`, `/` → `'dashboard'`)
+- Sidebar, MobileNav, MobileHeader: `setCurrentView` diganti `navigate`
+- State global (editingPost, generatedResults, dll) tetap di level App
+- Rendering view: ganti conditional `{currentView === 'xxx' && ...}` dengan `<Routes><Route>` pattern
 
-### Step 2: Verify the app loads
-Confirm the SignUpView (login/register screen) renders with:
-- Logo, form fields, submit button
-- "Lihat demo tanpa daftar" demo link
-- Toggle between login and register modes
+### Yang Tidak Berubah
 
-That's it. Your entire Postible app (SignUp, Onboarding wizard, Dashboard with AI content generation, Brand DNA, Instagram previews, Content Library) is already in the codebase and will work once the build succeeds.
-
+- Semua komponen view tetap identik secara visual dan fungsional
+- State management tetap sama
+- Design system tidak terpengaruh
