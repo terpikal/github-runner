@@ -417,7 +417,7 @@ const DashboardView = ({
                 </div>
 
                 {showModelPicker && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm animation-fade-in" onClick={() => { setShowModelPicker(false); setSelectedModelId(null); }}>
+                    <ModalPortal><div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/40 backdrop-blur-sm animation-fade-in" onClick={() => { setShowModelPicker(false); setSelectedModelId(null); }}>
                         <div className="bg-white rounded-[2rem] shadow-2xl border border-slate-100 w-full max-w-lg mx-4 max-h-[80vh] overflow-hidden" onClick={e => e.stopPropagation()}>
                             <div className="flex items-center justify-between p-5 border-b border-slate-100">
                                 <h3 className="text-base font-bold text-slate-800 flex items-center gap-2">
@@ -489,7 +489,7 @@ const DashboardView = ({
                                 )}
                             </div>
                         </div>
-                    </div>
+                    </div></ModalPortal>
                 )}
 
                 < div className="bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 p-5 md:p-6" >
