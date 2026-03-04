@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Mail, Lock, ArrowRight, Sparkles, Eye, EyeOff, User } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
 
-const SignUpView = ({ setCurrentView }) => {
+const LoginView = ({ setCurrentView }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -13,11 +12,9 @@ const SignUpView = ({ setCurrentView }) => {
         setIsLoading(true);
         setTimeout(() => {
             setIsLoading(false);
-            setCurrentView('onboarding');
+            setCurrentView('dashboard');
         }, 1200);
     };
-
-    
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-slate-50 via-cyan-50/30 to-slate-100 flex items-center justify-center p-4">
@@ -34,32 +31,15 @@ const SignUpView = ({ setCurrentView }) => {
                     {/* Title + Subtitle */}
                     <div className="text-center mb-7">
                         <h1 className="text-[1.65rem] font-black text-slate-900 leading-tight">
-                            Buat Akun Baru
+                            Masuk ke Akun
                         </h1>
                         <p className="text-slate-400 mt-2 text-sm leading-relaxed">
-                            Mulailah revolusi desain UMKM Anda hari ini.
+                            Selamat datang kembali di Postibel.
                         </p>
                     </div>
 
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        {/* Nama Lengkap — register only */}
-                        {true && (
-                            <div className="space-y-1.5">
-                                <label className="text-sm font-semibold text-slate-700">Nama Lengkap</label>
-                                <div className="relative flex items-center">
-                                    <User className="absolute left-3.5 w-4 h-4 text-slate-400 pointer-events-none" />
-                                    <input
-                                        type="text"
-                                        value={name}
-                                        onChange={e => setName(e.target.value)}
-                                        placeholder="Contoh: Budi Gunawan"
-                                        className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
-                                    />
-                                </div>
-                            </div>
-                        )}
-
                         {/* Email Bisnis */}
                         <div className="space-y-1.5">
                             <label className="text-sm font-semibold text-slate-700">Email Bisnis</label>
@@ -107,21 +87,21 @@ const SignUpView = ({ setCurrentView }) => {
                                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                             ) : (
                                 <>
-                                    Daftar & Lanjutkan
+                                    Masuk ke Workspace
                                     <ArrowRight className="w-4 h-4" />
                                 </>
                             )}
                         </button>
                     </form>
 
-                    {/* Mode switch link */}
+                    {/* Switch to register */}
                     <p className="text-center text-sm text-slate-500 mt-5">
-                        Sudah punya akun?{' '}
+                        Belum punya akun?{' '}
                         <button
-                            onClick={() => setCurrentView('login')}
+                            onClick={() => setCurrentView('signup')}
                             className="text-primary font-bold hover:underline transition-all"
                         >
-                            Masuk di sini
+                            Daftar sekarang
                         </button>
                     </p>
 
@@ -141,4 +121,4 @@ const SignUpView = ({ setCurrentView }) => {
     );
 };
 
-export default SignUpView;
+export default LoginView;
