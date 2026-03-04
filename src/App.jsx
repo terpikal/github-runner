@@ -3153,7 +3153,7 @@ const Sidebar = ({ isSidebarExpanded, setIsSidebarExpanded, brandDNA, setBrandDN
         }>
             <button
                 onClick={() => setIsSidebarExpanded(!isSidebarExpanded)}
-                className="absolute -right-3.5 top-9 bg-white border border-slate-200 rounded-full p-1 shadow-sm hover:bg-slate-50 hover:text-[#13c8ec] text-slate-500 z-50 transition-transform hover:scale-110"
+                className="absolute -right-3.5 top-9 bg-white border border-slate-200 rounded-full p-1 shadow-sm hover:bg-slate-50 hover:text-primary text-slate-500 z-50 transition-transform hover:scale-110"
             >
                 {isSidebarExpanded ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
             </button>
@@ -3164,7 +3164,7 @@ const Sidebar = ({ isSidebarExpanded, setIsSidebarExpanded, brandDNA, setBrandDN
                 </div>
                 {
                     isSidebarExpanded && (
-                        <span className="text-2xl font-black tracking-tight text-[#13c8ec] whitespace-nowrap animation-fade-in" >
+                        <span className="text-2xl font-black tracking-tight text-primary whitespace-nowrap animation-fade-in" >
                             Postibel
                         </span>
                     )
@@ -3177,7 +3177,7 @@ const Sidebar = ({ isSidebarExpanded, setIsSidebarExpanded, brandDNA, setBrandDN
                     className={`flex items-center ${isSidebarExpanded ? 'w-full gap-3 p-3' : 'justify-center p-2 w-14 h-14'} rounded-[1.25rem] bg-slate-50 hover:bg-slate-100 border border-slate-100 transition-all text-left group`}
                     title={!isSidebarExpanded ? brandDNA.name : ""}
                 >
-                    <div className="w-10 h-10 shrink-0 rounded-full bg-white shadow-sm border border-slate-200 flex items-center justify-center text-[#0daecf] font-black group-hover:border-[#13c8ec]/50 transition-colors" >
+                    <div className="w-10 h-10 shrink-0 rounded-full bg-white shadow-sm border border-slate-200 flex items-center justify-center text-primary-dark font-black group-hover:border-primary/50 transition-colors" >
                         {brandDNA.name.charAt(0)}
                     </div>
                     {
@@ -3211,14 +3211,14 @@ const Sidebar = ({ isSidebarExpanded, setIsSidebarExpanded, brandDNA, setBrandDN
                                                 }}
                                                 className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-slate-50 transition-colors text-left group/item"
                                             >
-                                                <div className="w-8 h-8 shrink-0 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs group-hover/item:text-[#13c8ec] transition-colors" >
+                                                <div className="w-8 h-8 shrink-0 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs group-hover/item:text-primary transition-colors" >
                                                     {biz.name.charAt(0)}
                                                 </div>
                                                 < div className="flex-1 overflow-hidden" >
-                                                    <p className={`text-sm font-bold truncate ${brandDNA.name === biz.name ? 'text-[#13c8ec]' : 'text-slate-700'}`}> {biz.name} </p>
+                                                    <p className={`text-sm font-bold truncate ${brandDNA.name === biz.name ? 'text-primary' : 'text-slate-700'}`}> {biz.name} </p>
                                                     < p className="text-[10px] text-slate-400 truncate" > {biz.category} </p>
                                                 </div>
-                                                {brandDNA.name === biz.name && <Check className="w-4 h-4 text-[#13c8ec] shrink-0" />}
+                                                {brandDNA.name === biz.name && <Check className="w-4 h-4 text-primary shrink-0" />}
                                             </button>
                                         ))}
                                 </div>
@@ -3230,7 +3230,7 @@ const Sidebar = ({ isSidebarExpanded, setIsSidebarExpanded, brandDNA, setBrandDN
                                                 setCurrentView('onboarding');
                                             }
                                         }
-                                        className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-bold text-[#13c8ec] hover:bg-[#13c8ec]/10 rounded-xl transition-colors"
+                                        className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-bold text-primary hover:bg-primary/10 rounded-xl transition-colors"
                                     >
                                         <Plus className="w-4 h-4" /> Tambah Bisnis
                                     </button>
@@ -3256,13 +3256,13 @@ const Sidebar = ({ isSidebarExpanded, setIsSidebarExpanded, brandDNA, setBrandDN
                     className={`flex items-center gap-3 cursor-pointer group rounded-[1.25rem] p-2 ${isSidebarExpanded ? 'hover:bg-slate-50 flex-1 overflow-hidden' : 'hover:bg-slate-50 w-full justify-center'}`}
                     title={!isSidebarExpanded ? "Profil Pengguna" : ""}
                 >
-                    <div className="w-10 h-10 shrink-0 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-sm border border-slate-200 group-hover:border-[#13c8ec]/30 group-hover:bg-[#13c8ec]/5 group-hover:text-[#098fae] transition-all shadow-sm" >
+                    <div className="w-10 h-10 shrink-0 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold text-sm border border-slate-200 group-hover:border-primary/30 group-hover:bg-primary/5 group-hover:text-primary-darker transition-all shadow-sm" >
                         BG
                     </div>
                     {
                         isSidebarExpanded && (
                             <div className="flex flex-col text-left overflow-hidden pr-1 animation-fade-in" >
-                                <span className="text-sm font-bold text-slate-800 leading-none mb-1 group-hover:text-[#098fae] transition-colors truncate" > Budi Gunawan </span>
+                                <span className="text-sm font-bold text-slate-800 leading-none mb-1 group-hover:text-primary-darker transition-colors truncate" > Budi Gunawan </span>
                                 < span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider truncate" > Admin </span>
                             </div>
                         )
@@ -3307,7 +3307,7 @@ const MobileHeader = ({ brandDNA, setBrandDNA, businesses, setCurrentView }) => 
                 <div className="w-8 h-8 flex items-center justify-center" >
                     <img src="/logo.png" alt="Logo" className="w-full h-full object-contain" />
                 </div>
-                < span className="text-xl font-black tracking-tight text-[#13c8ec]" >
+                < span className="text-xl font-black tracking-tight text-primary" >
                     Postibel
                 </span>
             </div>
@@ -3317,7 +3317,7 @@ const MobileHeader = ({ brandDNA, setBrandDNA, businesses, setCurrentView }) => 
                     onClick={() => setIsOpen(!isOpen)}
                     className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full bg-slate-50 hover:bg-slate-100 border border-slate-200 transition-colors"
                 >
-                    <div className="w-7 h-7 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[#0daecf] font-black text-xs" >
+                    <div className="w-7 h-7 rounded-full bg-white border border-slate-200 flex items-center justify-center text-primary-dark font-black text-xs" >
                         {brandDNA.name.charAt(0)}
                     </div>
                     < ChevronDown className={`w-3.5 h-3.5 text-slate-400 transition-transform ${isOpen ? 'rotate-180' : ''}`
@@ -3342,14 +3342,14 @@ const MobileHeader = ({ brandDNA, setBrandDNA, businesses, setCurrentView }) => 
                                                 }}
                                                 className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-slate-50 transition-colors text-left group/item"
                                             >
-                                                <div className="w-8 h-8 shrink-0 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs group-hover/item:text-[#13c8ec] transition-colors" >
+                                                <div className="w-8 h-8 shrink-0 rounded-full bg-slate-100 flex items-center justify-center text-slate-500 font-bold text-xs group-hover/item:text-primary transition-colors" >
                                                     {biz.name.charAt(0)}
                                                 </div>
                                                 < div className="flex-1 overflow-hidden" >
-                                                    <p className={`text-sm font-bold truncate ${brandDNA.name === biz.name ? 'text-[#13c8ec]' : 'text-slate-700'}`}> {biz.name} </p>
+                                                    <p className={`text-sm font-bold truncate ${brandDNA.name === biz.name ? 'text-primary' : 'text-slate-700'}`}> {biz.name} </p>
                                                     < p className="text-[10px] text-slate-400 truncate" > {biz.category} </p>
                                                 </div>
-                                                {brandDNA.name === biz.name && <Check className="w-4 h-4 text-[#13c8ec] shrink-0" />}
+                                                {brandDNA.name === biz.name && <Check className="w-4 h-4 text-primary shrink-0" />}
                                             </button>
                                         ))}
                                 </div>
@@ -3361,7 +3361,7 @@ const MobileHeader = ({ brandDNA, setBrandDNA, businesses, setCurrentView }) => 
                                                 setCurrentView('onboarding');
                                             }
                                         }
-                                        className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-bold text-[#13c8ec] hover:bg-[#13c8ec]/10 rounded-xl transition-colors"
+                                        className="w-full flex items-center justify-center gap-2 px-3 py-2.5 text-sm font-bold text-primary hover:bg-primary/10 rounded-xl transition-colors"
                                     >
                                         <Plus className="w-4 h-4" /> Tambah Bisnis
                                     </button>
@@ -3545,7 +3545,7 @@ function App() {
     const removeAttachment = (id) => setAttachments(attachments.filter(a => a.id !== id));
 
     return (
-        <div className="min-h-screen bg-[#f8fafc] font-sans text-slate-900" >
+        <div className="min-h-screen bg-slate-50 font-sans text-slate-900" >
             {showNav && (
                 <Sidebar
                     isSidebarExpanded={isSidebarExpanded}
