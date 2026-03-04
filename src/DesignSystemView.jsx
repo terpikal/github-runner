@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Copy, Check, Sparkles, Mail, Lock, Eye, EyeOff, User, Search, Plus, Download, Trash2, Edit3, ChevronRight, Heart, Star, Bell, Settings, Filter, Upload, X } from 'lucide-react';
+import { ArrowLeft, Copy, Check, Sparkles, Mail, Lock, Eye, EyeOff, User, Search, Plus, Download, Trash2, Edit3, ChevronRight, Heart, Star, Bell, Settings, Filter, Upload, X, ChevronDown } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const COLORS = [
@@ -47,6 +47,9 @@ const DesignSystemView = () => {
   const [demoPassword, setDemoPassword] = useState('');
   const [showPw, setShowPw] = useState(false);
   const [demoToggle, setDemoToggle] = useState(false);
+  const [demoDropdown, setDemoDropdown] = useState('');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const DEMO_DROPDOWN_OPTIONS = ['Opsi Pertama', 'Opsi Kedua', 'Opsi Ketiga', 'Opsi Keempat'];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-cyan-50/20 to-slate-100">
@@ -328,6 +331,40 @@ const DesignSystemView = () => {
               <button onClick={() => setDemoToggle(!demoToggle)} className={`relative w-12 h-7 rounded-full transition-colors ${demoToggle ? 'bg-primary' : 'bg-slate-200'}`}>
                 <div className={`absolute top-1 w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${demoToggle ? 'left-6' : 'left-1'}`} />
               </button>
+            </div>
+
+            {/* Dropdown */}
+            <div className="space-y-1.5">
+              <label className="text-sm font-semibold text-slate-700">Dropdown</label>
+              <div className="relative">
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className={`w-full flex items-center gap-3 py-3 px-4 rounded-xl border transition-all text-left ${demoDropdown ? 'border-primary/50 bg-white' : 'border-slate-200 bg-slate-50'}`}
+                >
+                  <span className={`text-sm flex-1 ${demoDropdown ? 'font-medium text-slate-800' : 'text-slate-400'}`}>
+                    {demoDropdown || 'Pilih opsi...'}
+                  </span>
+                  <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {isDropdownOpen && (
+                  <>
+                    <div className="fixed inset-0 z-10" onClick={() => setIsDropdownOpen(false)} />
+                    <div className="absolute z-20 mt-2 w-full bg-white border border-slate-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] rounded-xl py-2 animation-fade-in">
+                      {DEMO_DROPDOWN_OPTIONS.map(opt => (
+                        <button
+                          key={opt}
+                          onClick={() => { setDemoDropdown(opt); setIsDropdownOpen(false); }}
+                          className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${demoDropdown === opt ? 'bg-primary/10 text-primary-darker font-bold' : 'text-slate-600 hover:bg-slate-50 font-medium'}`}
+                        >
+                          {opt}
+                        </button>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
+              <code className="text-[10px] text-slate-400 font-mono">.dropdown</code>
             </div>
           </div>
         </Section>
