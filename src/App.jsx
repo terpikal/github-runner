@@ -1454,15 +1454,17 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
     if (isDraftingPlan) {
         return (
             <div className="flex flex-col items-center justify-center h-[70vh] animation-fade-in text-center px-4" >
-                <div className="relative w-24 h-24 mb-8" >
-                    <div className="absolute inset-0 border-4 border-primary/30 rounded-full animate-pulse" > </div>
-                    < div className="absolute inset-0 border-4 border-primary rounded-full border-t-transparent animate-spin" > </div>
-                    < div className="absolute inset-0 flex items-center justify-center" >
-                        <Sparkles className="w-8 h-8 text-primary animate-bounce" />
+                <div className="relative w-28 h-28 mb-8" >
+                    <div className="absolute inset-0 border-4 border-primary/20 rounded-full animate-ping" style={{ animationDuration: '2s' }}></div>
+                    <div className="absolute inset-0 border-4 border-primary/40 rounded-full border-t-transparent animate-spin" style={{ animationDuration: '1.5s' }}></div>
+                    <div className="absolute inset-0 flex items-center justify-center" >
+                        <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center shadow-primary">
+                            <Sparkles className="w-8 h-8 text-white animate-bounce" />
+                        </div>
                     </div>
                 </div>
-                < h2 className="text-2xl font-bold text-slate-900 mb-2" > Menganalisa & Menyusun Planner...</h2>
-                < p className="text-slate-500 max-w-md" > AI sedang merancang strategi konten Bulanan terbaik untuk {brandDNA?.name || 'bisnis Anda'}.</p>
+                <h2 className="text-2xl font-black text-slate-900 mb-2 tracking-tight">Menganalisa & Menyusun Planner...</h2>
+                <p className="text-slate-500 max-w-md text-sm">AI sedang merancang strategi konten bulanan terbaik untuk <span className="font-bold text-slate-700">{brandDNA?.name || 'bisnis Anda'}</span> ✨</p>
             </div>
         );
     }
@@ -1473,46 +1475,27 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                 <div className="fixed inset-0 z-40" onClick={() => setOpenActionMenuId(null)}> </div>
             )}
 
-            <div className="max-w-6xl mx-auto animation-fade-in pb-20 md:pb-0 px-4 md:px-0 relative" >
-                <div className="flex flex-col xl:flex-row xl:items-start justify-between gap-6 mb-8" >
-                    <div className="flex items-center gap-3 mb-2">
-                        <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight flex items-center gap-3">
-                            Konten Post & Planner <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary-darker border border-primary/20">PRO</span>
-                        </h1>
-                        <div className="group relative flex items-center justify-center">
-                            <HelpCircle className="w-5 h-5 text-slate-400 cursor-help hover:text-primary transition-colors" />
-                            <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 w-72 p-3 bg-slate-800 text-white text-xs rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all shadow-xl z-20 pointer-events-none">
-                                Kelola semua desain Anda, buat jadwal otomatis selama 1 bulan, dan posting langsung ke Instagram tanpa harus membuka aplikasi lain.
-                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 border-4 border-transparent border-b-slate-800" />
-                            </div>
+             <div className="max-w-6xl mx-auto animation-fade-in pb-20 md:pb-0 px-4 md:px-0 relative" >
+                {/* ── Playful Header ── */}
+                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+                    <div>
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary-darker text-xs font-bold mb-3">
+                            <CalendarDays className="w-3.5 h-3.5" /> Content Hub
                         </div>
+                        <h1 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight flex items-center gap-3">
+                            Konten Post & Planner
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary-darker border border-primary/20">
+                                <Sparkles className="w-3 h-3" /> PRO
+                            </span>
+                        </h1>
+                        <p className="text-slate-500 text-sm mt-1.5 max-w-lg">Kelola semua desain, buat jadwal otomatis, dan posting langsung ke Instagram ✨</p>
                     </div>
 
-
-                </div>
-
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-                    <div className="flex p-1.5 bg-slate-100/80 backdrop-blur-sm rounded-2xl w-fit border border-slate-200/50" >
-                        <button
-                            onClick={() => { setActiveTab('grid'); }}
-                            className={`px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 flex items-center gap-2 ${activeTab === 'grid' ? 'bg-white text-primary-darker shadow-sm ring-1 ring-slate-200/50' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
-                        >
-                            <Layout className="w-4 h-4" /> <span>Bank Konten </span>
-                        </button>
-                        <button
-                            onClick={() => { setActiveTab('calendar'); setIsPlannerAlertVisible(true); }}
-                            className={`px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 flex items-center gap-2 ${activeTab === 'calendar' ? 'bg-white text-primary-darker shadow-sm ring-1 ring-slate-200/50' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'}`}
-                        >
-                            <CalendarDays className="w-4 h-4" /> <span>Konten Planner </span>
-                        </button>
-                    </div>
-
-                    {/* Combined Settings & IG Status (Moved from top header) */}
+                    {/* IG Settings Button */}
                     <button
                         onClick={() => setIsSettingsOpen(true)}
-                        className="flex items-stretch bg-white border border-slate-200 shadow-sm rounded-2xl overflow-hidden hover:border-primary/50 hover:shadow-md transition-all group h-[52px]"
+                        className="flex items-stretch bg-white border border-slate-200 shadow-sm rounded-2xl overflow-hidden hover:border-primary/50 hover:shadow-md transition-all group h-[52px] self-start md:self-auto"
                     >
-                        {/* IG Status Section */}
                         <div className={`flex items-center gap-2 px-4 py-2 border-r border-slate-100 ${isIgConnected ? 'bg-emerald-50/50' : 'bg-amber-50/80'}`}>
                             <div className="w-5 h-5 rounded-full bg-gradient-to-tr from-pink-500 via-red-500 to-yellow-500 flex items-center justify-center flex-shrink-0">
                                 <Instagram className="w-3 h-3 text-white" />
@@ -1529,22 +1512,42 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                 </div>
                             )}
                         </div>
-                        {/* Settings Section */}
                         <div className="px-5 flex items-center gap-2 font-bold text-sm text-slate-700 group-hover:text-primary transition-colors bg-white">
                             <Settings className="w-4 h-4" /> <span className="hidden sm:inline">Pengaturan</span>
                         </div>
                     </button>
                 </div>
 
+                {/* ── Tab Switcher ── */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+                    <div className="flex p-1.5 bg-white/80 backdrop-blur-sm rounded-2xl w-fit border border-slate-200/50 shadow-sm">
+                        <button
+                            onClick={() => { setActiveTab('grid'); }}
+                            className={`px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 flex items-center gap-2 ${activeTab === 'grid' ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-primary-sm' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'}`}
+                        >
+                            <Layout className="w-4 h-4" /> <span>Bank Konten</span>
+                        </button>
+                        <button
+                            onClick={() => { setActiveTab('calendar'); setIsPlannerAlertVisible(true); }}
+                            className={`px-6 py-2.5 font-bold text-sm rounded-xl transition-all duration-300 flex items-center gap-2 ${activeTab === 'calendar' ? 'bg-gradient-to-r from-primary to-primary-dark text-white shadow-primary-sm' : 'text-slate-500 hover:text-slate-700 hover:bg-slate-100'}`}
+                        >
+                            <CalendarDays className="w-4 h-4" /> <span>Konten Planner</span>
+                        </button>
+                    </div>
+                </div>
+
                 {
                     activeTab === 'grid' && (
                         library.length === 0 ? (
-                            <div className="text-center py-20 bg-white rounded-[2rem] border border-slate-200 border-dashed shadow-sm" >
-                                <Library className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                                <h3 className="text-xl font-bold text-slate-800 mb-2" > Pustaka Masih Kosong </h3>
-                                < p className="text-slate-500 mb-6" > Mulai buat desain atau biarkan AI men - generate jadwal Anda.</p>
-                                < button onClick={() => setCurrentView('dashboard')
-                                } className="px-6 py-3 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary-dark transition-colors" > Buat Desain Baru </button>
+                            <div className="text-center py-20 bg-white rounded-[2rem] border-2 border-dashed border-slate-200 shadow-sm" >
+                                <div className="w-20 h-20 bg-gradient-to-br from-primary/10 to-primary-dark/10 rounded-3xl flex items-center justify-center mx-auto mb-5 rotate-3">
+                                    <Library className="w-10 h-10 text-primary" />
+                                </div>
+                                <h3 className="text-2xl font-black text-slate-800 mb-2 tracking-tight">Pustaka Masih Kosong 📭</h3>
+                                <p className="text-slate-500 mb-6 max-w-sm mx-auto">Mulai buat desain atau biarkan AI men-generate jadwal konten Anda secara otomatis.</p>
+                                <button onClick={() => setCurrentView('dashboard')} className="px-8 py-3.5 bg-gradient-to-r from-primary to-primary-dark text-white rounded-xl font-bold text-sm hover:from-primary-dark hover:to-primary-darker transition-all shadow-primary hover:shadow-primary-lg hover:-translate-y-0.5 flex items-center gap-2 mx-auto">
+                                    <Sparkles className="w-4 h-4" /> Buat Desain Baru
+                                </button>
                             </div>
                         ) : (() => {
                             const filteredLibrary = library.filter(post => {
@@ -1559,62 +1562,80 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                 );
                             });
                             return (
-                                <div className="space-y-5">
+                                <div className="space-y-6">
                                     {/* Search Bar */}
                                     <div className="relative flex items-center">
-                                        <Search className="absolute left-3.5 w-4 h-4 text-slate-400 pointer-events-none" />
+                                        <Search className="absolute left-4 w-4.5 h-4.5 text-slate-400 pointer-events-none" />
                                         <input
                                             type="text"
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
-                                            placeholder="Cari konten..."
-                                            className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-slate-50 focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400"
+                                            placeholder="Cari konten berdasarkan judul, caption, atau tipe..."
+                                            className="w-full pl-11 pr-4 py-3.5 rounded-2xl border border-slate-200 bg-white focus:bg-white focus:ring-4 focus:ring-primary/10 focus:border-primary/50 outline-none transition-all text-sm text-slate-800 placeholder-slate-400 shadow-sm"
                                         />
                                     </div>
+
+                                    {/* Stats Bar */}
+                                    <div className="flex items-center gap-3 flex-wrap">
+                                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-bold text-slate-600 shadow-sm">
+                                            <Layout className="w-3.5 h-3.5 text-slate-400" /> {filteredLibrary.length} Konten
+                                        </span>
+                                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-emerald-600">
+                                            <Clock className="w-3.5 h-3.5" /> {filteredLibrary.filter(p => p.status === 'scheduled').length} Terjadwal
+                                        </span>
+                                    </div>
+
                                     {filteredLibrary.length === 0 ? (
-                                        <div className="text-center py-16 bg-white rounded-2xl border border-slate-200 border-dashed">
+                                        <div className="text-center py-16 bg-white rounded-[2rem] border-2 border-dashed border-slate-200">
                                             <Search className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-                                            <p className="font-semibold text-slate-600">Tidak ada konten ditemukan</p>
+                                            <p className="font-bold text-slate-600">Tidak ada konten ditemukan</p>
                                             <p className="text-sm text-slate-400 mt-1">Coba kata kunci lain</p>
                                         </div>
                                     ) : (
-                                    <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6" >
+                                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5" >
                                 {
-                                    library.map(post => {
+                                    filteredLibrary.map(post => {
                                         const displayImage = post.type === 'carousel' && post.slides ? post.slides[0].image : post.image;
                                         return (
-                                            <div key={post.id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden group hover:shadow-lg hover:border-primary/30 transition-all flex flex-col" >
-                                                <div className="aspect-square relative overflow-hidden bg-slate-100" >
-                                                    <img src={displayImage} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" alt="Post" />
+                                            <div key={post.id} className="bg-white rounded-[1.5rem] border border-slate-100 overflow-hidden group hover:shadow-xl hover:border-primary/20 transition-all duration-300 flex flex-col hover:-translate-y-1" >
+                                                <div className="aspect-[4/3] relative overflow-hidden bg-slate-100" >
+                                                    <img src={displayImage} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" alt="Post" />
 
-                                                    <div className="absolute top-2 left-2 flex flex-col gap-1" >
-                                                        {post.status === 'scheduled' && <div className="px-3 py-1 bg-emerald-500/90 text-white text-[10px] rounded-full backdrop-blur-md flex items-center gap-1 font-bold shadow-sm"> <Clock className="w-3 h-3" /> Terjadwal</div >}
+                                                    <div className="absolute top-3 left-3 flex flex-col gap-1.5" >
+                                                        {post.status === 'scheduled' && (
+                                                            <div className="px-3 py-1.5 bg-emerald-500 text-white text-[10px] rounded-full backdrop-blur-md flex items-center gap-1.5 font-bold shadow-lg">
+                                                                <Clock className="w-3 h-3" /> Terjadwal
+                                                            </div>
+                                                        )}
+                                                        {post.goal && (
+                                                            <span className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-[10px] font-bold border backdrop-blur-md ${post.goal.color}`}>
+                                                                {renderGoalIcon(post.goal.icon, "w-3 h-3")} {post.goal.name}
+                                                            </span>
+                                                        )}
                                                     </div>
 
-                                                    < div className="absolute inset-0 bg-slate-900/60 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 backdrop-blur-[2px]" >
-                                                        <button onClick={() => setPreviewPost(post)} className="px-4 py-2 bg-primary text-white rounded-lg text-xs font-bold flex items-center gap-1.5 w-32 justify-center hover:scale-105 transition-transform" > <Eye className="w-3.5 h-3.5" /> Pratinjau </button>
-                                                        < button onClick={() => { setEditingPost(post); setCurrentView('editor'); }
-                                                        } className="px-4 py-2 bg-white text-slate-900 rounded-lg text-xs font-bold flex items-center gap-1.5 w-32 justify-center hover:scale-105 transition-transform" > <Edit3 className="w-3.5 h-3.5" /> Edit </button>
-                                                    </div>
-                                                </div>
-                                                < div className="p-4 flex-1 flex flex-col" >
-                                                    <div className="flex flex-wrap items-center gap-2 mb-2" >
-                                                        {
-                                                            post.goal && (
-                                                                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold border uppercase tracking-wider ${post.goal.color}`} >
-                                                                    {renderGoalIcon(post.goal.icon, "w-3 h-3")} {post.goal.name}
-                                                                </span>
-                                                            )}
-                                                        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold border border-slate-200 bg-slate-100 text-slate-500 uppercase tracking-wider" >
+                                                    <div className="absolute top-3 right-3">
+                                                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-black/50 text-white backdrop-blur-sm">
                                                             {post.type === 'carousel' ? <Layout className="w-3 h-3" /> : post.type === 'video' ? <Video className="w-3 h-3" /> : <ImageIcon className="w-3 h-3" />}
                                                             {post.type === 'carousel' ? 'Karosel' : post.type === 'video' ? 'Video' : 'Single'}
                                                         </span>
                                                     </div>
 
-                                                    < p className="text-sm text-slate-600 line-clamp-2 mb-3 flex-1" > {post.caption} </p>
-                                                    < div className="border-t border-slate-100 pt-3 flex items-center justify-between" >
-                                                        <span className="text-[10px] font-bold text-slate-400" > {post.status === 'scheduled' ? formatDate(post.scheduledDate) : 'Tersimpan'} </span>
-                                                        < button className={`p-1.5 rounded-md transition-colors ${isIgConnected ? 'text-slate-400 hover:text-pink-500 hover:bg-pink-50' : 'text-slate-300 cursor-not-allowed'}`} title={isIgConnected ? "Posting ke IG Sekarang" : "Hubungkan IG terlebih dahulu"} >
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end justify-center pb-5 gap-2">
+                                                        <button onClick={() => setPreviewPost(post)} className="px-5 py-2.5 bg-white text-slate-900 rounded-xl text-xs font-bold flex items-center gap-1.5 hover:scale-105 transition-transform shadow-lg">
+                                                            <Eye className="w-3.5 h-3.5" /> Pratinjau
+                                                        </button>
+                                                        <button onClick={() => { setEditingPost(post); setCurrentView('editor'); }} className="px-5 py-2.5 bg-primary text-white rounded-xl text-xs font-bold flex items-center gap-1.5 hover:scale-105 transition-transform shadow-lg">
+                                                            <Edit3 className="w-3.5 h-3.5" /> Edit
+                                                        </button>
+                                                    </div>
+                                                </div>
+
+                                                <div className="p-5 flex-1 flex flex-col">
+                                                    <p className="text-sm text-slate-700 line-clamp-2 mb-4 flex-1 leading-relaxed">{post.caption}</p>
+                                                    <div className="border-t border-slate-100 pt-3 flex items-center justify-between">
+                                                        <span className="text-[11px] font-bold text-slate-400">{post.status === 'scheduled' ? formatDate(post.scheduledDate) : '💾 Tersimpan'}</span>
+                                                        <button className={`p-2 rounded-xl transition-all ${isIgConnected ? 'text-slate-400 hover:text-pink-500 hover:bg-pink-50' : 'text-slate-300 cursor-not-allowed'}`} title={isIgConnected ? "Posting ke IG" : "Hubungkan IG terlebih dahulu"}>
                                                             <Instagram className="w-4 h-4" />
                                                         </button>
                                                     </div>
@@ -1631,120 +1652,104 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
 
 
                 {activeTab === 'calendar' && (
-                    <div className="bg-white rounded-[2rem] border border-slate-200 shadow-sm p-6 md:p-8 min-h-[500px]" >
+                    <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden min-h-[500px]" >
                         <div className="animation-fade-in" >
                             {plannerViewMode === 'monthly_grid' ? (
                                 // --- MONTHLY GRID VIEW ---
-                                <div className="space-y-6">
-
-                                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-6" >
-                                        <div className="flex items-center gap-3">
-                                            <div className="flex items-center bg-slate-50 border border-slate-200/80 rounded-2xl p-1 shadow-[0_2px_10px_rgb(0,0,0,0.02)]">
+                                <div>
+                                    {/* Planner Header */}
+                                    <div className="p-6 md:p-8 pb-0">
+                                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+                                            <div className="flex items-center gap-3">
+                                                <div className="flex items-center bg-slate-50 border border-slate-200/80 rounded-2xl p-1 shadow-sm">
+                                                    <button
+                                                        onClick={() => setCurrentCalendarDate(new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() - 1, 1))}
+                                                        className="p-2.5 hover:bg-white hover:text-primary text-slate-400 hover:shadow-sm rounded-xl transition-all"
+                                                        title="Bulan Sebelumnya"
+                                                    ><ChevronLeft className="w-5 h-5" /></button>
+                                                    <h2 className="text-xl font-black text-slate-800 px-5 min-w-[180px] text-center tracking-tight">
+                                                        {currentCalendarDate.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}
+                                                    </h2>
+                                                    <button
+                                                        onClick={() => setCurrentCalendarDate(new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() + 1, 1))}
+                                                        className="p-2.5 hover:bg-white hover:text-primary text-slate-400 hover:shadow-sm rounded-xl transition-all"
+                                                        title="Bulan Berikutnya"
+                                                    ><ChevronRight className="w-5 h-5" /></button>
+                                                </div>
                                                 <button
-                                                    onClick={() => setCurrentCalendarDate(new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() - 1, 1))}
-                                                    className="p-2 hover:bg-white hover:text-primary text-slate-400 hover:shadow-sm rounded-[10px] transition-all"
-                                                    title="Bulan Sebelumnya"
-                                                ><ChevronLeft className="w-5 h-5" /></button>
-                                                <h2 className="text-xl font-black text-slate-800 px-4 min-w-[160px] text-center tracking-tight">
-                                                    {currentCalendarDate.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}
-                                                </h2>
-                                                <button
-                                                    onClick={() => setCurrentCalendarDate(new Date(currentCalendarDate.getFullYear(), currentCalendarDate.getMonth() + 1, 1))}
-                                                    className="p-2 hover:bg-white hover:text-primary text-slate-400 hover:shadow-sm rounded-[10px] transition-all"
-                                                    title="Bulan Berikutnya"
-                                                ><ChevronRight className="w-5 h-5" /></button>
-                                            </div>
-                                            <button
-                                                onClick={() => setCurrentCalendarDate(new Date())}
-                                                className="px-4 py-2.5 bg-white border border-slate-200/80 text-slate-600 font-bold text-sm rounded-xl hover:bg-slate-50 hover:text-primary hover:border-primary/30 transition-all shadow-[0_2px_10px_rgb(0,0,0,0.02)] hidden sm:block"
-                                            >
-                                                Hari Ini
-                                            </button>
-                                        </div>
-
-                                        <div className="flex flex-wrap items-center gap-3">
-                                            {isMonthScheduled ? (
-                                                // === SCHEDULED MODE: hanya tampilkan tombol batalkan ===
-                                                <button
-                                                    onClick={() => setIsMonthScheduled(false)}
-                                                    className="px-4 py-2 bg-white border-2 border-rose-200 text-rose-500 hover:bg-rose-50 hover:border-rose-300 rounded-xl font-bold text-xs transition-all flex items-center gap-2 shadow-sm"
+                                                    onClick={() => setCurrentCalendarDate(new Date())}
+                                                    className="px-4 py-2.5 bg-slate-50 border border-slate-200/80 text-slate-600 font-bold text-sm rounded-xl hover:bg-primary/5 hover:text-primary hover:border-primary/30 transition-all hidden sm:flex items-center gap-1.5"
                                                 >
-                                                    <X className="w-3.5 h-3.5" /> Batalkan Jadwal
+                                                    <CalendarDays className="w-3.5 h-3.5" /> Hari Ini
                                                 </button>
-                                            ) : (
-                                                // === NORMAL MODE: tampilkan tombol generate AI + jadwalkan ===
-                                                <>
-                                                    <button onClick={() => setIsGenerateModalOpen(true)} className="px-4 py-2 bg-primary hover:bg-primary-dark text-white shadow-sm rounded-xl font-bold text-xs transition-all flex items-center gap-2" >
-                                                        <Sparkles className="w-3.5 h-3.5" />
-                                                        {hasPlanForCurrentMonth ? 'Tambahkan Konten AI' : 'Generate Konten Plan'}
-                                                    </button>
-                                                    {hasPlanForCurrentMonth && (
-                                                        <button
-                                                            onClick={() => {
-                                                                if (!isIgConnected) {
-                                                                    setIsConnectWarningOpen(true);
-                                                                } else {
-                                                                    setIsScheduleConfirmOpen(true);
-                                                                }
-                                                            }}
-                                                            className="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm shadow-emerald-500/20 rounded-xl font-bold text-xs transition-all flex items-center gap-2 hover:-translate-y-0.5"
-                                                        >
-                                                            <CalendarDays className="w-3.5 h-3.5" /> Jadwalkan
-                                                        </button>
-                                                    )}
-                                                </>
-                                            )}
-
-                                            <div className="flex items-center bg-slate-50 p-1 rounded-xl border border-slate-200">
-                                                <button
-                                                    onClick={() => setCalendarViewType('grid')}
-                                                    className={`p-1.5 rounded-lg transition-all ${calendarViewType === 'grid' ? 'bg-white text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-                                                ><Layout className="w-4 h-4" /></button>
-                                                <button
-                                                    onClick={() => setCalendarViewType('list')}
-                                                    className={`p-1.5 rounded-lg transition-all ${calendarViewType === 'list' ? 'bg-white text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
-                                                ><List className="w-4 h-4" /></button>
                                             </div>
 
+                                            <div className="flex flex-wrap items-center gap-2">
+                                                {isMonthScheduled ? (
+                                                    <button
+                                                        onClick={() => setIsMonthScheduled(false)}
+                                                        className="px-4 py-2.5 bg-white border-2 border-rose-200 text-rose-500 hover:bg-rose-50 hover:border-rose-300 rounded-xl font-bold text-xs transition-all flex items-center gap-2 shadow-sm"
+                                                    >
+                                                        <X className="w-3.5 h-3.5" /> Batalkan Jadwal
+                                                    </button>
+                                                ) : (
+                                                    <>
+                                                        <button onClick={() => setIsGenerateModalOpen(true)} className="px-5 py-2.5 bg-gradient-to-r from-primary to-primary-dark hover:from-primary-dark hover:to-primary-darker text-white shadow-primary-sm rounded-xl font-bold text-xs transition-all flex items-center gap-2 hover:-translate-y-0.5" >
+                                                            <Sparkles className="w-3.5 h-3.5" />
+                                                            {hasPlanForCurrentMonth ? 'Tambahkan Konten AI' : 'Generate Konten Plan'}
+                                                        </button>
+                                                        {hasPlanForCurrentMonth && (
+                                                            <button
+                                                                onClick={() => {
+                                                                    if (!isIgConnected) {
+                                                                        setIsConnectWarningOpen(true);
+                                                                    } else {
+                                                                        setIsScheduleConfirmOpen(true);
+                                                                    }
+                                                                }}
+                                                                className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white shadow-sm shadow-emerald-500/20 rounded-xl font-bold text-xs transition-all flex items-center gap-2 hover:-translate-y-0.5"
+                                                            >
+                                                                <CalendarDays className="w-3.5 h-3.5" /> Jadwalkan
+                                                            </button>
+                                                        )}
+                                                    </>
+                                                )}
+
+                                                <div className="flex items-center bg-slate-50 p-1 rounded-xl border border-slate-200">
+                                                    <button
+                                                        onClick={() => setCalendarViewType('grid')}
+                                                        className={`p-2 rounded-lg transition-all ${calendarViewType === 'grid' ? 'bg-white text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                                                    ><Layout className="w-4 h-4" /></button>
+                                                    <button
+                                                        onClick={() => setCalendarViewType('list')}
+                                                        className={`p-2 rounded-lg transition-all ${calendarViewType === 'list' ? 'bg-white text-primary shadow-sm' : 'text-slate-400 hover:text-slate-600'}`}
+                                                    ><List className="w-4 h-4" /></button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
                                     {/* STATUS CARD */}
+                                    <div className="px-6 md:px-8">
                                     {isPlannerAlertVisible && !hasPlanForCurrentMonth && !isMonthScheduled && (
-                                        <div className="flex items-center justify-between px-4 py-3 bg-primary/[0.08] border border-primary/20 rounded-xl w-full mb-4">
+                                        <div className="flex items-center justify-between px-5 py-4 bg-gradient-to-r from-primary/[0.06] to-primary-dark/[0.04] border border-primary/15 rounded-2xl w-full mt-6">
                                             <div className="flex items-center gap-3">
-                                                {isMonthScheduled ? (
-                                                    <>
-                                                        <div className="flex items-center justify-center w-6 h-6 rounded-full bg-emerald-500/20">
-                                                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                                                        </div>
-                                                        <span className="font-bold text-primary-darker text-sm tracking-wide">Postingan Terjadwal</span>
-                                                        <span className="text-primary-darker/80 text-sm hidden sm:block">- Semua konten pada bulan ini sudah dikunci dan siap di-posting.</span>
-                                                    </>
-                                                ) : hasPlanForCurrentMonth ? (
-                                                    <>
-                                                        <div className="flex items-center justify-center w-6 h-6 rounded-full bg-primary/20 animate-pulse">
-                                                            <div className="w-2.5 h-2.5 rounded-full bg-primary"></div>
-                                                        </div>
-                                                        <span className="text-primary-darker font-semibold text-sm">Terhubung secara otomatis</span>
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <div className="flex items-center justify-center w-6 h-6 rounded-full bg-amber-400/20">
-                                                            <CalendarDays className="w-3.5 h-3.5 text-amber-500" />
-                                                        </div>
-                                                        <span className="font-semibold text-primary-darker text-sm tracking-wide">Belum Ada Rencana Konten</span>
-                                                        <span className="text-primary-darker/80 text-sm hidden sm:block">- Kalender Anda masih kosong bulan ini. Mari buat konten atau gunakan AI.</span>
-                                                    </>
-                                                )}
+                                                <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
+                                                    <CalendarDays className="w-5 h-5 text-primary" />
+                                                </div>
+                                                <div>
+                                                    <span className="font-bold text-slate-700 text-sm block">Belum Ada Rencana Konten</span>
+                                                    <span className="text-slate-500 text-xs hidden sm:block">Kalender kosong bulan ini. Gunakan AI untuk generate rencana konten otomatis 🚀</span>
+                                                </div>
                                             </div>
-                                            <button onClick={() => setIsPlannerAlertVisible(false)} className="p-1.5 hover:bg-primary/10 rounded-lg text-primary-darker transition-colors" title="Tutup">
+                                            <button onClick={() => setIsPlannerAlertVisible(false)} className="p-2 hover:bg-primary/10 rounded-xl text-slate-400 hover:text-primary-darker transition-colors" title="Tutup">
                                                 <X className="w-4 h-4" />
                                             </button>
                                         </div>
                                     )}
+                                    </div>
 
-                                    {(() => {
+                                    <div className="p-6 md:p-8 pt-4">
                                         const allPosts = [];
                                         if (hasPlanForCurrentMonth) {
                                             monthPlan.weeks.forEach(w => {
@@ -1991,6 +1996,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                             />
                                         </ModalPortal>
                                     )}
+                                    </div>
                                 </div>
                             ) : (
                                 // --- WEEKLY APPROVAL VIEW ---
