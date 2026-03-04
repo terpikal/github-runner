@@ -2078,8 +2078,8 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                         <ModalPortal>
                             <div className="fixed inset-0 z-[160] flex items-center justify-center p-4 animation-fade-in" >
                                 <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsGenerateModalOpen(false)} > </div>
-                                <div className="relative z-10 bg-white rounded-[2rem] shadow-2xl w-full max-w-lg overflow-hidden flex flex-col" >
-                                    <div className="flex items-center justify-between p-6 border-b border-slate-100 bg-white" >
+                                <div className="relative z-10 bg-white rounded-[2rem] shadow-2xl w-full max-w-lg max-h-[85vh] overflow-hidden flex flex-col" >
+                                    <div className="flex items-center justify-between p-6 border-b border-slate-100 bg-white shrink-0" >
                                         <div className="flex items-center gap-3" >
                                             <div className="p-2 bg-primary/10 text-primary-darker rounded-xl" > <Sparkles className="w-5 h-5" /> </div>
                                             <h3 className="font-bold text-lg text-slate-800" > Generate Konten bulan {currentCalendarDate.toLocaleDateString('id-ID', { month: 'long' })} </h3>
@@ -2087,7 +2087,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                         <button onClick={() => setIsGenerateModalOpen(false)} className="p-2 text-slate-400 hover:bg-slate-100 rounded-full transition-colors" > <X className="w-5 h-5" /> </button>
                                     </div>
 
-                                    <div className="p-6 bg-slate-50/50 space-y-6" >
+                                    <div className="p-6 bg-slate-50/50 space-y-6 overflow-y-auto flex-1" >
                                         <div className="space-y-3">
                                             <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">1. Tujuan Bulan ini (Pilih lebih dari satu)</label>
                                             <div className="grid grid-cols-2 gap-3">
