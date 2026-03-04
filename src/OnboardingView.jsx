@@ -411,20 +411,12 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                 <div className="relative">
                                     <button
                                         onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
-                                        className={`w-full flex items-center gap-3 p-4 rounded-2xl border transition-all text-left ${localBrand.category ? 'border-primary/40 bg-white' : 'border-slate-200 bg-slate-50'}`}
+                                        className={`w-full flex items-center gap-3 py-3.5 px-4 rounded-2xl border transition-all text-left ${localBrand.category ? 'border-primary/40 bg-white' : 'border-slate-200 bg-slate-50'}`}
                                     >
                                         {localBrand.category ? (
-                                            <>
-                                                <div className="p-1.5 rounded-xl bg-primary/20 text-primary-darker">
-                                                    {CATEGORIES.find(c => c.label === localBrand.category)?.icon}
-                                                </div>
-                                                <span className="font-bold text-slate-800 text-sm flex-1">{localBrand.category}</span>
-                                            </>
+                                            <span className="font-medium text-slate-800 text-sm flex-1">{localBrand.category}</span>
                                         ) : (
-                                            <>
-                                                <Briefcase className="w-5 h-5 text-slate-400" />
-                                                <span className="text-slate-400 font-medium text-sm flex-1">Pilih kategori bisnis...</span>
-                                            </>
+                                            <span className="text-slate-400 font-medium text-sm flex-1">Pilih kategori bisnis...</span>
                                         )}
                                         <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform ${isCategoryDropdownOpen ? 'rotate-180' : ''}`} />
                                     </button>
@@ -432,7 +424,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                     {isCategoryDropdownOpen && (
                                         <>
                                             <div className="fixed inset-0 z-10" onClick={() => setIsCategoryDropdownOpen(false)} />
-                                            <div className="absolute z-20 mt-2 w-full bg-white border border-slate-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] rounded-2xl py-2 animation-fade-in">
+                                            <div className="absolute z-20 mt-2 w-full bg-white border border-slate-100 shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] rounded-2xl py-2 max-h-48 overflow-y-auto animation-fade-in">
                                                 {CATEGORIES.map(cat => (
                                                     <button
                                                         key={cat.id}
@@ -441,13 +433,9 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                             setProductSearch('');
                                                             setIsCategoryDropdownOpen(false);
                                                         }}
-                                                        className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors ${localBrand.category === cat.label ? 'bg-primary/10 text-primary-darker' : 'text-slate-600 hover:bg-slate-50'}`}
+                                                        className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${localBrand.category === cat.label ? 'bg-primary/10 text-primary-darker font-bold' : 'text-slate-600 hover:bg-slate-50 font-medium'}`}
                                                     >
-                                                        <div className={`p-1.5 rounded-xl ${localBrand.category === cat.label ? 'bg-primary/20' : 'bg-slate-100'}`}>
-                                                            {cat.icon}
-                                                        </div>
-                                                        <span className="text-sm font-bold">{cat.label}</span>
-                                                        {localBrand.category === cat.label && <Check className="w-4 h-4 ml-auto text-primary" />}
+                                                        {cat.label}
                                                     </button>
                                                 ))}
                                             </div>
