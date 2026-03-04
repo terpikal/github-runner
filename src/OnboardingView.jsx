@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import {
     Sparkles, ArrowRight, ArrowLeft, Check, CheckCircle2,
     Coffee, Utensils, ShoppingBag, Flower2, Briefcase,
@@ -288,6 +289,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
     const [productSearch, setProductSearch] = useState('');
     const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false);
     const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+    const [showTemplateModal, setShowTemplateModal] = useState(false);
 
     const handleNext = () => {
         if (step < STEPS.length) setStep(step + 1);
@@ -788,182 +790,212 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                     {/* Step 3 — Template Desain */}
                     {step === 3 && (
                         <div className="space-y-4 animation-fade-in">
-                            {/* Tab: Pilih Template / Upload Desain */}
-                            <div className="flex p-1 bg-slate-100 rounded-2xl">
+                            {/* Upload Desain — always shown as default */}
+                            <div className="space-y-4">
+                                <div className="flex flex-col items-center justify-center py-12 gap-4 border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50">
+                                    <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl">📁</div>
+                                    <div className="text-center">
+                                        <p className="font-bold text-slate-700 text-sm">Upload file desain Anda</p>
+                                        <p className="text-xs text-slate-400 mt-1">PNG, JPG, atau PDF — maks. 10MB</p>
+                                    </div>
+                                    <label className="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-xl cursor-pointer hover:bg-primary-dark transition-colors">
+                                        Pilih File
+                                        <input type="file" accept="image/*,.pdf" className="hidden" />
+                                    </label>
+                                </div>
+
+                                <div className="relative">
+                                    <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-200" /></div>
+                                    <div className="relative flex justify-center"><span className="bg-white px-3 text-xs text-slate-400 font-medium">atau</span></div>
+                                </div>
+
                                 <button
-                                    onClick={() => setTemplateTab('pick')}
-                                    className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all ${templateTab === 'pick' ? 'bg-white text-primary-darker shadow-sm' : 'text-slate-500'}`}
+                                    onClick={() => setShowTemplateModal(true)}
+                                    className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-primary/10 to-cyan-100/40 text-primary-darker text-sm font-black rounded-2xl border-2 border-primary/20 hover:border-primary/40 hover:shadow-md transition-all active:scale-[0.98]"
                                 >
-                                    Pilih Template
+                                    <Sparkles className="w-4 h-4" />
+                                    Generate Template Desain
                                 </button>
-                                <button
-                                    onClick={() => setTemplateTab('upload')}
-                                    className={`flex-1 py-2.5 text-sm font-bold rounded-xl transition-all ${templateTab === 'upload' ? 'bg-white text-primary-darker shadow-sm' : 'text-slate-500'}`}
-                                >
-                                    Upload Desain
-                                </button>
+
+                                {/* Selected templates indicator */}
+                                {(localBrand.designTemplate || []).length > 0 && (
+                                    <div className="flex items-center gap-2 p-3 bg-primary/5 rounded-xl border border-primary/10">
+                                        <CheckCircle2 className="w-4 h-4 text-primary shrink-0" />
+                                        <p className="text-xs font-bold text-primary-darker">
+                                            {(localBrand.designTemplate || []).length} template dipilih
+                                        </p>
+                                        <button
+                                            onClick={() => setShowTemplateModal(true)}
+                                            className="ml-auto text-xs font-bold text-primary hover:underline"
+                                        >
+                                            Ubah
+                                        </button>
+                                    </div>
+                                )}
                             </div>
 
-                            {/* Template Grid */}
-                            {templateTab === 'pick' && (
-                                <div className="grid grid-cols-2 gap-3">
-                                    {TEMPLATES.map(tpl => {
-                                        const isSelected = (localBrand.designTemplate || []).includes(tpl.id);
-
-                                        // Each template has its own minimal layout renderer
-                                        const renderMockup = () => {
-                                            switch (tpl.id) {
-                                                case 'minimalis-elegan':
-                                                    // Clean centered: thin header line, centered square image, 2 text lines
-                                                    return (
-                                                        <div className="w-full h-full flex flex-col items-center justify-center gap-2 px-5">
-                                                            <div className="w-full h-px bg-slate-200" />
-                                                            <div className="w-16 h-16 rounded-xl bg-slate-200" />
-                                                            <div className="w-16 h-1.5 rounded-full bg-slate-300" />
-                                                            <div className="w-10 h-1 rounded-full bg-slate-200" />
-                                                            <div className="w-full h-px bg-slate-200" />
-                                                        </div>
-                                                    );
-                                                case 'tegas-berani':
-                                                    // Full-bleed dark: thick accent bar top, big bold image area, white lines
-                                                    return (
-                                                        <div className="w-full h-full flex flex-col">
-                                                            <div className="h-1.5 w-full bg-slate-500" />
-                                                            <div className="flex-1 flex items-end justify-between px-4 pb-4">
-                                                                <div className="space-y-1.5">
-                                                                    <div className="w-14 h-1.5 rounded-full bg-slate-500" />
-                                                                    <div className="w-10 h-1 rounded-full bg-slate-600" />
-                                                                </div>
-                                                                <div className="w-12 h-12 rounded-lg bg-slate-600" />
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                case 'lembut-estetik':
-                                                    // Soft layout: left pink accent bar, right content column
-                                                    return (
-                                                        <div className="w-full h-full flex">
-                                                            <div className="w-1 bg-pink-300 rounded-full my-4 ml-3" />
-                                                            <div className="flex-1 flex flex-col justify-center gap-2.5 px-4">
-                                                                <div className="w-12 h-12 rounded-xl bg-orange-200" />
-                                                                <div className="w-14 h-1.5 rounded-full bg-orange-200" />
-                                                                <div className="w-10 h-1 rounded-full bg-pink-100" />
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                case 'mewah-eksklusif':
-                                                    // Dark luxury: centered image with gold underline, minimal
-                                                    return (
-                                                        <div className="w-full h-full flex flex-col items-center justify-center gap-2.5">
-                                                            <div className="w-14 h-14 rounded-lg bg-yellow-900/40 border border-yellow-700/30" />
-                                                            <div className="w-10 h-0.5 rounded-full bg-yellow-600" />
-                                                            <div className="w-8 h-1 rounded-full bg-slate-700" />
-                                                        </div>
-                                                    );
-                                                case 'ceria-aktif':
-                                                    // Bright playful: offset image + text mix
-                                                    return (
-                                                        <div className="w-full h-full p-3 flex flex-col gap-2">
-                                                            <div className="flex gap-2 flex-1">
-                                                                <div className="flex-[3] rounded-lg bg-pink-300" />
-                                                                <div className="flex-1 flex flex-col gap-1.5">
-                                                                    <div className="flex-1 rounded bg-yellow-200" />
-                                                                    <div className="flex-1 rounded bg-pink-100" />
-                                                                </div>
-                                                            </div>
-                                                            <div className="w-full h-1.5 rounded-full bg-yellow-300" />
-                                                        </div>
-                                                    );
-                                                case 'profesional-rapi':
-                                                    // Clean grid: avatar circle + stacked lines
-                                                    return (
-                                                        <div className="w-full h-full flex flex-col justify-center gap-3 px-4">
-                                                            <div className="flex items-center gap-2.5">
-                                                                <div className="w-8 h-8 rounded-full bg-blue-200 shrink-0" />
-                                                                <div className="space-y-1">
-                                                                    <div className="w-14 h-1.5 rounded-full bg-blue-300" />
-                                                                    <div className="w-8 h-1 rounded-full bg-blue-100" />
-                                                                </div>
-                                                            </div>
-                                                            <div className="w-full h-16 rounded-xl bg-blue-200/60" />
-                                                            <div className="space-y-1">
-                                                                <div className="w-full h-1.5 rounded-full bg-blue-100" />
-                                                                <div className="w-2/3 h-1 rounded-full bg-blue-100/70" />
-                                                            </div>
-                                                        </div>
-                                                    );
-                                                default:
-                                                    return null;
-                                            }
-                                        };
-
-                                        return (
+                            {/* Template Picker Modal */}
+                            {showTemplateModal && ReactDOM.createPortal(
+                                <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+                                    {/* Backdrop */}
+                                    <div
+                                        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+                                        onClick={() => setShowTemplateModal(false)}
+                                    />
+                                    {/* Modal content */}
+                                    <div className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-lg max-h-[85vh] flex flex-col overflow-hidden animation-fade-in">
+                                        {/* Header */}
+                                        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+                                            <div>
+                                                <h3 className="text-lg font-black text-slate-900">Pilih Template Desain</h3>
+                                                <p className="text-xs text-slate-400 mt-0.5">Pilih satu atau lebih template untuk brand Anda</p>
+                                            </div>
                                             <button
-                                                key={tpl.id}
-                                                onClick={() => {
-                                                    const current = localBrand.designTemplate || [];
-                                                    const updated = current.includes(tpl.id)
-                                                        ? current.filter(id => id !== tpl.id)
-                                                        : [...current, tpl.id];
-                                                    setLocalBrand({ ...localBrand, designTemplate: updated });
-                                                }}
-                                                className={`rounded-2xl border-2 overflow-hidden flex flex-col transition-all text-left ${isSelected
-                                                    ? 'border-primary shadow-md'
-                                                    : 'border-slate-100 hover:border-primary/40'
-                                                    }`}
+                                                onClick={() => setShowTemplateModal(false)}
+                                                className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center transition-colors"
                                             >
-                                                {/* Mockup preview area */}
-                                                <div
-                                                    className="relative w-full overflow-hidden"
-                                                    style={{ backgroundColor: tpl.bg, aspectRatio: '4/3' }}
-                                                >
-                                                    {renderMockup()}
-                                                </div>
-                                                {/* Name + checkbox */}
-                                                <div className="flex items-center justify-between px-3 py-2.5 bg-white">
-                                                    <span className={`text-xs font-bold leading-snug ${isSelected ? 'text-primary-darker' : 'text-slate-800'}`}>
-                                                        {tpl.name}
-                                                    </span>
-                                                    <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${isSelected
-                                                        ? 'bg-primary border-primary'
-                                                        : 'border-slate-300 bg-white'
-                                                        }`}>
-                                                        {isSelected && <Check className="w-3 h-3 text-white" />}
-                                                    </div>
-                                                </div>
+                                                <X className="w-4 h-4 text-slate-500" />
                                             </button>
-                                        );
-                                    })}
-                                </div>
-                            )}
-
-                            {/* Upload Desain tab */}
-                            {templateTab === 'upload' && (
-                                <div className="space-y-4">
-                                    <div className="flex flex-col items-center justify-center py-12 gap-4 border-2 border-dashed border-slate-200 rounded-2xl bg-slate-50/50">
-                                        <div className="w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-2xl">📁</div>
-                                        <div className="text-center">
-                                            <p className="font-bold text-slate-700 text-sm">Upload file desain Anda</p>
-                                            <p className="text-xs text-slate-400 mt-1">PNG, JPG, atau PDF — maks. 10MB</p>
                                         </div>
-                                        <label className="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-xl cursor-pointer hover:bg-primary-dark transition-colors">
-                                            Pilih File
-                                            <input type="file" accept="image/*,.pdf" className="hidden" />
-                                        </label>
-                                    </div>
 
-                                    <div className="relative">
-                                        <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-200" /></div>
-                                        <div className="relative flex justify-center"><span className="bg-white px-3 text-xs text-slate-400 font-medium">atau</span></div>
-                                    </div>
+                                        {/* Template Grid — scrollable */}
+                                        <div className="flex-1 overflow-y-auto p-6">
+                                            <div className="grid grid-cols-2 gap-3">
+                                                {TEMPLATES.map(tpl => {
+                                                    const isSelected = (localBrand.designTemplate || []).includes(tpl.id);
 
-                                    <button
-                                        onClick={() => setTemplateTab('pick')}
-                                        className="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-primary/10 to-cyan-100/40 text-primary-darker text-sm font-black rounded-2xl border-2 border-primary/20 hover:border-primary/40 hover:shadow-md transition-all active:scale-[0.98]"
-                                    >
-                                        <Sparkles className="w-4 h-4" />
-                                        Generate Template Desain
-                                    </button>
-                                </div>
+                                                    const renderMockup = () => {
+                                                        switch (tpl.id) {
+                                                            case 'minimalis-elegan':
+                                                                return (
+                                                                    <div className="w-full h-full flex flex-col items-center justify-center gap-2 px-5">
+                                                                        <div className="w-full h-px bg-slate-200" />
+                                                                        <div className="w-16 h-16 rounded-xl bg-slate-200" />
+                                                                        <div className="w-16 h-1.5 rounded-full bg-slate-300" />
+                                                                        <div className="w-10 h-1 rounded-full bg-slate-200" />
+                                                                        <div className="w-full h-px bg-slate-200" />
+                                                                    </div>
+                                                                );
+                                                            case 'tegas-berani':
+                                                                return (
+                                                                    <div className="w-full h-full flex flex-col">
+                                                                        <div className="h-1.5 w-full bg-slate-500" />
+                                                                        <div className="flex-1 flex items-end justify-between px-4 pb-4">
+                                                                            <div className="space-y-1.5">
+                                                                                <div className="w-14 h-1.5 rounded-full bg-slate-500" />
+                                                                                <div className="w-10 h-1 rounded-full bg-slate-600" />
+                                                                            </div>
+                                                                            <div className="w-12 h-12 rounded-lg bg-slate-600" />
+                                                                        </div>
+                                                                    </div>
+                                                                );
+                                                            case 'lembut-estetik':
+                                                                return (
+                                                                    <div className="w-full h-full flex">
+                                                                        <div className="w-1 bg-pink-300 rounded-full my-4 ml-3" />
+                                                                        <div className="flex-1 flex flex-col justify-center gap-2.5 px-4">
+                                                                            <div className="w-12 h-12 rounded-xl bg-orange-200" />
+                                                                            <div className="w-14 h-1.5 rounded-full bg-orange-200" />
+                                                                            <div className="w-10 h-1 rounded-full bg-pink-100" />
+                                                                        </div>
+                                                                    </div>
+                                                                );
+                                                            case 'mewah-eksklusif':
+                                                                return (
+                                                                    <div className="w-full h-full flex flex-col items-center justify-center gap-2.5">
+                                                                        <div className="w-14 h-14 rounded-lg bg-yellow-900/40 border border-yellow-700/30" />
+                                                                        <div className="w-10 h-0.5 rounded-full bg-yellow-600" />
+                                                                        <div className="w-8 h-1 rounded-full bg-slate-700" />
+                                                                    </div>
+                                                                );
+                                                            case 'ceria-aktif':
+                                                                return (
+                                                                    <div className="w-full h-full p-3 flex flex-col gap-2">
+                                                                        <div className="flex gap-2 flex-1">
+                                                                            <div className="flex-[3] rounded-lg bg-pink-300" />
+                                                                            <div className="flex-1 flex flex-col gap-1.5">
+                                                                                <div className="flex-1 rounded bg-yellow-200" />
+                                                                                <div className="flex-1 rounded bg-pink-100" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="w-full h-1.5 rounded-full bg-yellow-300" />
+                                                                    </div>
+                                                                );
+                                                            case 'profesional-rapi':
+                                                                return (
+                                                                    <div className="w-full h-full flex flex-col justify-center gap-3 px-4">
+                                                                        <div className="flex items-center gap-2.5">
+                                                                            <div className="w-8 h-8 rounded-full bg-blue-200 shrink-0" />
+                                                                            <div className="space-y-1">
+                                                                                <div className="w-14 h-1.5 rounded-full bg-blue-300" />
+                                                                                <div className="w-8 h-1 rounded-full bg-blue-100" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div className="w-full h-16 rounded-xl bg-blue-200/60" />
+                                                                        <div className="space-y-1">
+                                                                            <div className="w-full h-1.5 rounded-full bg-blue-100" />
+                                                                            <div className="w-2/3 h-1 rounded-full bg-blue-100/70" />
+                                                                        </div>
+                                                                    </div>
+                                                                );
+                                                            default:
+                                                                return null;
+                                                        }
+                                                    };
+
+                                                    return (
+                                                        <button
+                                                            key={tpl.id}
+                                                            onClick={() => {
+                                                                const current = localBrand.designTemplate || [];
+                                                                const updated = current.includes(tpl.id)
+                                                                    ? current.filter(id => id !== tpl.id)
+                                                                    : [...current, tpl.id];
+                                                                setLocalBrand({ ...localBrand, designTemplate: updated });
+                                                            }}
+                                                            className={`rounded-2xl border-2 overflow-hidden flex flex-col transition-all text-left ${isSelected
+                                                                ? 'border-primary shadow-md'
+                                                                : 'border-slate-100 hover:border-primary/40'
+                                                                }`}
+                                                        >
+                                                            <div
+                                                                className="relative w-full overflow-hidden"
+                                                                style={{ backgroundColor: tpl.bg, aspectRatio: '4/3' }}
+                                                            >
+                                                                {renderMockup()}
+                                                            </div>
+                                                            <div className="flex items-center justify-between px-3 py-2.5 bg-white">
+                                                                <span className={`text-xs font-bold leading-snug ${isSelected ? 'text-primary-darker' : 'text-slate-800'}`}>
+                                                                    {tpl.name}
+                                                                </span>
+                                                                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${isSelected
+                                                                    ? 'bg-primary border-primary'
+                                                                    : 'border-slate-300 bg-white'
+                                                                    }`}>
+                                                                    {isSelected && <Check className="w-3 h-3 text-white" />}
+                                                                </div>
+                                                            </div>
+                                                        </button>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+
+                                        {/* Footer */}
+                                        <div className="px-6 py-4 border-t border-slate-100 flex items-center justify-between">
+                                            <p className="text-xs text-slate-400">
+                                                {(localBrand.designTemplate || []).length} template dipilih
+                                            </p>
+                                            <button
+                                                onClick={() => setShowTemplateModal(false)}
+                                                className="px-6 py-2.5 bg-primary text-white text-sm font-black rounded-xl hover:bg-primary-dark transition-colors"
+                                            >
+                                                Selesai
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>,
+                                document.body
                             )}
                         </div>
                     )}
