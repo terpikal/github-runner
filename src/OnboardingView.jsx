@@ -175,8 +175,8 @@ const TYPOGRAPHY_PRESETS = [
 const STEPS = [
     { id: 1, title: 'Profil Bisnis', icon: <Briefcase className="w-5 h-5" /> },
     { id: 2, title: 'Warna Brand', icon: <Palette className="w-5 h-5" /> },
-    { id: 3, title: 'Template Desain', icon: <Type className="w-5 h-5" /> },
-    { id: 4, title: 'Tipografi Brand', icon: <Sliders className="w-5 h-5" /> },
+    { id: 3, title: 'Tipografi Brand', icon: <Sliders className="w-5 h-5" /> },
+    { id: 4, title: 'Template Desain', icon: <Type className="w-5 h-5" /> },
 ];
 
 // --- Color Harmony Utilities ---
@@ -390,8 +390,8 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                         <h2 className="text-2xl font-black text-slate-900">
                             {step === 1 && 'Kenalkan bisnis Anda'}
                             {step === 2 && 'Pilih palet warna brand'}
-                            {step === 3 && 'Desain template brand'}
-                            {step === 4 && 'Tipografi brand'}
+                            {step === 3 && 'Tipografi brand'}
+                            {step === 4 && 'Desain template brand'}
                         </h2>
                         <p className="text-slate-500 mt-1 text-sm">
                             Langkah {step} dari {STEPS.length}
@@ -796,8 +796,8 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                     })()}
 
 
-                    {/* Step 3 — Template Desain */}
-                    {step === 3 && (
+                    {/* Step 3 — Tipografi Brand (swapped) */}
+                    {step === 4 && (
                         <div className="space-y-4 animation-fade-in">
                             {/* Upload Desain — always shown as default */}
                             <div className="space-y-4">
@@ -1062,8 +1062,8 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                         </div>
                     )}
 
-                    {/* Step 4 — Tipografi Brand */}
-                    {step === 4 && (() => {
+                    {/* Step 4 — Template Desain (swapped) */}
+                    {step === 3 && (() => {
                         const selectedTypo = TYPOGRAPHY_PRESETS.find(t => t.id === localBrand.typography?.preset) || TYPOGRAPHY_PRESETS[0];
                         const toggleTypo = (id) => {
                             setLocalBrand({ ...localBrand, typography: { ...(localBrand.typography || {}), preset: id } });
