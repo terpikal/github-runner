@@ -483,7 +483,7 @@ const ResultsView = ({ generatedResults, setCurrentView, setPreviewPost, setEdit
                                 <button onClick={() => setPreviewPost(post)} className="p-1.5 bg-white border border-slate-200 rounded-md text-slate-500 hover:text-[#13c8ec] transition-colors shadow-sm" title="Pratinjau Penuh" >
                                     <Eye className="w-3.5 h-3.5" />
                                 </button>
-                                < span className="text-xs px-2 py-1 bg-white border border-slate-200 rounded-full text-slate-600 capitalize" > {post.type === 'carousel' ? 'Karosel' : post.type === 'video' ? 'Video' : 'Single'} </span>
+                                < span className="text-xs font-bold px-3 py-1 bg-slate-100 border border-slate-200 rounded-full text-slate-500 capitalize" > {post.type === 'carousel' ? 'Karosel' : post.type === 'video' ? 'Video' : 'Single'} </span>
                             </div>
                         </div>
                         < div className="p-4 flex-1 flex justify-center" > <InstagramPostMock post={post} brand={brandDNA} /> </div>
@@ -762,11 +762,11 @@ const DayDetailModal = ({ day, year, month, onClose, onEditPost, library, onGoTo
                                             {/* Meta */}
                                             <div className="flex-1 min-w-0">
                                                 <div className="flex items-center gap-2 mb-1 flex-wrap">
-                                                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border border-slate-200 bg-slate-100 text-slate-500">
+                                                    <span className="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border border-slate-200 bg-slate-100 text-slate-500">
                                                         {post.type === 'carousel' ? 'Karosel' : 'Single'}
                                                     </span>
                                                     {post.goal && (
-                                                        <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md border ${post.goal.color}`}>
+                                                        <span className={`text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full border ${post.goal.color}`}>
                                                             {post.goal.name}
                                                         </span>
                                                     )}
@@ -818,7 +818,7 @@ const DayDetailModal = ({ day, year, month, onClose, onEditPost, library, onGoTo
                                                         <Clock className="w-3 h-3" /> {p.selectedTime || p.recommendedTime}
                                                     </span>
                                                 )}
-                                                <span className="text-[10px] font-semibold text-slate-400 bg-white border border-slate-200 px-2.5 py-1 rounded-md flex items-center gap-1">
+                                                <span className="text-[10px] font-bold text-slate-500 bg-slate-100 border border-slate-200 px-3 py-1 rounded-full flex items-center gap-1">
                                                     {p.format === 'Carousel' ? <Layout className="w-3 h-3" /> : <ImageIcon className="w-3 h-3" />}
                                                     {p.format || (p.type === 'carousel' ? 'Carousel' : 'Single Image')}
                                                 </span>
