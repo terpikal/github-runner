@@ -405,7 +405,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                 : 'border-slate-100 hover:border-primary/30 bg-slate-50 text-slate-600'
                                                 }`}
                                         >
-                                            <div className={`p-1.5 rounded-lg ${localBrand.category === cat.label ? 'bg-primary/20' : 'bg-white'}`}>
+                                            <div className={`p-1.5 rounded-xl ${localBrand.category === cat.label ? 'bg-primary/20' : 'bg-white'}`}>
                                                 {cat.icon}
                                             </div>
                                             <span className="text-xs font-bold leading-tight">{cat.label}</span>
