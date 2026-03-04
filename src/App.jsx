@@ -1274,6 +1274,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
 
     const [openActionMenuId, setOpenActionMenuId] = useState(null);
     const [moreMenuId, setMoreMenuId] = useState(null);
+    const [deleteConfirmPost, setDeleteConfirmPost] = useState(null);
     const [isDraftingPlan, setIsDraftingPlan] = useState(false);
     const [editingPlannerPost, setEditingPlannerPost] = useState(null);
 
@@ -1817,7 +1818,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                                 </button>
                                                 <div className="border-t border-slate-100" />
                                                 <button 
-                                                    onClick={() => { setMoreMenuId(null); setLibrary(library.filter(p => p.id !== post.id)); }}
+                                                    onClick={() => { setMoreMenuId(null); setDeleteConfirmPost(post); }}
                                                     className="w-full flex items-center gap-3 px-4 py-3.5 text-sm font-semibold text-red-500 hover:bg-red-50 transition-colors"
                                                 >
                                                     <Trash2 className="w-4 h-4" /> Hapus
@@ -1827,6 +1828,33 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                     </ModalPortal>
                                 );
                             })()}
+
+                            {/* Delete Confirmation Modal */}
+                            {deleteConfirmPost && (
+                                <ModalPortal>
+                                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+                                        <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setDeleteConfirmPost(null)}></div>
+                                        <div className="bg-white rounded-[2rem] p-8 w-full max-w-sm relative z-10 shadow-2xl animation-fade-in text-center">
+                                            <div className="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center mx-auto mb-5">
+                                                <Trash2 className="w-7 h-7 text-red-500" />
+                                            </div>
+                                            <h3 className="text-xl font-black text-slate-900 mb-2 tracking-tight">Hapus Konten?</h3>
+                                            <p className="text-sm text-slate-500 mb-8 leading-relaxed">Konten ini akan dihapus secara permanen dan tidak bisa dikembalikan.</p>
+                                            <div className="flex gap-3">
+                                                <button onClick={() => setDeleteConfirmPost(null)} className="flex-1 px-5 py-3 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors">
+                                                    Batal
+                                                </button>
+                                                <button 
+                                                    onClick={() => { setLibrary(library.filter(p => p.id !== deleteConfirmPost.id)); setDeleteConfirmPost(null); }}
+                                                    className="flex-1 px-5 py-3 rounded-xl font-bold text-white bg-red-500 hover:bg-red-600 shadow-lg shadow-red-500/25 transition-all"
+                                                >
+                                                    Ya, Hapus
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ModalPortal>
+                            )}
                             </div>
                                     )}
                                 </div>
