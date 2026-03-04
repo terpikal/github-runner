@@ -543,7 +543,7 @@ const ResultsView = ({ generatedResults, setCurrentView, setPreviewPost, setEdit
                         <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50" >
                             <span className="text-xs font-bold uppercase tracking-wider text-slate-500" > Opsi {idx + 1} </span>
                             < div className="flex items-center gap-2" >
-                                <button onClick={() => setPreviewPost(post)} className="p-1.5 bg-white border border-slate-200 rounded-md text-slate-500 hover:text-primary transition-colors shadow-sm" title="Pratinjau Penuh" >
+                                <button onClick={() => setPreviewPost(post)} className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-primary-darker transition-all border border-slate-100" title="Pratinjau Penuh" >
                                     <Eye className="w-3.5 h-3.5" />
                                 </button>
                                 < span className="text-xs font-bold px-3 py-1 bg-slate-100 border border-slate-200 rounded-full text-slate-500 capitalize" > {post.type === 'carousel' ? 'Karosel' : post.type === 'video' ? 'Video' : 'Single'} </span>
