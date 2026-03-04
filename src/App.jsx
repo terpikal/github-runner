@@ -529,34 +529,66 @@ const GeneratingView = ({ brandDNA }) => (
 );
 
 const ResultsView = ({ generatedResults, setCurrentView, setPreviewPost, setEditingPost, handleSaveToLibrary, brandDNA }) => (
-    <div className="max-w-6xl mx-auto animation-fade-in pb-20 md:pb-0" >
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8" >
-            <div>
-                <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2" > <CheckCircle2 className="w-6 h-6 text-green-500" /> Desain Selesai </h1>
-                < p className="text-slate-500 mt-1" > Berikut adalah 4 variasi desain berdasarkan instruksi Anda.</p>
-            </div>
-            < button onClick={() => setCurrentView('dashboard')} className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 rounded-lg text-slate-700 hover:bg-slate-50 font-medium text-sm transition-colors" > <RotateCcw className="w-4 h-4" /> Buat Instruksi Baru </button>
-        </div>
-        < div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-6" >
-            {
-                generatedResults.map((post, idx) => (
-                    <div key={post.id} className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col" >
-                        <div className="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50" >
-                            <span className="text-xs font-bold uppercase tracking-wider text-slate-500" > Opsi {idx + 1} </span>
-                            < div className="flex items-center gap-2" >
-                                <button onClick={() => setPreviewPost(post)} className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 hover:text-primary-darker transition-all border border-slate-100" title="Pratinjau Penuh" >
-                                    <Eye className="w-3.5 h-3.5" />
-                                </button>
-                                < span className="text-xs font-bold px-3 py-1 bg-slate-100 border border-slate-200 rounded-full text-slate-500 capitalize" > {post.type === 'carousel' ? 'Karosel' : post.type === 'video' ? 'Video' : 'Single'} </span>
-                            </div>
+    <div className="max-w-6xl mx-auto animation-fade-in pb-20 md:pb-0">
+        {/* Hero Header */}
+        <div className="relative mb-10 p-8 rounded-[2rem] bg-gradient-to-br from-primary/10 via-white to-primary/5 border border-primary/15 overflow-hidden">
+            <div className="absolute top-0 right-0 w-40 h-40 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl translate-y-1/2 -translate-x-1/4"></div>
+            <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-5">
+                <div className="flex items-start gap-4">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-primary-dark flex items-center justify-center shadow-primary-sm shrink-0">
+                        <CheckCircle2 className="w-7 h-7 text-white" />
+                    </div>
+                    <div>
+                        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-bold mb-2">
+                            <Sparkles className="w-3 h-3" /> Berhasil dibuat
                         </div>
-                        < div className="p-4 flex-1 flex justify-center" > <InstagramPostMock post={post} brand={brandDNA} /> </div>
-                        < div className="p-4 bg-slate-50 border-t border-slate-100 grid grid-cols-2 gap-2" >
-                            <button onClick={() => { setEditingPost(post); setCurrentView('editor'); }} className="py-2.5 flex items-center justify-center gap-2 bg-white border border-slate-200 rounded-xl text-slate-700 font-medium hover:bg-slate-100 text-sm" > <Edit3 className="w-4 h-4" /> Edit Teks </button>
-                            < button onClick={() => handleSaveToLibrary(post)} className="py-2.5 flex items-center justify-center gap-2 bg-primary rounded-xl text-white font-medium hover:bg-primary-dark text-sm" > <Download className="w-4 h-4" /> Simpan </button>
+                        <h1 className="text-2xl font-black text-slate-900 tracking-tight">Desain Selesai! 🎉</h1>
+                        <p className="text-slate-500 mt-1 text-sm">Berikut {generatedResults.length} variasi desain berdasarkan instruksi Anda</p>
+                    </div>
+                </div>
+                <button onClick={() => setCurrentView('dashboard')} className="flex items-center gap-2 px-5 py-3 bg-white border border-slate-200 rounded-2xl text-slate-700 hover:bg-slate-50 hover:border-primary/30 font-bold text-sm transition-all shadow-sm hover:shadow-md group">
+                    <RotateCcw className="w-4 h-4 group-hover:rotate-[-180deg] transition-transform duration-500" /> Buat Instruksi Baru
+                </button>
+            </div>
+        </div>
+
+        {/* Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
+            {generatedResults.map((post, idx) => (
+                <div key={post.id} className="group bg-white rounded-[1.5rem] border border-slate-100 overflow-hidden shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-300 flex flex-col hover:-translate-y-1">
+                    {/* Card Header */}
+                    <div className="p-4 flex justify-between items-center">
+                        <div className="flex items-center gap-2">
+                            <span className="w-8 h-8 rounded-xl bg-gradient-to-br from-primary/15 to-primary/5 flex items-center justify-center text-xs font-black text-primary-darker">{idx + 1}</span>
+                            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Opsi</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <button onClick={() => setPreviewPost(post)} className="p-2 rounded-xl bg-slate-50 hover:bg-primary/10 text-slate-400 hover:text-primary transition-all" title="Pratinjau Penuh">
+                                <Eye className="w-4 h-4" />
+                            </button>
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary-darker border border-primary/20 capitalize">
+                                {post.type === 'carousel' ? 'Karosel' : post.type === 'video' ? 'Video' : 'Single'}
+                            </span>
                         </div>
                     </div>
-                ))}
+
+                    {/* Post Preview */}
+                    <div className="px-4 pb-2 flex-1 flex justify-center">
+                        <InstagramPostMock post={post} brand={brandDNA} />
+                    </div>
+
+                    {/* Card Actions */}
+                    <div className="p-4 pt-3 grid grid-cols-2 gap-2">
+                        <button onClick={() => { setEditingPost(post); setCurrentView('editor'); }} className="py-2.5 flex items-center justify-center gap-2 bg-slate-50 border border-slate-100 rounded-xl text-slate-600 font-bold hover:bg-slate-100 hover:border-slate-200 text-sm transition-all">
+                            <Edit3 className="w-3.5 h-3.5" /> Edit Teks
+                        </button>
+                        <button onClick={() => handleSaveToLibrary(post)} className="py-2.5 flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-primary-dark rounded-xl text-white font-bold hover:from-primary-dark hover:to-primary-darker text-sm transition-all shadow-primary-sm hover:shadow-primary-lg">
+                            <Download className="w-3.5 h-3.5" /> Simpan
+                        </button>
+                    </div>
+                </div>
+            ))}
         </div>
     </div>
 );
