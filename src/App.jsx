@@ -1575,15 +1575,6 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                         />
                                     </div>
 
-                                    {/* Stats Bar */}
-                                    <div className="flex items-center gap-3 flex-wrap">
-                                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white border border-slate-200 text-xs font-bold text-slate-600 shadow-sm">
-                                            <Layout className="w-3.5 h-3.5 text-slate-400" /> {filteredLibrary.length} Konten
-                                        </span>
-                                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-bold text-emerald-600">
-                                            <Clock className="w-3.5 h-3.5" /> {filteredLibrary.filter(p => p.status === 'scheduled').length} Terjadwal
-                                        </span>
-                                    </div>
 
                                     {filteredLibrary.length === 0 ? (
                                         <div className="text-center py-16 bg-white rounded-[2rem] border-2 border-dashed border-slate-200">
