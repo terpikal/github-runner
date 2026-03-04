@@ -1750,6 +1750,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                     </div>
 
                                     <div className="p-6 md:p-8 pt-4">
+                                    {(() => {
                                         const allPosts = [];
                                         if (hasPlanForCurrentMonth) {
                                             monthPlan.weeks.forEach(w => {
@@ -1996,6 +1997,7 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
                                             />
                                         </ModalPortal>
                                     )}
+                                    })()}
                                     </div>
                                 </div>
                             ) : (
