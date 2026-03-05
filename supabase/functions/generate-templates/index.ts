@@ -125,6 +125,87 @@ REQUIREMENTS:
 DO NOT include any real text, words, or letters in the image. Use colored rectangles or lines as text placeholders.`;
 }
 
+/**
+ * Compress a base64 image using ImageMagick WASM.
+ * Resizes to max dimensions, converts to JPEG with quality reduction.
+ * Target: ≤200KB per image.
+ */
+async function compressBase64Image(
+  base64Url: string,
+  maxWidth: number = 1080,
+  maxHeight: number = 1920,
+  targetSizeKB: number = 200,
+): Promise<string> {
+  await ensureMagick();
+
+  // Extract raw base64 data
+  const base64Data = base64Url.includes(",") ? base64Url.split(",")[1] : base64Url;
+  const binaryStr = atob(base64Data);
+  const bytes = new Uint8Array(binaryStr.length);
+  for (let i = 0; i < binaryStr.length; i++) {
+    bytes[i] = binaryStr.charCodeAt(i);
+  }
+
+  const originalSizeKB = Math.round(bytes.length / 1024);
+  console.log(`[compress] Original size: ${originalSizeKB}KB`);
+
+  let resultBytes: Uint8Array | null = null;
+
+  ImageMagick.read(bytes, (image) => {
+    // Resize if larger than max dimensions
+    if (image.width > maxWidth || image.height > maxHeight) {
+      const geometry = new MagickGeometry(maxWidth, maxHeight);
+      geometry.ignoreAspectRatio = false;
+      image.resize(geometry);
+      console.log(`[compress] Resized to ${image.width}x${image.height}`);
+    }
+
+    // Strip metadata
+    image.strip();
+
+    // Iterative quality reduction to hit target size
+    let quality = 80;
+    const minQuality = 40;
+
+    while (quality >= minQuality) {
+      image.quality = quality;
+      image.write(MagickFormat.Jpeg, (data) => {
+        const sizeKB = Math.round(data.length / 1024);
+        console.log(`[compress] Quality ${quality} → ${sizeKB}KB`);
+        if (sizeKB <= targetSizeKB || quality <= minQuality) {
+          resultBytes = new Uint8Array(data);
+        }
+      });
+      if (resultBytes && resultBytes.length / 1024 <= targetSizeKB) break;
+      quality -= 10;
+    }
+
+    // Fallback: if still too large, use the last attempt
+    if (!resultBytes) {
+      image.quality = minQuality;
+      image.write(MagickFormat.Jpeg, (data) => {
+        resultBytes = new Uint8Array(data);
+      });
+    }
+  });
+
+  if (!resultBytes) {
+    console.warn("[compress] Compression failed, returning original");
+    return base64Url;
+  }
+
+  // Convert back to base64
+  let binary = "";
+  for (let i = 0; i < resultBytes.length; i++) {
+    binary += String.fromCharCode(resultBytes[i]);
+  }
+  const compressedBase64 = btoa(binary);
+  const finalSizeKB = Math.round(resultBytes.length / 1024);
+  console.log(`[compress] Final: ${finalSizeKB}KB (${Math.round((1 - finalSizeKB / originalSizeKB) * 100)}% reduction)`);
+
+  return `data:image/jpeg;base64,${compressedBase64}`;
+}
+
 async function generateTemplateImage(
   prompt: string,
   apiKey: string,
@@ -133,7 +214,6 @@ async function generateTemplateImage(
   const messages: any[] = [];
 
   if (businessLogoBase64) {
-    // If logo available, use it as reference for brand consistency
     messages.push({
       role: "user",
       content: [
@@ -172,7 +252,12 @@ async function generateTemplateImage(
 
   const data = await response.json();
   const imageUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
-  return imageUrl || null;
+  if (!imageUrl) return null;
+
+  // Compress before returning
+  console.log("[generate] Compressing AI output...");
+  const compressed = await compressBase64Image(imageUrl);
+  return compressed;
 }
 
 serve(async (req) => {
