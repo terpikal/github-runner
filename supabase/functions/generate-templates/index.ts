@@ -66,10 +66,12 @@ interface BusinessData {
 }
 
 interface TemplateRequest {
-  business_id: string;
+  business_id?: string;
+  business_data?: BusinessData;
   formats: string[];
   variations_per_format: number;
   style_preferences?: string;
+  save_to_db?: boolean;
 }
 
 const FORMAT_CONFIGS: Record<string, { width: number; height: number; label: string; ratio: string }> = {
@@ -207,61 +209,72 @@ serve(async (req) => {
     }
 
     const body: TemplateRequest = await req.json();
-    const { business_id, formats, variations_per_format = 3 } = body;
+    const { business_id, business_data, formats, variations_per_format = 3, save_to_db = true } = body;
 
-    if (!business_id || !formats || formats.length === 0) {
-      return new Response(JSON.stringify({ error: "business_id and formats are required" }), {
+    if ((!business_id && !business_data) || !formats || formats.length === 0) {
+      return new Response(JSON.stringify({ error: "business_id or business_data, and formats are required" }), {
         status: 400,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
     }
 
-    // Fetch business data
-    const { data: business, error: bizError } = await supabaseAuth
-      .from("businesses")
-      .select("*")
-      .eq("id", business_id)
-      .eq("user_id", user.id)
-      .single();
+    let business: BusinessData;
 
-    if (bizError || !business) {
-      return new Response(JSON.stringify({ error: "Business not found" }), {
-        status: 404,
-        headers: { ...corsHeaders, "Content-Type": "application/json" },
-      });
+    if (business_data) {
+      // Use inline business data (no DB fetch needed)
+      business = business_data;
+    } else {
+      // Fetch business data from DB
+      const { data: bizData, error: bizError } = await supabaseAuth
+        .from("businesses")
+        .select("*")
+        .eq("id", business_id!)
+        .eq("user_id", user.id)
+        .single();
+
+      if (bizError || !bizData) {
+        return new Response(JSON.stringify({ error: "Business not found" }), {
+          status: 404,
+          headers: { ...corsHeaders, "Content-Type": "application/json" },
+        });
+      }
+      business = bizData as BusinessData;
     }
 
-    // Check cache: if templates already exist for this business+format combo, return cached
+    // Check cache only if we have a business_id and save_to_db is true
     const requestedFormats = formats.slice(0, 3); // max 3 formats
     const cachedResults: any[] = [];
     const formatsToGenerate: string[] = [];
 
-    for (const format of requestedFormats) {
-      const { data: existing } = await supabaseAuth
-        .from("design_templates")
-        .select("*")
-        .eq("business_id", business_id)
-        .eq("user_id", user.id)
-        .eq("format", format)
-        .order("created_at", { ascending: false })
-        .limit(variations_per_format);
+    if (business_id && save_to_db) {
+      for (const format of requestedFormats) {
+        const { data: existing } = await supabaseAuth
+          .from("design_templates")
+          .select("*")
+          .eq("business_id", business_id)
+          .eq("user_id", user.id)
+          .eq("format", format)
+          .order("created_at", { ascending: false })
+          .limit(variations_per_format);
 
-      if (existing && existing.length >= variations_per_format) {
-        // Cache hit — use existing templates
-        for (const t of existing) {
-          cachedResults.push({
-            id: t.id,
-            format: t.format,
-            width: t.width,
-            height: t.height,
-            image_base64: t.image_base64,
-            variation_index: t.style_metadata?.variation_index ?? 0,
-            cached: true,
-          });
+        if (existing && existing.length >= variations_per_format) {
+          for (const t of existing) {
+            cachedResults.push({
+              id: t.id,
+              format: t.format,
+              width: t.width,
+              height: t.height,
+              image_base64: t.image_base64,
+              variation_index: t.style_metadata?.variation_index ?? 0,
+              cached: true,
+            });
+          }
+        } else {
+          formatsToGenerate.push(format);
         }
-      } else {
-        formatsToGenerate.push(format);
       }
+    } else {
+      formatsToGenerate.push(...requestedFormats);
     }
 
     // Generate new templates sequentially (1 by 1) to avoid rate limits
@@ -302,46 +315,59 @@ serve(async (req) => {
             continue;
           }
 
-          // Save to database (acts as cache for future requests)
-          const { data: template, error: insertError } = await supabaseAuth
-            .from("design_templates")
-            .insert({
-              user_id: user.id,
-              business_id: business_id,
-              image_base64: imageBase64,
+          if (save_to_db && business_id) {
+            // Save to database (acts as cache for future requests)
+            const { data: template, error: insertError } = await supabaseAuth
+              .from("design_templates")
+              .insert({
+                user_id: user.id,
+                business_id: business_id,
+                image_base64: imageBase64,
+                format: format,
+                width: config.width,
+                height: config.height,
+                prompt_used: prompt,
+                style_metadata: {
+                  brand_colors: {
+                    primary: business.color_primary,
+                    secondary: business.color_secondary,
+                    tertiary: business.color_tertiary,
+                  },
+                  color_schema: business.color_schema,
+                  typography_preset: business.typography_preset,
+                  variation_index: i,
+                },
+              })
+              .select()
+              .single();
+
+            if (insertError) {
+              console.error("Insert error:", insertError);
+              errors.push(`DB insert failed for ${format} variation ${i + 1}`);
+              continue;
+            }
+
+            results.push({
+              id: template.id,
               format: format,
               width: config.width,
               height: config.height,
-              prompt_used: prompt,
-              style_metadata: {
-                brand_colors: {
-                  primary: business.color_primary,
-                  secondary: business.color_secondary,
-                  tertiary: business.color_tertiary,
-                },
-                color_schema: business.color_schema,
-                typography_preset: business.typography_preset,
-                variation_index: i,
-              },
-            })
-            .select()
-            .single();
-
-          if (insertError) {
-            console.error("Insert error:", insertError);
-            errors.push(`DB insert failed for ${format} variation ${i + 1}`);
-            continue;
+              image_base64: imageBase64,
+              variation_index: i,
+              cached: false,
+            });
+          } else {
+            // Return without saving to DB
+            results.push({
+              id: crypto.randomUUID(),
+              format: format,
+              width: config.width,
+              height: config.height,
+              image_base64: imageBase64,
+              variation_index: i,
+              cached: false,
+            });
           }
-
-          results.push({
-            id: template.id,
-            format: format,
-            width: config.width,
-            height: config.height,
-            image_base64: imageBase64,
-            variation_index: i,
-            cached: false,
-          });
         } catch (err) {
           const msg = err instanceof Error ? err.message : "Unknown error";
           if (msg === "RATE_LIMITED") {
@@ -351,12 +377,16 @@ serve(async (req) => {
               const prompt = buildPrompt(business as BusinessData, format, i);
               const retryImage = await generateTemplateImage(prompt, LOVABLE_API_KEY, business.logo_base64 || undefined);
               if (retryImage) {
-                const { data: t } = await supabaseAuth.from("design_templates").insert({
-                  user_id: user.id, business_id, image_base64: retryImage, format,
-                  width: config.width, height: config.height, prompt_used: prompt,
-                  style_metadata: { variation_index: i },
-                }).select().single();
-                if (t) results.push({ id: t.id, format, width: config.width, height: config.height, image_base64: retryImage, variation_index: i, cached: false });
+                if (save_to_db && business_id) {
+                  const { data: t } = await supabaseAuth.from("design_templates").insert({
+                    user_id: user.id, business_id, image_base64: retryImage, format,
+                    width: config.width, height: config.height, prompt_used: prompt,
+                    style_metadata: { variation_index: i },
+                  }).select().single();
+                  if (t) results.push({ id: t.id, format, width: config.width, height: config.height, image_base64: retryImage, variation_index: i, cached: false });
+                } else {
+                  results.push({ id: crypto.randomUUID(), format, width: config.width, height: config.height, image_base64: retryImage, variation_index: i, cached: false });
+                }
                 continue;
               }
             } catch {
