@@ -672,8 +672,8 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Logo Bisnis (Opsional)</label>
                                 <label className="flex items-center gap-4 p-4 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-primary/50 transition-all cursor-pointer group">
                                     <div className="w-16 h-16 rounded-xl bg-white border border-slate-200 flex items-center justify-center overflow-hidden shadow-sm shrink-0 group-hover:scale-105 transition-transform">
-                                        {localBrand.logo ? (
-                                            <img src={localBrand.logo} alt="Logo" className="w-full h-full object-cover" />
+                                        {(localBrand.logoPreview || localBrand.logo) ? (
+                                            <img src={localBrand.logoPreview || localBrand.logo} alt="Logo" className="w-full h-full object-cover" />
                                         ) : (
                                             <ImageIcon className="w-6 h-6 text-slate-400 group-hover:text-primary" />
                                         )}
@@ -689,10 +689,26 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                         type="file"
                                         accept="image/*"
                                         className="hidden"
-                                        onChange={(e) => {
+                                        onChange={async (e) => {
                                             if (e.target.files && e.target.files[0]) {
-                                                const url = URL.createObjectURL(e.target.files[0]);
-                                                setLocalBrand({ ...localBrand, logo: url });
+                                                const file = e.target.files[0];
+                                                const previewUrl = URL.createObjectURL(file);
+                                                setLocalBrand(prev => ({ ...prev, logoPreview: previewUrl }));
+                                                try {
+                                                    const { compressImage } = await import('./utils/imageCompression');
+                                                    const compressed = await compressImage(file, { maxWidth: 512, maxHeight: 512, quality: 0.8 });
+                                                    const reader = new FileReader();
+                                                    reader.onloadend = () => {
+                                                        setLocalBrand(prev => ({ ...prev, logo: reader.result, logoPreview: previewUrl }));
+                                                    };
+                                                    reader.readAsDataURL(compressed);
+                                                } catch {
+                                                    const reader = new FileReader();
+                                                    reader.onloadend = () => {
+                                                        setLocalBrand(prev => ({ ...prev, logo: reader.result, logoPreview: previewUrl }));
+                                                    };
+                                                    reader.readAsDataURL(file);
+                                                }
                                             }
                                         }}
                                     />

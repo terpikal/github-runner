@@ -120,6 +120,10 @@ async function generateTemplateImage(
   apiKey: string,
   businessLogoBase64?: string
 ): Promise<string | null> {
+  // Only use logo if it's actual base64 data, not a blob URL
+  if (businessLogoBase64 && (businessLogoBase64.startsWith('blob:') || businessLogoBase64.startsWith('http'))) {
+    businessLogoBase64 = undefined;
+  }
   const messages: any[] = [];
 
   if (businessLogoBase64) {
