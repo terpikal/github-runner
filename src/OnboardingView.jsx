@@ -983,15 +983,12 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                             </button>
                                         </div>
                                         <div className="grid grid-cols-3 gap-2">
-                                            {TEMPLATES.filter(tpl => (localBrand.designTemplate || []).includes(tpl.id)).map(tpl => (
+                                            {generatedTemplates.filter(tpl => (localBrand.designTemplate || []).includes(tpl.id)).map(tpl => (
                                                 <div key={tpl.id} className="rounded-xl border border-primary/20 overflow-hidden bg-white shadow-sm">
-                                                    <div className="w-full aspect-[4/3] flex items-center justify-center" style={{ backgroundColor: tpl.bg }}>
-                                                        <div className="flex gap-0.5">
-                                                            <div className="w-4 h-4 rounded" style={{ backgroundColor: tpl.content }} />
-                                                            <div className="w-3 h-4 rounded" style={{ backgroundColor: tpl.accent }} />
-                                                        </div>
+                                                    <div className="w-full aspect-square">
+                                                        <img src={tpl.image_base64} alt="Template" className="w-full h-full object-cover" />
                                                     </div>
-                                                    <p className="text-[10px] font-bold text-slate-600 text-center py-1.5 truncate px-1">{tpl.name}</p>
+                                                    <p className="text-[10px] font-bold text-slate-600 text-center py-1.5 truncate px-1">Template {(tpl.variation_index ?? 0) + 1}</p>
                                                 </div>
                                             ))}
                                         </div>
