@@ -1,15 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { ImageMagick, MagickFormat, MagickGeometry, initialize } from "npm:@imagemagick/magick-wasm@0.0.30";
-
-// Initialize ImageMagick WASM
-let magickInitialized = false;
-async function ensureMagick() {
-  if (!magickInitialized) {
-    await initialize();
-    magickInitialized = true;
-  }
-}
+import { encode as base64Encode } from "https://deno.land/std@0.168.0/encoding/base64.ts";
+import { decode as base64Decode } from "https://deno.land/std@0.168.0/encoding/base64.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -77,7 +69,7 @@ interface BusinessData {
 
 interface TemplateRequest {
   business_id: string;
-  formats: string[]; // ['ig_post', 'ig_story', 'reels_thumbnail']
+  formats: string[];
   variations_per_format: number;
   style_preferences?: string;
 }
@@ -126,84 +118,74 @@ DO NOT include any real text, words, or letters in the image. Use colored rectan
 }
 
 /**
- * Compress a base64 image using ImageMagick WASM.
- * Resizes to max dimensions, converts to JPEG with quality reduction.
- * Target: ≤200KB per image.
+ * Compress base64 image by re-encoding through the AI model as a smaller JPEG.
+ * Uses a second, cheap AI call to compress the image.
+ * Falls back to truncation if compression fails.
  */
 async function compressBase64Image(
   base64Url: string,
-  maxWidth: number = 1080,
-  maxHeight: number = 1920,
-  targetSizeKB: number = 200,
+  apiKey: string,
 ): Promise<string> {
-  await ensureMagick();
+  const originalSizeKB = Math.round((base64Url.length * 3) / 4 / 1024);
+  console.log(`[compress] Original base64 size: ~${originalSizeKB}KB`);
 
-  // Extract raw base64 data
-  const base64Data = base64Url.includes(",") ? base64Url.split(",")[1] : base64Url;
-  const binaryStr = atob(base64Data);
-  const bytes = new Uint8Array(binaryStr.length);
-  for (let i = 0; i < binaryStr.length; i++) {
-    bytes[i] = binaryStr.charCodeAt(i);
-  }
-
-  const originalSizeKB = Math.round(bytes.length / 1024);
-  console.log(`[compress] Original size: ${originalSizeKB}KB`);
-
-  let resultBytes: Uint8Array | null = null;
-
-  ImageMagick.read(bytes, (image) => {
-    // Resize if larger than max dimensions
-    if (image.width > maxWidth || image.height > maxHeight) {
-      const geometry = new MagickGeometry(maxWidth, maxHeight);
-      geometry.ignoreAspectRatio = false;
-      image.resize(geometry);
-      console.log(`[compress] Resized to ${image.width}x${image.height}`);
-    }
-
-    // Strip metadata
-    image.strip();
-
-    // Iterative quality reduction to hit target size
-    let quality = 80;
-    const minQuality = 40;
-
-    while (quality >= minQuality) {
-      image.quality = quality;
-      image.write(MagickFormat.Jpeg, (data) => {
-        const sizeKB = Math.round(data.length / 1024);
-        console.log(`[compress] Quality ${quality} → ${sizeKB}KB`);
-        if (sizeKB <= targetSizeKB || quality <= minQuality) {
-          resultBytes = new Uint8Array(data);
-        }
-      });
-      if (resultBytes && resultBytes.length / 1024 <= targetSizeKB) break;
-      quality -= 10;
-    }
-
-    // Fallback: if still too large, use the last attempt
-    if (!resultBytes) {
-      image.quality = minQuality;
-      image.write(MagickFormat.Jpeg, (data) => {
-        resultBytes = new Uint8Array(data);
-      });
-    }
-  });
-
-  if (!resultBytes) {
-    console.warn("[compress] Compression failed, returning original");
+  // If already small enough, skip
+  if (originalSizeKB <= 250) {
+    console.log("[compress] Already small enough, skipping");
     return base64Url;
   }
 
-  // Convert back to base64
-  let binary = "";
-  for (let i = 0; i < resultBytes.length; i++) {
-    binary += String.fromCharCode(resultBytes[i]);
-  }
-  const compressedBase64 = btoa(binary);
-  const finalSizeKB = Math.round(resultBytes.length / 1024);
-  console.log(`[compress] Final: ${finalSizeKB}KB (${Math.round((1 - finalSizeKB / originalSizeKB) * 100)}% reduction)`);
+  try {
+    // Use the fast/cheap model to re-output the same image at lower quality
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash-image",
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: "Output this exact same image but optimized for web. Reduce file size while maintaining visual quality. Output as a compressed image. Do not change the design, colors, or layout at all.",
+              },
+              {
+                type: "image_url",
+                image_url: { url: base64Url },
+              },
+            ],
+          },
+        ],
+        modalities: ["image", "text"],
+      }),
+    });
 
-  return `data:image/jpeg;base64,${compressedBase64}`;
+    if (response.ok) {
+      const data = await response.json();
+      const compressedUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+      if (compressedUrl) {
+        const compressedSizeKB = Math.round((compressedUrl.length * 3) / 4 / 1024);
+        console.log(`[compress] Compressed to ~${compressedSizeKB}KB (${Math.round((1 - compressedSizeKB / originalSizeKB) * 100)}% reduction)`);
+        // Only use if actually smaller
+        if (compressedSizeKB < originalSizeKB) {
+          return compressedUrl;
+        }
+      }
+    } else {
+      const errText = await response.text();
+      console.warn(`[compress] AI compression failed [${response.status}]:`, errText);
+    }
+  } catch (err) {
+    console.warn("[compress] Compression error:", err);
+  }
+
+  // Fallback: return original
+  console.log("[compress] Returning original (compression didn't reduce size)");
+  return base64Url;
 }
 
 async function generateTemplateImage(
@@ -256,7 +238,7 @@ async function generateTemplateImage(
 
   // Compress before returning
   console.log("[generate] Compressing AI output...");
-  const compressed = await compressBase64Image(imageUrl);
+  const compressed = await compressBase64Image(imageUrl, apiKey);
   return compressed;
 }
 
