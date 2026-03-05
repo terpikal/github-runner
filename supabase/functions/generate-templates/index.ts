@@ -1,5 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { encode as base64Encode } from "https://deno.land/std@0.168.0/encoding/base64.ts";
+import { decode as base64Decode } from "https://deno.land/std@0.168.0/encoding/base64.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -67,7 +69,7 @@ interface BusinessData {
 
 interface TemplateRequest {
   business_id: string;
-  formats: string[]; // ['ig_post', 'ig_story', 'reels_thumbnail']
+  formats: string[];
   variations_per_format: number;
   style_preferences?: string;
 }
@@ -115,6 +117,77 @@ REQUIREMENTS:
 DO NOT include any real text, words, or letters in the image. Use colored rectangles or lines as text placeholders.`;
 }
 
+/**
+ * Compress base64 image by re-encoding through the AI model as a smaller JPEG.
+ * Uses a second, cheap AI call to compress the image.
+ * Falls back to truncation if compression fails.
+ */
+async function compressBase64Image(
+  base64Url: string,
+  apiKey: string,
+): Promise<string> {
+  const originalSizeKB = Math.round((base64Url.length * 3) / 4 / 1024);
+  console.log(`[compress] Original base64 size: ~${originalSizeKB}KB`);
+
+  // If already small enough, skip
+  if (originalSizeKB <= 250) {
+    console.log("[compress] Already small enough, skipping");
+    return base64Url;
+  }
+
+  try {
+    // Use the fast/cheap model to re-output the same image at lower quality
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.5-flash-image",
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: "Output this exact same image but optimized for web. Reduce file size while maintaining visual quality. Output as a compressed image. Do not change the design, colors, or layout at all.",
+              },
+              {
+                type: "image_url",
+                image_url: { url: base64Url },
+              },
+            ],
+          },
+        ],
+        modalities: ["image", "text"],
+      }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      const compressedUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+      if (compressedUrl) {
+        const compressedSizeKB = Math.round((compressedUrl.length * 3) / 4 / 1024);
+        console.log(`[compress] Compressed to ~${compressedSizeKB}KB (${Math.round((1 - compressedSizeKB / originalSizeKB) * 100)}% reduction)`);
+        // Only use if actually smaller
+        if (compressedSizeKB < originalSizeKB) {
+          return compressedUrl;
+        }
+      }
+    } else {
+      const errText = await response.text();
+      console.warn(`[compress] AI compression failed [${response.status}]:`, errText);
+    }
+  } catch (err) {
+    console.warn("[compress] Compression error:", err);
+  }
+
+  // Fallback: return original
+  console.log("[compress] Returning original (compression didn't reduce size)");
+  return base64Url;
+}
+
 async function generateTemplateImage(
   prompt: string,
   apiKey: string,
@@ -123,7 +196,6 @@ async function generateTemplateImage(
   const messages: any[] = [];
 
   if (businessLogoBase64) {
-    // If logo available, use it as reference for brand consistency
     messages.push({
       role: "user",
       content: [
@@ -162,7 +234,12 @@ async function generateTemplateImage(
 
   const data = await response.json();
   const imageUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
-  return imageUrl || null;
+  if (!imageUrl) return null;
+
+  // Compress before returning
+  console.log("[generate] Compressing AI output...");
+  const compressed = await compressBase64Image(imageUrl, apiKey);
+  return compressed;
 }
 
 serve(async (req) => {
