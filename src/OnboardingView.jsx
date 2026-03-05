@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import postibleLogo from './assets/postibel-logo.svg';
+import { useAuth } from './hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import {
     Sparkles, ArrowRight, ArrowLeft, Check, CheckCircle2,
     Coffee, Utensils, ShoppingBag, Flower2, Briefcase,
