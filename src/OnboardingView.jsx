@@ -266,6 +266,7 @@ function generate4Palettes(primaryHex) {
 }
 
 const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView }) => {
+    const { user } = useAuth();
     const [step, setStep] = useState(1);
     const [localBrand, setLocalBrand] = useState({
         name: '',
