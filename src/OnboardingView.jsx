@@ -268,6 +268,7 @@ function generate4Palettes(primaryHex) {
 
 const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView }) => {
     const { user } = useAuth();
+    const { isGenerating: isGeneratingAI, templates: generatedTemplates, error: generateError, generateTemplates } = useGenerateTemplates();
     const [step, setStep] = useState(1);
     const [localBrand, setLocalBrand] = useState({
         name: '',
@@ -296,13 +297,60 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
     const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
     const [showTemplateModal, setShowTemplateModal] = useState(false);
     const [isGeneratingTemplate, setIsGeneratingTemplate] = useState(false);
+    const [savedBusinessId, setSavedBusinessId] = useState(null);
 
-    const handleGenerateTemplate = () => {
+    const handleGenerateTemplate = async () => {
+        if (!user) return;
         setIsGeneratingTemplate(true);
-        setTimeout(() => {
+
+        try {
+            // Save business first to get an ID
+            let businessId = savedBusinessId;
+            if (!businessId) {
+                const businessData = {
+                    user_id: user.id,
+                    name: localBrand.name,
+                    category: localBrand.category,
+                    product: localBrand.product || null,
+                    website: localBrand.website || null,
+                    color_primary: localBrand.primaryColor,
+                    color_secondary: localBrand.secondaryColor,
+                    color_tertiary: localBrand.tertiaryColor || null,
+                    color_schema: localBrand.colorSchema || 'custom',
+                    typography_preset: null,
+                    typography_custom: localBrand.typography || null,
+                    logo_base64: localBrand.logo || null,
+                    design_templates: [],
+                };
+                const { data, error } = await supabase
+                    .from('businesses')
+                    .insert(businessData)
+                    .select()
+                    .single();
+                if (error) {
+                    console.error('Error saving business:', error);
+                    setIsGeneratingTemplate(false);
+                    return;
+                }
+                businessId = data.id;
+                setSavedBusinessId(businessId);
+            }
+
+            // Generate templates via edge function
+            const result = await generateTemplates({
+                businessId,
+                formats: ['ig_post'],
+                variationsPerFormat: 3,
+            });
+
+            if (result) {
+                setShowTemplateModal(true);
+            }
+        } catch (err) {
+            console.error('Generate template error:', err);
+        } finally {
             setIsGeneratingTemplate(false);
-            setShowTemplateModal(true);
-        }, 2500);
+        }
     };
 
     const handleNext = () => {
