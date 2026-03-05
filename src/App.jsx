@@ -3970,7 +3970,26 @@ function App() {
 
     const showNav = currentView !== 'signup' && currentView !== 'login' && currentView !== 'onboarding' && currentView !== 'design-system' && currentView !== 'loading-preview';
 
-    const { user, signOut } = useAuth();
+    const { user, loading: authLoading, signOut } = useAuth();
+
+    const PUBLIC_VIEWS = ['login', 'signup', 'design-system'];
+    const isPublicView = PUBLIC_VIEWS.includes(currentView);
+
+    // Route protection: redirect to login if not authenticated
+    useEffect(() => {
+        if (authLoading) return;
+        if (!user && !isPublicView) {
+            navigate('/login', { replace: true });
+        }
+    }, [user, authLoading, isPublicView, navigate]);
+
+    // Redirect authenticated users away from login/signup
+    useEffect(() => {
+        if (authLoading) return;
+        if (user && (currentView === 'login' || currentView === 'signup')) {
+            navigate('/buat_konten', { replace: true });
+        }
+    }, [user, authLoading, currentView, navigate]);
 
     const handleConfirmLogout = async () => {
         setIsLogoutModalOpen(false);
