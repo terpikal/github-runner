@@ -315,46 +315,59 @@ serve(async (req) => {
             continue;
           }
 
-          // Save to database (acts as cache for future requests)
-          const { data: template, error: insertError } = await supabaseAuth
-            .from("design_templates")
-            .insert({
-              user_id: user.id,
-              business_id: business_id,
-              image_base64: imageBase64,
+          if (save_to_db && business_id) {
+            // Save to database (acts as cache for future requests)
+            const { data: template, error: insertError } = await supabaseAuth
+              .from("design_templates")
+              .insert({
+                user_id: user.id,
+                business_id: business_id,
+                image_base64: imageBase64,
+                format: format,
+                width: config.width,
+                height: config.height,
+                prompt_used: prompt,
+                style_metadata: {
+                  brand_colors: {
+                    primary: business.color_primary,
+                    secondary: business.color_secondary,
+                    tertiary: business.color_tertiary,
+                  },
+                  color_schema: business.color_schema,
+                  typography_preset: business.typography_preset,
+                  variation_index: i,
+                },
+              })
+              .select()
+              .single();
+
+            if (insertError) {
+              console.error("Insert error:", insertError);
+              errors.push(`DB insert failed for ${format} variation ${i + 1}`);
+              continue;
+            }
+
+            results.push({
+              id: template.id,
               format: format,
               width: config.width,
               height: config.height,
-              prompt_used: prompt,
-              style_metadata: {
-                brand_colors: {
-                  primary: business.color_primary,
-                  secondary: business.color_secondary,
-                  tertiary: business.color_tertiary,
-                },
-                color_schema: business.color_schema,
-                typography_preset: business.typography_preset,
-                variation_index: i,
-              },
-            })
-            .select()
-            .single();
-
-          if (insertError) {
-            console.error("Insert error:", insertError);
-            errors.push(`DB insert failed for ${format} variation ${i + 1}`);
-            continue;
+              image_base64: imageBase64,
+              variation_index: i,
+              cached: false,
+            });
+          } else {
+            // Return without saving to DB
+            results.push({
+              id: crypto.randomUUID(),
+              format: format,
+              width: config.width,
+              height: config.height,
+              image_base64: imageBase64,
+              variation_index: i,
+              cached: false,
+            });
           }
-
-          results.push({
-            id: template.id,
-            format: format,
-            width: config.width,
-            height: config.height,
-            image_base64: imageBase64,
-            variation_index: i,
-            cached: false,
-          });
         } catch (err) {
           const msg = err instanceof Error ? err.message : "Unknown error";
           if (msg === "RATE_LIMITED") {
