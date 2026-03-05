@@ -12,7 +12,7 @@ export function useGenerateTemplates() {
   const generateTemplates = useCallback(async ({
     businessId,
     formats = ['ig_post'],
-    variationsPerFormat = 6,
+    variationsPerFormat = 3,
   }) => {
     setIsGenerating(true);
     setError(null);

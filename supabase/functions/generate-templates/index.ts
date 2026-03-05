@@ -365,11 +365,16 @@ serve(async (req) => {
       }
     }
 
+    const cachedCount = results.filter((r: any) => r.cached).length;
+    const generatedCount = results.filter((r: any) => !r.cached).length;
+
     return new Response(
       JSON.stringify({
         success: true,
         templates: results,
         total_generated: results.length,
+        from_cache: cachedCount,
+        freshly_generated: generatedCount,
         errors: errors.length > 0 ? errors : undefined,
       }),
       { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
