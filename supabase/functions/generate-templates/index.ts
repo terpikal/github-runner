@@ -225,11 +225,45 @@ serve(async (req) => {
       });
     }
 
-    // Generate templates for each format
-    const results: any[] = [];
-    const errors: string[] = [];
+    // Check cache: if templates already exist for this business+format combo, return cached
+    const requestedFormats = formats.slice(0, 3); // max 3 formats
+    const cachedResults: any[] = [];
+    const formatsToGenerate: string[] = [];
 
-    for (const format of formats) {
+    for (const format of requestedFormats) {
+      const { data: existing } = await supabaseAuth
+        .from("design_templates")
+        .select("*")
+        .eq("business_id", business_id)
+        .eq("user_id", user.id)
+        .eq("format", format)
+        .order("created_at", { ascending: false })
+        .limit(variations_per_format);
+
+      if (existing && existing.length >= variations_per_format) {
+        // Cache hit — use existing templates
+        for (const t of existing) {
+          cachedResults.push({
+            id: t.id,
+            format: t.format,
+            width: t.width,
+            height: t.height,
+            image_base64: t.image_base64,
+            variation_index: t.style_metadata?.variation_index ?? 0,
+            cached: true,
+          });
+        }
+      } else {
+        formatsToGenerate.push(format);
+      }
+    }
+
+    // Generate new templates sequentially (1 by 1) to avoid rate limits
+    const results: any[] = [...cachedResults];
+    const errors: string[] = [];
+    const DELAY_BETWEEN_REQUESTS_MS = 3000; // 3s delay between AI calls
+
+    for (const format of formatsToGenerate) {
       const config = FORMAT_CONFIGS[format];
       if (!config) {
         errors.push(`Unknown format: ${format}`);
@@ -238,6 +272,11 @@ serve(async (req) => {
 
       for (let i = 0; i < variations_per_format; i++) {
         try {
+          // Add delay between requests (skip first)
+          if (results.length > cachedResults.length) {
+            await new Promise(resolve => setTimeout(resolve, DELAY_BETWEEN_REQUESTS_MS));
+          }
+
           const prompt = buildPrompt(business as BusinessData, format, i);
           const imageBase64 = await generateTemplateImage(
             prompt,
@@ -250,7 +289,7 @@ serve(async (req) => {
             continue;
           }
 
-          // Save to database
+          // Save to database (acts as cache for future requests)
           const { data: template, error: insertError } = await supabaseAuth
             .from("design_templates")
             .insert({
@@ -288,24 +327,36 @@ serve(async (req) => {
             height: config.height,
             image_base64: imageBase64,
             variation_index: i,
+            cached: false,
           });
         } catch (err) {
           const msg = err instanceof Error ? err.message : "Unknown error";
           if (msg === "RATE_LIMITED") {
+            // Wait longer and retry once
+            await new Promise(resolve => setTimeout(resolve, 10000));
+            try {
+              const prompt = buildPrompt(business as BusinessData, format, i);
+              const retryImage = await generateTemplateImage(prompt, LOVABLE_API_KEY, business.logo_base64 || undefined);
+              if (retryImage) {
+                const { data: t } = await supabaseAuth.from("design_templates").insert({
+                  user_id: user.id, business_id, image_base64: retryImage, format,
+                  width: config.width, height: config.height, prompt_used: prompt,
+                  style_metadata: { variation_index: i },
+                }).select().single();
+                if (t) results.push({ id: t.id, format, width: config.width, height: config.height, image_base64: retryImage, variation_index: i, cached: false });
+                continue;
+              }
+            } catch {
+              // Retry also failed
+            }
             return new Response(
-              JSON.stringify({
-                error: "Rate limit exceeded. Please try again later.",
-                partial_results: results,
-              }),
+              JSON.stringify({ error: "Rate limit exceeded.", partial_results: results }),
               { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
           if (msg === "PAYMENT_REQUIRED") {
             return new Response(
-              JSON.stringify({
-                error: "AI credits depleted. Please add credits to continue.",
-                partial_results: results,
-              }),
+              JSON.stringify({ error: "AI credits depleted.", partial_results: results }),
               { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
           }
