@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import postibleLogo from './assets/postibel-logo.svg';
 import { useAuth } from './hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
+import { useGenerateTemplates } from './hooks/useGenerateTemplates';
 import {
     Sparkles, ArrowRight, ArrowLeft, Check, CheckCircle2,
     Coffee, Utensils, ShoppingBag, Flower2, Briefcase,
@@ -267,6 +268,7 @@ function generate4Palettes(primaryHex) {
 
 const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView }) => {
     const { user } = useAuth();
+    const { isGenerating: isGeneratingAI, templates: generatedTemplates, error: generateError, generateTemplates } = useGenerateTemplates();
     const [step, setStep] = useState(1);
     const [localBrand, setLocalBrand] = useState({
         name: '',
@@ -295,13 +297,60 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
     const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
     const [showTemplateModal, setShowTemplateModal] = useState(false);
     const [isGeneratingTemplate, setIsGeneratingTemplate] = useState(false);
+    const [savedBusinessId, setSavedBusinessId] = useState(null);
 
-    const handleGenerateTemplate = () => {
+    const handleGenerateTemplate = async () => {
+        if (!user) return;
         setIsGeneratingTemplate(true);
-        setTimeout(() => {
+
+        try {
+            // Save business first to get an ID
+            let businessId = savedBusinessId;
+            if (!businessId) {
+                const businessData = {
+                    user_id: user.id,
+                    name: localBrand.name,
+                    category: localBrand.category,
+                    product: localBrand.product || null,
+                    website: localBrand.website || null,
+                    color_primary: localBrand.primaryColor,
+                    color_secondary: localBrand.secondaryColor,
+                    color_tertiary: localBrand.tertiaryColor || null,
+                    color_schema: localBrand.colorSchema || 'custom',
+                    typography_preset: null,
+                    typography_custom: localBrand.typography || null,
+                    logo_base64: localBrand.logo || null,
+                    design_templates: [],
+                };
+                const { data, error } = await supabase
+                    .from('businesses')
+                    .insert(businessData)
+                    .select()
+                    .single();
+                if (error) {
+                    console.error('Error saving business:', error);
+                    setIsGeneratingTemplate(false);
+                    return;
+                }
+                businessId = data.id;
+                setSavedBusinessId(businessId);
+            }
+
+            // Generate templates via edge function
+            const result = await generateTemplates({
+                businessId,
+                formats: ['ig_post'],
+                variationsPerFormat: 3,
+            });
+
+            if (result) {
+                setShowTemplateModal(true);
+            }
+        } catch (err) {
+            console.error('Generate template error:', err);
+        } finally {
             setIsGeneratingTemplate(false);
-            setShowTemplateModal(true);
-        }, 2500);
+        }
     };
 
     const handleNext = () => {
@@ -361,33 +410,55 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
 
         if (user) {
             try {
-                const businessData = {
-                    user_id: user.id,
-                    name: newBrand.name,
-                    category: newBrand.category,
-                    product: newBrand.product || null,
-                    website: newBrand.website || null,
-                    color_primary: newBrand.primaryColor,
-                    color_secondary: newBrand.secondaryColor,
-                    color_tertiary: newBrand.tertiaryColor || null,
-                    color_schema: newBrand.colorSchema || 'custom',
-                    typography_preset: null,
-                    typography_custom: newBrand.typography || null,
-                    logo_base64: newBrand.logo || null,
-                    design_templates: newBrand.designTemplate || [],
-                };
-
-                const { data, error } = await supabase
-                    .from('businesses')
-                    .insert(businessData)
-                    .select()
-                    .single();
-
-                if (error) {
-                    console.error('Error saving business:', error);
-                    // Still proceed with local state
-                } else if (data) {
-                    newBrand.id = data.id;
+                if (savedBusinessId) {
+                    // Business already saved during template generation, just update it
+                    const updateData = {
+                        name: newBrand.name,
+                        category: newBrand.category,
+                        product: newBrand.product || null,
+                        website: newBrand.website || null,
+                        color_primary: newBrand.primaryColor,
+                        color_secondary: newBrand.secondaryColor,
+                        color_tertiary: newBrand.tertiaryColor || null,
+                        color_schema: newBrand.colorSchema || 'custom',
+                        typography_preset: null,
+                        typography_custom: newBrand.typography || null,
+                        logo_base64: newBrand.logo || null,
+                        design_templates: newBrand.designTemplate || [],
+                    };
+                    const { error } = await supabase
+                        .from('businesses')
+                        .update(updateData)
+                        .eq('id', savedBusinessId);
+                    if (error) console.error('Error updating business:', error);
+                    newBrand.id = savedBusinessId;
+                } else {
+                    // Save new business
+                    const businessData = {
+                        user_id: user.id,
+                        name: newBrand.name,
+                        category: newBrand.category,
+                        product: newBrand.product || null,
+                        website: newBrand.website || null,
+                        color_primary: newBrand.primaryColor,
+                        color_secondary: newBrand.secondaryColor,
+                        color_tertiary: newBrand.tertiaryColor || null,
+                        color_schema: newBrand.colorSchema || 'custom',
+                        typography_preset: null,
+                        typography_custom: newBrand.typography || null,
+                        logo_base64: newBrand.logo || null,
+                        design_templates: newBrand.designTemplate || [],
+                    };
+                    const { data, error } = await supabase
+                        .from('businesses')
+                        .insert(businessData)
+                        .select()
+                        .single();
+                    if (error) {
+                        console.error('Error saving business:', error);
+                    } else if (data) {
+                        newBrand.id = data.id;
+                    }
                 }
             } catch (err) {
                 console.error('Unexpected error:', err);
@@ -862,11 +933,11 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
 
                                 <button
                                     onClick={handleGenerateTemplate}
-                                    disabled={isGeneratingTemplate}
+                                    disabled={isGeneratingTemplate || isGeneratingAI}
                                     className="w-full flex items-center justify-center gap-2 py-3 px-8 bg-primary/10 hover:bg-primary/20 text-primary-darker font-bold rounded-2xl transition-colors text-[15px] disabled:opacity-60"
                                 >
                                     <Sparkles className="w-4 h-4" />
-                                    Generate Template Desain
+                                    {isGeneratingTemplate || isGeneratingAI ? 'Generating...' : 'Generate Template Desain'}
                                 </button>
 
                                 {/* Dramatic generating loading */}
@@ -912,15 +983,12 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                             </button>
                                         </div>
                                         <div className="grid grid-cols-3 gap-2">
-                                            {TEMPLATES.filter(tpl => (localBrand.designTemplate || []).includes(tpl.id)).map(tpl => (
+                                            {generatedTemplates.filter(tpl => (localBrand.designTemplate || []).includes(tpl.id)).map(tpl => (
                                                 <div key={tpl.id} className="rounded-xl border border-primary/20 overflow-hidden bg-white shadow-sm">
-                                                    <div className="w-full aspect-[4/3] flex items-center justify-center" style={{ backgroundColor: tpl.bg }}>
-                                                        <div className="flex gap-0.5">
-                                                            <div className="w-4 h-4 rounded" style={{ backgroundColor: tpl.content }} />
-                                                            <div className="w-3 h-4 rounded" style={{ backgroundColor: tpl.accent }} />
-                                                        </div>
+                                                    <div className="w-full aspect-square">
+                                                        <img src={tpl.image_base64} alt="Template" className="w-full h-full object-cover" />
                                                     </div>
-                                                    <p className="text-[10px] font-bold text-slate-600 text-center py-1.5 truncate px-1">{tpl.name}</p>
+                                                    <p className="text-[10px] font-bold text-slate-600 text-center py-1.5 truncate px-1">Template {(tpl.variation_index ?? 0) + 1}</p>
                                                 </div>
                                             ))}
                                         </div>
@@ -954,89 +1022,19 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
 
                                         {/* Template Grid — scrollable */}
                                         <div className="flex-1 overflow-y-auto p-6">
+                                            {generateError && (
+                                                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600 text-center">
+                                                    {generateError}
+                                                </div>
+                                            )}
+                                            {generatedTemplates.length === 0 && !generateError && (
+                                                <div className="text-center py-12 text-slate-400 text-sm">
+                                                    Belum ada template yang di-generate.
+                                                </div>
+                                            )}
                                             <div className="grid grid-cols-2 gap-3">
-                                                {TEMPLATES.map(tpl => {
+                                                {generatedTemplates.map(tpl => {
                                                     const isSelected = (localBrand.designTemplate || []).includes(tpl.id);
-
-                                                    const renderMockup = () => {
-                                                        switch (tpl.id) {
-                                                            case 'minimalis-elegan':
-                                                                return (
-                                                                    <div className="w-full h-full flex flex-col items-center justify-center gap-2 px-5">
-                                                                        <div className="w-full h-px bg-slate-200" />
-                                                                        <div className="w-16 h-16 rounded-xl bg-slate-200" />
-                                                                        <div className="w-16 h-1.5 rounded-full bg-slate-300" />
-                                                                        <div className="w-10 h-1 rounded-full bg-slate-200" />
-                                                                        <div className="w-full h-px bg-slate-200" />
-                                                                    </div>
-                                                                );
-                                                            case 'tegas-berani':
-                                                                return (
-                                                                    <div className="w-full h-full flex flex-col">
-                                                                        <div className="h-1.5 w-full bg-slate-500" />
-                                                                        <div className="flex-1 flex items-end justify-between px-4 pb-4">
-                                                                            <div className="space-y-1.5">
-                                                                                <div className="w-14 h-1.5 rounded-full bg-slate-500" />
-                                                                                <div className="w-10 h-1 rounded-full bg-slate-600" />
-                                                                            </div>
-                                                                            <div className="w-12 h-12 rounded-lg bg-slate-600" />
-                                                                        </div>
-                                                                    </div>
-                                                                );
-                                                            case 'lembut-estetik':
-                                                                return (
-                                                                    <div className="w-full h-full flex">
-                                                                        <div className="w-1 bg-pink-300 rounded-full my-4 ml-3" />
-                                                                        <div className="flex-1 flex flex-col justify-center gap-2.5 px-4">
-                                                                            <div className="w-12 h-12 rounded-xl bg-orange-200" />
-                                                                            <div className="w-14 h-1.5 rounded-full bg-orange-200" />
-                                                                            <div className="w-10 h-1 rounded-full bg-pink-100" />
-                                                                        </div>
-                                                                    </div>
-                                                                );
-                                                            case 'mewah-eksklusif':
-                                                                return (
-                                                                    <div className="w-full h-full flex flex-col items-center justify-center gap-2.5">
-                                                                        <div className="w-14 h-14 rounded-lg bg-yellow-900/40 border border-yellow-700/30" />
-                                                                        <div className="w-10 h-0.5 rounded-full bg-yellow-600" />
-                                                                        <div className="w-8 h-1 rounded-full bg-slate-700" />
-                                                                    </div>
-                                                                );
-                                                            case 'ceria-aktif':
-                                                                return (
-                                                                    <div className="w-full h-full p-3 flex flex-col gap-2">
-                                                                        <div className="flex gap-2 flex-1">
-                                                                            <div className="flex-[3] rounded-lg bg-pink-300" />
-                                                                            <div className="flex-1 flex flex-col gap-1.5">
-                                                                                <div className="flex-1 rounded bg-yellow-200" />
-                                                                                <div className="flex-1 rounded bg-pink-100" />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="w-full h-1.5 rounded-full bg-yellow-300" />
-                                                                    </div>
-                                                                );
-                                                            case 'profesional-rapi':
-                                                                return (
-                                                                    <div className="w-full h-full flex flex-col justify-center gap-3 px-4">
-                                                                        <div className="flex items-center gap-2.5">
-                                                                            <div className="w-8 h-8 rounded-full bg-blue-200 shrink-0" />
-                                                                            <div className="space-y-1">
-                                                                                <div className="w-14 h-1.5 rounded-full bg-blue-300" />
-                                                                                <div className="w-8 h-1 rounded-full bg-blue-100" />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="w-full h-16 rounded-xl bg-blue-200/60" />
-                                                                        <div className="space-y-1">
-                                                                            <div className="w-full h-1.5 rounded-full bg-blue-100" />
-                                                                            <div className="w-2/3 h-1 rounded-full bg-blue-100/70" />
-                                                                        </div>
-                                                                    </div>
-                                                                );
-                                                            default:
-                                                                return null;
-                                                        }
-                                                    };
-
                                                     return (
                                                         <button
                                                             key={tpl.id}
@@ -1052,15 +1050,12 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                                 : 'border-slate-100 hover:border-primary/40'
                                                                 }`}
                                                         >
-                                                            <div
-                                                                className="relative w-full overflow-hidden"
-                                                                style={{ backgroundColor: tpl.bg, aspectRatio: '4/3' }}
-                                                            >
-                                                                {renderMockup()}
+                                                            <div className="relative w-full overflow-hidden aspect-square">
+                                                                <img src={tpl.image_base64} alt={`Template ${(tpl.variation_index ?? 0) + 1}`} className="w-full h-full object-cover" />
                                                             </div>
                                                             <div className="flex items-center justify-between px-3 py-2.5 bg-white">
                                                                 <span className={`text-xs font-bold leading-snug ${isSelected ? 'text-primary-darker' : 'text-slate-800'}`}>
-                                                                    {tpl.name}
+                                                                    Template {(tpl.variation_index ?? 0) + 1}
                                                                 </span>
                                                                 <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${isSelected
                                                                     ? 'bg-primary border-primary'

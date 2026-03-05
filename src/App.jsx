@@ -3984,10 +3984,24 @@ function App() {
     }, [user, authLoading, isPublicView, navigate]);
 
     // Redirect authenticated users away from login/signup
+    // Check if they have business data to decide destination
     useEffect(() => {
         if (authLoading) return;
         if (user && (currentView === 'login' || currentView === 'signup')) {
-            navigate('/buat_konten', { replace: true });
+            const checkBusinessAndRedirect = async () => {
+                const { data, error } = await supabase
+                    .from('businesses')
+                    .select('id')
+                    .eq('user_id', user.id)
+                    .limit(1);
+                
+                if (!error && data && data.length > 0) {
+                    navigate('/buat_konten', { replace: true });
+                } else {
+                    navigate('/onboarding', { replace: true });
+                }
+            };
+            checkBusinessAndRedirect();
         }
     }, [user, authLoading, currentView, navigate]);
 
