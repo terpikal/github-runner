@@ -3970,10 +3970,49 @@ function App() {
 
     const showNav = currentView !== 'signup' && currentView !== 'login' && currentView !== 'onboarding' && currentView !== 'design-system' && currentView !== 'loading-preview';
 
-    const handleConfirmLogout = () => {
+    const { user, signOut } = useAuth();
+
+    const handleConfirmLogout = async () => {
         setIsLogoutModalOpen(false);
+        await signOut();
         setCurrentView('login');
     };
+
+    // Load user's business from database when authenticated
+    useEffect(() => {
+        if (!user) return;
+        const loadBusiness = async () => {
+            const { data, error } = await supabase
+                .from('businesses')
+                .select('*')
+                .eq('user_id', user.id)
+                .order('created_at', { ascending: false });
+            
+            if (!error && data && data.length > 0) {
+                const loadedBusinesses = data.map(b => ({
+                    id: b.id,
+                    name: b.name,
+                    category: b.category,
+                    product: b.product || '',
+                    website: b.website || '',
+                    colorSchema: b.color_schema,
+                    primaryColor: b.color_primary,
+                    secondaryColor: b.color_secondary,
+                    tertiaryColor: b.color_tertiary || '#ECFEFF',
+                    typography: b.typography_custom || { judul: 'bold', subJudul: 'modern', deskripsi: 'modern' },
+                    typographyPreset: b.typography_preset,
+                    designTemplate: b.design_templates || [],
+                    logo: b.logo_base64 || null,
+                    fontStyle: ['modern'],
+                    designStyle: ['minimal'],
+                    tone: 'friendly',
+                }));
+                setBrandDNA(loadedBusinesses[0]);
+                setBusinesses(loadedBusinesses);
+            }
+        };
+        loadBusiness();
+    }, [user]);
 
     const handleGenerate = () => {
         if (!prompt.trim()) return;
