@@ -66,10 +66,12 @@ interface BusinessData {
 }
 
 interface TemplateRequest {
-  business_id: string;
+  business_id?: string;
+  business_data?: BusinessData;
   formats: string[];
   variations_per_format: number;
   style_preferences?: string;
+  save_to_db?: boolean;
 }
 
 const FORMAT_CONFIGS: Record<string, { width: number; height: number; label: string; ratio: string }> = {
