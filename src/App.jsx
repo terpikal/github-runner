@@ -1,5 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate, useLocation, Routes, Route, Navigate } from 'react-router-dom';
+import { useAuth } from './hooks/useAuth';
+import { supabase } from '@/integrations/supabase/client';
 import ReactDOM from 'react-dom';
 import {
     Sparkles, Image as ImageIcon, Layout, Settings, Library,
