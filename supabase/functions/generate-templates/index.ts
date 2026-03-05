@@ -277,26 +277,37 @@ serve(async (req) => {
       formatsToGenerate.push(...requestedFormats);
     }
 
-    // Generate new templates sequentially (1 by 1) to avoid rate limits
+    // Generate templates in parallel batches to avoid timeout
     const results: any[] = [...cachedResults];
     const errors: string[] = [];
-    const DELAY_BETWEEN_REQUESTS_MS = 3000; // 3s delay between AI calls
+    const BATCH_SIZE = 3; // Process 3 at a time to balance speed vs rate limits
 
+    // Build all generation tasks
+    interface GenTask { format: string; variationIndex: number; config: { width: number; height: number; label: string; ratio: string } }
+    const tasks: GenTask[] = [];
     for (const format of formatsToGenerate) {
       const config = FORMAT_CONFIGS[format];
       if (!config) {
         errors.push(`Unknown format: ${format}`);
         continue;
       }
-
       for (let i = 0; i < variations_per_format; i++) {
-        try {
-          // Add delay between requests (skip first)
-          if (results.length > cachedResults.length) {
-            await new Promise(resolve => setTimeout(resolve, DELAY_BETWEEN_REQUESTS_MS));
-          }
+        tasks.push({ format, variationIndex: i, config });
+      }
+    }
 
-          const prompt = buildPrompt(business as BusinessData, format, i);
+    // Process in batches
+    for (let batchStart = 0; batchStart < tasks.length; batchStart += BATCH_SIZE) {
+      const batch = tasks.slice(batchStart, batchStart + BATCH_SIZE);
+
+      // Add delay between batches (skip first)
+      if (batchStart > 0) {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+
+      const batchResults = await Promise.allSettled(
+        batch.map(async (task) => {
+          const prompt = buildPrompt(business as BusinessData, task.format, task.variationIndex);
           let imageBase64 = await generateTemplateImage(
             prompt,
             LOVABLE_API_KEY,
@@ -305,105 +316,90 @@ serve(async (req) => {
 
           // Retry once on failure
           if (!imageBase64) {
-            console.warn(`Retry: ${format} variation ${i + 1}`);
-            await new Promise(resolve => setTimeout(resolve, 3000));
+            console.warn(`Retry: ${task.format} variation ${task.variationIndex + 1}`);
+            await new Promise(resolve => setTimeout(resolve, 2000));
             imageBase64 = await generateTemplateImage(prompt, LOVABLE_API_KEY, business.logo_base64 || undefined);
           }
 
           if (!imageBase64) {
-            errors.push(`Failed to generate ${format} variation ${i + 1}`);
-            continue;
+            throw new Error(`GENERATION_FAILED:${task.format}:${task.variationIndex}`);
           }
 
-          if (save_to_db && business_id) {
-            // Save to database (acts as cache for future requests)
-            const { data: template, error: insertError } = await supabaseAuth
-              .from("design_templates")
-              .insert({
-                user_id: user.id,
-                business_id: business_id,
-                image_base64: imageBase64,
-                format: format,
-                width: config.width,
-                height: config.height,
-                prompt_used: prompt,
-                style_metadata: {
-                  brand_colors: {
-                    primary: business.color_primary,
-                    secondary: business.color_secondary,
-                    tertiary: business.color_tertiary,
-                  },
-                  color_schema: business.color_schema,
-                  typography_preset: business.typography_preset,
-                  variation_index: i,
-                },
-              })
-              .select()
-              .single();
+          return { imageBase64, prompt, task };
+        })
+      );
 
-            if (insertError) {
-              console.error("Insert error:", insertError);
-              errors.push(`DB insert failed for ${format} variation ${i + 1}`);
-              continue;
-            }
-
-            results.push({
-              id: template.id,
-              format: format,
-              width: config.width,
-              height: config.height,
-              image_base64: imageBase64,
-              variation_index: i,
-              cached: false,
-            });
-          } else {
-            // Return without saving to DB
-            results.push({
-              id: crypto.randomUUID(),
-              format: format,
-              width: config.width,
-              height: config.height,
-              image_base64: imageBase64,
-              variation_index: i,
-              cached: false,
-            });
-          }
-        } catch (err) {
-          const msg = err instanceof Error ? err.message : "Unknown error";
+      for (const result of batchResults) {
+        if (result.status === "rejected") {
+          const msg = result.reason instanceof Error ? result.reason.message : "Unknown error";
           if (msg === "RATE_LIMITED") {
-            // Wait longer and retry once
-            await new Promise(resolve => setTimeout(resolve, 10000));
-            try {
-              const prompt = buildPrompt(business as BusinessData, format, i);
-              const retryImage = await generateTemplateImage(prompt, LOVABLE_API_KEY, business.logo_base64 || undefined);
-              if (retryImage) {
-                if (save_to_db && business_id) {
-                  const { data: t } = await supabaseAuth.from("design_templates").insert({
-                    user_id: user.id, business_id, image_base64: retryImage, format,
-                    width: config.width, height: config.height, prompt_used: prompt,
-                    style_metadata: { variation_index: i },
-                  }).select().single();
-                  if (t) results.push({ id: t.id, format, width: config.width, height: config.height, image_base64: retryImage, variation_index: i, cached: false });
-                } else {
-                  results.push({ id: crypto.randomUUID(), format, width: config.width, height: config.height, image_base64: retryImage, variation_index: i, cached: false });
-                }
-                continue;
-              }
-            } catch {
-              // Retry also failed
-            }
-            return new Response(
-              JSON.stringify({ error: "Rate limit exceeded.", partial_results: results }),
-              { status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" } }
-            );
-          }
-          if (msg === "PAYMENT_REQUIRED") {
+            errors.push("Rate limited - some variations skipped");
+          } else if (msg === "PAYMENT_REQUIRED") {
             return new Response(
               JSON.stringify({ error: "AI credits depleted.", partial_results: results }),
               { status: 402, headers: { ...corsHeaders, "Content-Type": "application/json" } }
             );
+          } else if (msg.startsWith("GENERATION_FAILED:")) {
+            const parts = msg.split(":");
+            errors.push(`Failed to generate ${parts[1]} variation ${Number(parts[2]) + 1}`);
+          } else {
+            errors.push(msg);
           }
-          errors.push(`${format} variation ${i + 1}: ${msg}`);
+          continue;
+        }
+
+        const { imageBase64, prompt, task } = result.value;
+
+        if (save_to_db && business_id) {
+          const { data: template, error: insertError } = await supabaseAuth
+            .from("design_templates")
+            .insert({
+              user_id: user.id,
+              business_id: business_id,
+              image_base64: imageBase64,
+              format: task.format,
+              width: task.config.width,
+              height: task.config.height,
+              prompt_used: prompt,
+              style_metadata: {
+                brand_colors: {
+                  primary: business.color_primary,
+                  secondary: business.color_secondary,
+                  tertiary: business.color_tertiary,
+                },
+                color_schema: business.color_schema,
+                typography_preset: business.typography_preset,
+                variation_index: task.variationIndex,
+              },
+            })
+            .select()
+            .single();
+
+          if (insertError) {
+            console.error("Insert error:", insertError);
+            errors.push(`DB insert failed for ${task.format} variation ${task.variationIndex + 1}`);
+            continue;
+          }
+
+          results.push({
+            id: template.id,
+            format: task.format,
+            width: task.config.width,
+            height: task.config.height,
+            image_base64: imageBase64,
+            variation_index: task.variationIndex,
+            cached: false,
+          });
+        } else {
+          results.push({
+            id: crypto.randomUUID(),
+            format: task.format,
+            width: task.config.width,
+            height: task.config.height,
+            image_base64: imageBase64,
+            variation_index: task.variationIndex,
+            cached: false,
+          });
         }
       }
     }
