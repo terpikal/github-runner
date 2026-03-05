@@ -389,8 +389,6 @@ serve(async (req) => {
                 }
                 continue;
               }
-                continue;
-              }
             } catch {
               // Retry also failed
             }
