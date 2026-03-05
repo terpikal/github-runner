@@ -377,12 +377,18 @@ serve(async (req) => {
               const prompt = buildPrompt(business as BusinessData, format, i);
               const retryImage = await generateTemplateImage(prompt, LOVABLE_API_KEY, business.logo_base64 || undefined);
               if (retryImage) {
-                const { data: t } = await supabaseAuth.from("design_templates").insert({
-                  user_id: user.id, business_id, image_base64: retryImage, format,
-                  width: config.width, height: config.height, prompt_used: prompt,
-                  style_metadata: { variation_index: i },
-                }).select().single();
-                if (t) results.push({ id: t.id, format, width: config.width, height: config.height, image_base64: retryImage, variation_index: i, cached: false });
+                if (save_to_db && business_id) {
+                  const { data: t } = await supabaseAuth.from("design_templates").insert({
+                    user_id: user.id, business_id, image_base64: retryImage, format,
+                    width: config.width, height: config.height, prompt_used: prompt,
+                    style_metadata: { variation_index: i },
+                  }).select().single();
+                  if (t) results.push({ id: t.id, format, width: config.width, height: config.height, image_base64: retryImage, variation_index: i, cached: false });
+                } else {
+                  results.push({ id: crypto.randomUUID(), format, width: config.width, height: config.height, image_base64: retryImage, variation_index: i, cached: false });
+                }
+                continue;
+              }
                 continue;
               }
             } catch {
