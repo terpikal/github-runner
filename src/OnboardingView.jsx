@@ -689,10 +689,26 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                         type="file"
                                         accept="image/*"
                                         className="hidden"
-                                        onChange={(e) => {
+                                        onChange={async (e) => {
                                             if (e.target.files && e.target.files[0]) {
-                                                const url = URL.createObjectURL(e.target.files[0]);
-                                                setLocalBrand({ ...localBrand, logo: url });
+                                                const file = e.target.files[0];
+                                                const previewUrl = URL.createObjectURL(file);
+                                                setLocalBrand(prev => ({ ...prev, logoPreview: previewUrl }));
+                                                try {
+                                                    const { compressImage } = await import('./utils/imageCompression');
+                                                    const compressed = await compressImage(file, { maxWidth: 512, maxHeight: 512, quality: 0.8 });
+                                                    const reader = new FileReader();
+                                                    reader.onloadend = () => {
+                                                        setLocalBrand(prev => ({ ...prev, logo: reader.result, logoPreview: previewUrl }));
+                                                    };
+                                                    reader.readAsDataURL(compressed);
+                                                } catch {
+                                                    const reader = new FileReader();
+                                                    reader.onloadend = () => {
+                                                        setLocalBrand(prev => ({ ...prev, logo: reader.result, logoPreview: previewUrl }));
+                                                    };
+                                                    reader.readAsDataURL(file);
+                                                }
                                             }
                                         }}
                                     />
