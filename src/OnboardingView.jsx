@@ -340,7 +340,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
             const result = await generateTemplates({
                 businessId,
                 formats: ['ig_post'],
-                variationsPerFormat: 3,
+                variationsPerFormat: 6,
             });
 
             if (result) {

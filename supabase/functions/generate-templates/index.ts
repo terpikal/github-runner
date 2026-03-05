@@ -87,6 +87,9 @@ function buildPrompt(business: BusinessData, format: string, variationIndex: num
     "clean corporate with professional layout",
     "creative and playful with geometric elements",
     "sophisticated dark theme with neon accents",
+    "retro vintage with warm tones and textured feel",
+    "futuristic tech with glassmorphism effects",
+    "nature-inspired organic shapes and earthy palette",
   ];
   const styleVariation = styles[variationIndex % styles.length];
 
@@ -281,11 +284,18 @@ serve(async (req) => {
           }
 
           const prompt = buildPrompt(business as BusinessData, format, i);
-          const imageBase64 = await generateTemplateImage(
+          let imageBase64 = await generateTemplateImage(
             prompt,
             LOVABLE_API_KEY,
             business.logo_base64 || undefined
           );
+
+          // Retry once on failure
+          if (!imageBase64) {
+            console.warn(`Retry: ${format} variation ${i + 1}`);
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            imageBase64 = await generateTemplateImage(prompt, LOVABLE_API_KEY, business.logo_base64 || undefined);
+          }
 
           if (!imageBase64) {
             errors.push(`Failed to generate ${format} variation ${i + 1}`);
