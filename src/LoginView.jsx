@@ -1,19 +1,40 @@
 import React, { useState } from 'react';
 import { Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { useAuth } from './hooks/useAuth';
 
 const LoginView = ({ setCurrentView }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    const { signIn } = useAuth();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!email.trim() || !password.trim()) {
+            setError('Email dan kata sandi wajib diisi.');
+            return;
+        }
+        setError('');
         setIsLoading(true);
-        setTimeout(() => {
-            setIsLoading(false);
-            setCurrentView('dashboard');
-        }, 1200);
+
+        const { error: authError } = await signIn(email, password);
+        setIsLoading(false);
+
+        if (authError) {
+            if (authError.message.includes('Invalid login credentials')) {
+                setError('Email atau kata sandi salah.');
+            } else if (authError.message.includes('Email not confirmed')) {
+                setError('Email belum diverifikasi. Silakan cek inbox Anda.');
+            } else {
+                setError(authError.message);
+            }
+            return;
+        }
+
+        // Check if user has a business already
+        setCurrentView('dashboard');
     };
 
     return (
@@ -37,6 +58,13 @@ const LoginView = ({ setCurrentView }) => {
                             Selamat datang kembali di Postibel.
                         </p>
                     </div>
+
+                    {/* Error */}
+                    {error && (
+                        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600 text-center">
+                            {error}
+                        </div>
+                    )}
 
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="space-y-4">
