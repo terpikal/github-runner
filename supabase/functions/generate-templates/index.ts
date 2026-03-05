@@ -201,7 +201,7 @@ serve(async (req) => {
     }
 
     const body: TemplateRequest = await req.json();
-    const { business_id, formats, variations_per_format = 6 } = body;
+    const { business_id, formats, variations_per_format = 3 } = body;
 
     if (!business_id || !formats || formats.length === 0) {
       return new Response(JSON.stringify({ error: "business_id and formats are required" }), {
