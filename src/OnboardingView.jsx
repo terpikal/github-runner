@@ -304,67 +304,36 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
         setIsGeneratingTemplate(true);
 
         try {
-            // Save or update business to get an ID
-            let businessId = savedBusinessId;
-            if (!businessId) {
-                // Check if user already has a business
-                const { data: existing } = await supabase
-                    .from('businesses')
-                    .select('id')
-                    .eq('user_id', user.id)
-                    .maybeSingle();
+            // Pass business data inline — no DB save yet
+            const businessData = {
+                name: localBrand.name,
+                category: localBrand.category,
+                product: localBrand.product || null,
+                color_primary: localBrand.primaryColor,
+                color_secondary: localBrand.secondaryColor,
+                color_tertiary: localBrand.tertiaryColor || null,
+                color_schema: localBrand.colorSchema || 'custom',
+                typography_preset: null,
+                logo_base64: localBrand.logo || null,
+            };
 
-                const businessData = {
-                    user_id: user.id,
-                    name: localBrand.name,
-                    category: localBrand.category,
-                    product: localBrand.product || null,
-                    website: localBrand.website || null,
-                    color_primary: localBrand.primaryColor,
-                    color_secondary: localBrand.secondaryColor,
-                    color_tertiary: localBrand.tertiaryColor || null,
-                    color_schema: localBrand.colorSchema || 'custom',
-                    typography_preset: null,
-                    typography_custom: localBrand.typography || null,
-                    logo_base64: localBrand.logo || null,
-                    design_templates: [],
-                };
-
-                let data, error;
-                if (existing?.id) {
-                    // Update existing business
-                    ({ data, error } = await supabase
-                        .from('businesses')
-                        .update(businessData)
-                        .eq('id', existing.id)
-                        .select()
-                        .single());
-                } else {
-                    // Insert new business
-                    ({ data, error } = await supabase
-                        .from('businesses')
-                        .insert(businessData)
-                        .select()
-                        .single());
-                }
-
-                if (error) {
-                    console.error('Error saving business:', error);
-                    setIsGeneratingTemplate(false);
-                    return;
-                }
-                businessId = data.id;
-                setSavedBusinessId(businessId);
-            }
-
-            // Generate templates via edge function
             const result = await generateTemplates({
-                businessId,
+                businessData,
                 formats: ['ig_post'],
                 variationsPerFormat: 6,
+                saveToDb: false,
             });
 
             if (result) {
+                // Store generated templates temporarily in localStorage
+                const templatesToStore = (result.templates || []).map(t => ({
+                    image_base64: t.image_base64,
+                    format: t.format,
+                    width: t.width,
+                    height: t.height,
+                    variation_index: t.variation_index,
+                }));
+                localStorage.setItem('onboarding_generated_templates', JSON.stringify(templatesToStore));
                 setShowTemplateModal(true);
             }
         } catch (err) {
