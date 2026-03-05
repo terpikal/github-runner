@@ -11,8 +11,10 @@ export function useGenerateTemplates() {
 
   const generateTemplates = useCallback(async ({
     businessId,
+    businessData,
     formats = ['ig_post'],
     variationsPerFormat = 3,
+    saveToDb = true,
   }) => {
     setIsGenerating(true);
     setError(null);
@@ -25,17 +27,21 @@ export function useGenerateTemplates() {
         throw new Error('Anda harus login terlebih dahulu');
       }
 
+      const body = {
+        formats,
+        variations_per_format: variationsPerFormat,
+        save_to_db: saveToDb,
+      };
+      if (businessId) body.business_id = businessId;
+      if (businessData) body.business_data = businessData;
+
       const response = await fetch(GENERATE_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${session.access_token}`,
         },
-        body: JSON.stringify({
-          business_id: businessId,
-          formats,
-          variations_per_format: variationsPerFormat,
-        }),
+        body: JSON.stringify(body),
       });
 
       if (response.status === 429) {
