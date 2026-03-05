@@ -400,54 +400,66 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
 
         if (user) {
             try {
-                if (savedBusinessId) {
-                    // Business already saved during template generation, just update it
-                    const updateData = {
-                        name: newBrand.name,
-                        category: newBrand.category,
-                        product: newBrand.product || null,
-                        website: newBrand.website || null,
-                        color_primary: newBrand.primaryColor,
-                        color_secondary: newBrand.secondaryColor,
-                        color_tertiary: newBrand.tertiaryColor || null,
-                        color_schema: newBrand.colorSchema || 'custom',
-                        typography_preset: null,
-                        typography_custom: newBrand.typography || null,
-                        logo_base64: newBrand.logo || null,
-                        design_templates: newBrand.designTemplate || [],
-                    };
-                    const { error } = await supabase
+                // Check if user already has a business
+                const { data: existing } = await supabase
+                    .from('businesses')
+                    .select('id')
+                    .eq('user_id', user.id)
+                    .maybeSingle();
+
+                const businessData = {
+                    user_id: user.id,
+                    name: newBrand.name,
+                    category: newBrand.category,
+                    product: newBrand.product || null,
+                    website: newBrand.website || null,
+                    color_primary: newBrand.primaryColor,
+                    color_secondary: newBrand.secondaryColor,
+                    color_tertiary: newBrand.tertiaryColor || null,
+                    color_schema: newBrand.colorSchema || 'custom',
+                    typography_preset: null,
+                    typography_custom: newBrand.typography || null,
+                    logo_base64: newBrand.logo || null,
+                    design_templates: newBrand.designTemplate || [],
+                };
+
+                let data, error;
+                if (existing?.id) {
+                    ({ data, error } = await supabase
                         .from('businesses')
-                        .update(updateData)
-                        .eq('id', savedBusinessId);
-                    if (error) console.error('Error updating business:', error);
-                    newBrand.id = savedBusinessId;
+                        .update(businessData)
+                        .eq('id', existing.id)
+                        .select()
+                        .single());
                 } else {
-                    // Save new business
-                    const businessData = {
-                        user_id: user.id,
-                        name: newBrand.name,
-                        category: newBrand.category,
-                        product: newBrand.product || null,
-                        website: newBrand.website || null,
-                        color_primary: newBrand.primaryColor,
-                        color_secondary: newBrand.secondaryColor,
-                        color_tertiary: newBrand.tertiaryColor || null,
-                        color_schema: newBrand.colorSchema || 'custom',
-                        typography_preset: null,
-                        typography_custom: newBrand.typography || null,
-                        logo_base64: newBrand.logo || null,
-                        design_templates: newBrand.designTemplate || [],
-                    };
-                    const { data, error } = await supabase
+                    ({ data, error } = await supabase
                         .from('businesses')
                         .insert(businessData)
                         .select()
-                        .single();
-                    if (error) {
-                        console.error('Error saving business:', error);
-                    } else if (data) {
-                        newBrand.id = data.id;
+                        .single());
+                }
+
+                if (error) {
+                    console.error('Error saving business:', error);
+                } else if (data) {
+                    newBrand.id = data.id;
+
+                    // Save generated templates from localStorage to DB
+                    const storedTemplates = localStorage.getItem('onboarding_generated_templates');
+                    if (storedTemplates) {
+                        const templates = JSON.parse(storedTemplates);
+                        for (const t of templates) {
+                            await supabase.from('design_templates').insert({
+                                user_id: user.id,
+                                business_id: data.id,
+                                image_base64: t.image_base64,
+                                format: t.format,
+                                width: t.width,
+                                height: t.height,
+                                style_metadata: { variation_index: t.variation_index },
+                            });
+                        }
+                        localStorage.removeItem('onboarding_generated_templates');
                     }
                 }
             } catch (err) {
@@ -465,6 +477,8 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
             setBusinesses([...businesses, newBrand]);
         }
         setIsSaving(false);
+        // Clean up localStorage
+        localStorage.removeItem('onboarding_generated_templates');
         setCurrentView('dashboard');
     };
 
