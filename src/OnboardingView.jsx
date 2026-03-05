@@ -481,7 +481,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Produk / Jasa yang Ditawarkan</label>
                                 <div className="relative">
                                     <div className="relative flex items-center">
-                                        <ShoppingBag className="absolute left-4 w-4 h-4 text-slate-400 pointer-events-none" />
+                                        <ShoppingBag className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
                                         <input
                                             type="text"
                                             value={productSearch}
