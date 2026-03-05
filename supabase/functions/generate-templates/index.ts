@@ -1,5 +1,15 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { ImageMagick, MagickFormat, MagickGeometry, initialize } from "npm:@imagemagick/magick-wasm@0.0.30";
+
+// Initialize ImageMagick WASM
+let magickInitialized = false;
+async function ensureMagick() {
+  if (!magickInitialized) {
+    await initialize();
+    magickInitialized = true;
+  }
+}
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
