@@ -355,22 +355,56 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
         });
     };
 
-    const handleFinish = () => {
+    const handleFinish = async () => {
         setIsSaving(true);
-        setTimeout(() => {
-            const newBrand = { ...localBrand };
-            setBrandDNA(newBrand);
-            const existingIdx = businesses.findIndex(b => b.name === newBrand.name);
-            if (existingIdx >= 0) {
-                const updated = [...businesses];
-                updated[existingIdx] = newBrand;
-                setBusinesses(updated);
-            } else {
-                setBusinesses([...businesses, newBrand]);
+        const newBrand = { ...localBrand };
+
+        if (user) {
+            try {
+                const businessData = {
+                    user_id: user.id,
+                    name: newBrand.name,
+                    category: newBrand.category,
+                    product: newBrand.product || null,
+                    website: newBrand.website || null,
+                    color_primary: newBrand.primaryColor,
+                    color_secondary: newBrand.secondaryColor,
+                    color_tertiary: newBrand.tertiaryColor || null,
+                    color_schema: newBrand.colorSchema || 'custom',
+                    typography_preset: null,
+                    typography_custom: newBrand.typography || null,
+                    logo_base64: newBrand.logo || null,
+                    design_templates: newBrand.designTemplate || [],
+                };
+
+                const { data, error } = await supabase
+                    .from('businesses')
+                    .insert(businessData)
+                    .select()
+                    .single();
+
+                if (error) {
+                    console.error('Error saving business:', error);
+                    // Still proceed with local state
+                } else if (data) {
+                    newBrand.id = data.id;
+                }
+            } catch (err) {
+                console.error('Unexpected error:', err);
             }
-            setIsSaving(false);
-            setCurrentView('dashboard');
-        }, 1000);
+        }
+
+        setBrandDNA(newBrand);
+        const existingIdx = businesses.findIndex(b => b.name === newBrand.name);
+        if (existingIdx >= 0) {
+            const updated = [...businesses];
+            updated[existingIdx] = newBrand;
+            setBusinesses(updated);
+        } else {
+            setBusinesses([...businesses, newBrand]);
+        }
+        setIsSaving(false);
+        setCurrentView('dashboard');
     };
 
     const canProceed = () => {
