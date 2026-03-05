@@ -1022,89 +1022,19 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
 
                                         {/* Template Grid — scrollable */}
                                         <div className="flex-1 overflow-y-auto p-6">
+                                            {generateError && (
+                                                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-sm text-red-600 text-center">
+                                                    {generateError}
+                                                </div>
+                                            )}
+                                            {generatedTemplates.length === 0 && !generateError && (
+                                                <div className="text-center py-12 text-slate-400 text-sm">
+                                                    Belum ada template yang di-generate.
+                                                </div>
+                                            )}
                                             <div className="grid grid-cols-2 gap-3">
-                                                {TEMPLATES.map(tpl => {
+                                                {generatedTemplates.map(tpl => {
                                                     const isSelected = (localBrand.designTemplate || []).includes(tpl.id);
-
-                                                    const renderMockup = () => {
-                                                        switch (tpl.id) {
-                                                            case 'minimalis-elegan':
-                                                                return (
-                                                                    <div className="w-full h-full flex flex-col items-center justify-center gap-2 px-5">
-                                                                        <div className="w-full h-px bg-slate-200" />
-                                                                        <div className="w-16 h-16 rounded-xl bg-slate-200" />
-                                                                        <div className="w-16 h-1.5 rounded-full bg-slate-300" />
-                                                                        <div className="w-10 h-1 rounded-full bg-slate-200" />
-                                                                        <div className="w-full h-px bg-slate-200" />
-                                                                    </div>
-                                                                );
-                                                            case 'tegas-berani':
-                                                                return (
-                                                                    <div className="w-full h-full flex flex-col">
-                                                                        <div className="h-1.5 w-full bg-slate-500" />
-                                                                        <div className="flex-1 flex items-end justify-between px-4 pb-4">
-                                                                            <div className="space-y-1.5">
-                                                                                <div className="w-14 h-1.5 rounded-full bg-slate-500" />
-                                                                                <div className="w-10 h-1 rounded-full bg-slate-600" />
-                                                                            </div>
-                                                                            <div className="w-12 h-12 rounded-lg bg-slate-600" />
-                                                                        </div>
-                                                                    </div>
-                                                                );
-                                                            case 'lembut-estetik':
-                                                                return (
-                                                                    <div className="w-full h-full flex">
-                                                                        <div className="w-1 bg-pink-300 rounded-full my-4 ml-3" />
-                                                                        <div className="flex-1 flex flex-col justify-center gap-2.5 px-4">
-                                                                            <div className="w-12 h-12 rounded-xl bg-orange-200" />
-                                                                            <div className="w-14 h-1.5 rounded-full bg-orange-200" />
-                                                                            <div className="w-10 h-1 rounded-full bg-pink-100" />
-                                                                        </div>
-                                                                    </div>
-                                                                );
-                                                            case 'mewah-eksklusif':
-                                                                return (
-                                                                    <div className="w-full h-full flex flex-col items-center justify-center gap-2.5">
-                                                                        <div className="w-14 h-14 rounded-lg bg-yellow-900/40 border border-yellow-700/30" />
-                                                                        <div className="w-10 h-0.5 rounded-full bg-yellow-600" />
-                                                                        <div className="w-8 h-1 rounded-full bg-slate-700" />
-                                                                    </div>
-                                                                );
-                                                            case 'ceria-aktif':
-                                                                return (
-                                                                    <div className="w-full h-full p-3 flex flex-col gap-2">
-                                                                        <div className="flex gap-2 flex-1">
-                                                                            <div className="flex-[3] rounded-lg bg-pink-300" />
-                                                                            <div className="flex-1 flex flex-col gap-1.5">
-                                                                                <div className="flex-1 rounded bg-yellow-200" />
-                                                                                <div className="flex-1 rounded bg-pink-100" />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="w-full h-1.5 rounded-full bg-yellow-300" />
-                                                                    </div>
-                                                                );
-                                                            case 'profesional-rapi':
-                                                                return (
-                                                                    <div className="w-full h-full flex flex-col justify-center gap-3 px-4">
-                                                                        <div className="flex items-center gap-2.5">
-                                                                            <div className="w-8 h-8 rounded-full bg-blue-200 shrink-0" />
-                                                                            <div className="space-y-1">
-                                                                                <div className="w-14 h-1.5 rounded-full bg-blue-300" />
-                                                                                <div className="w-8 h-1 rounded-full bg-blue-100" />
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="w-full h-16 rounded-xl bg-blue-200/60" />
-                                                                        <div className="space-y-1">
-                                                                            <div className="w-full h-1.5 rounded-full bg-blue-100" />
-                                                                            <div className="w-2/3 h-1 rounded-full bg-blue-100/70" />
-                                                                        </div>
-                                                                    </div>
-                                                                );
-                                                            default:
-                                                                return null;
-                                                        }
-                                                    };
-
                                                     return (
                                                         <button
                                                             key={tpl.id}
@@ -1120,15 +1050,12 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                                 : 'border-slate-100 hover:border-primary/40'
                                                                 }`}
                                                         >
-                                                            <div
-                                                                className="relative w-full overflow-hidden"
-                                                                style={{ backgroundColor: tpl.bg, aspectRatio: '4/3' }}
-                                                            >
-                                                                {renderMockup()}
+                                                            <div className="relative w-full overflow-hidden aspect-square">
+                                                                <img src={tpl.image_base64} alt={`Template ${(tpl.variation_index ?? 0) + 1}`} className="w-full h-full object-cover" />
                                                             </div>
                                                             <div className="flex items-center justify-between px-3 py-2.5 bg-white">
                                                                 <span className={`text-xs font-bold leading-snug ${isSelected ? 'text-primary-darker' : 'text-slate-800'}`}>
-                                                                    {tpl.name}
+                                                                    Template {(tpl.variation_index ?? 0) + 1}
                                                                 </span>
                                                                 <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all ${isSelected
                                                                     ? 'bg-primary border-primary'
