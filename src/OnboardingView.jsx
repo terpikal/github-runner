@@ -933,11 +933,11 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
 
                                 <button
                                     onClick={handleGenerateTemplate}
-                                    disabled={isGeneratingTemplate}
+                                    disabled={isGeneratingTemplate || isGeneratingAI}
                                     className="w-full flex items-center justify-center gap-2 py-3 px-8 bg-primary/10 hover:bg-primary/20 text-primary-darker font-bold rounded-2xl transition-colors text-[15px] disabled:opacity-60"
                                 >
                                     <Sparkles className="w-4 h-4" />
-                                    Generate Template Desain
+                                    {isGeneratingTemplate || isGeneratingAI ? 'Generating...' : 'Generate Template Desain'}
                                 </button>
 
                                 {/* Dramatic generating loading */}
