@@ -87,6 +87,9 @@ function buildPrompt(business: BusinessData, format: string, variationIndex: num
     "clean corporate with professional layout",
     "creative and playful with geometric elements",
     "sophisticated dark theme with neon accents",
+    "retro vintage with warm tones and textured feel",
+    "futuristic tech with glassmorphism effects",
+    "nature-inspired organic shapes and earthy palette",
   ];
   const styleVariation = styles[variationIndex % styles.length];
 
