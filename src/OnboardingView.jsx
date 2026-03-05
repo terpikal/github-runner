@@ -672,8 +672,8 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                 <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Logo Bisnis (Opsional)</label>
                                 <label className="flex items-center gap-4 p-4 rounded-2xl border-2 border-dashed border-slate-200 bg-slate-50 hover:bg-slate-100 hover:border-primary/50 transition-all cursor-pointer group">
                                     <div className="w-16 h-16 rounded-xl bg-white border border-slate-200 flex items-center justify-center overflow-hidden shadow-sm shrink-0 group-hover:scale-105 transition-transform">
-                                        {localBrand.logo ? (
-                                            <img src={localBrand.logo} alt="Logo" className="w-full h-full object-cover" />
+                                        {(localBrand.logoPreview || localBrand.logo) ? (
+                                            <img src={localBrand.logoPreview || localBrand.logo} alt="Logo" className="w-full h-full object-cover" />
                                         ) : (
                                             <ImageIcon className="w-6 h-6 text-slate-400 group-hover:text-primary" />
                                         )}
