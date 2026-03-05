@@ -304,9 +304,16 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
         setIsGeneratingTemplate(true);
 
         try {
-            // Save business first to get an ID
+            // Save or update business to get an ID
             let businessId = savedBusinessId;
             if (!businessId) {
+                // Check if user already has a business
+                const { data: existing } = await supabase
+                    .from('businesses')
+                    .select('id')
+                    .eq('user_id', user.id)
+                    .maybeSingle();
+
                 const businessData = {
                     user_id: user.id,
                     name: localBrand.name,
@@ -322,11 +329,25 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                     logo_base64: localBrand.logo || null,
                     design_templates: [],
                 };
-                const { data, error } = await supabase
-                    .from('businesses')
-                    .insert(businessData)
-                    .select()
-                    .single();
+
+                let data, error;
+                if (existing?.id) {
+                    // Update existing business
+                    ({ data, error } = await supabase
+                        .from('businesses')
+                        .update(businessData)
+                        .eq('id', existing.id)
+                        .select()
+                        .single());
+                } else {
+                    // Insert new business
+                    ({ data, error } = await supabase
+                        .from('businesses')
+                        .insert(businessData)
+                        .select()
+                        .single());
+                }
+
                 if (error) {
                     console.error('Error saving business:', error);
                     setIsGeneratingTemplate(false);
