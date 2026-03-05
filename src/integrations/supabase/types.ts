@@ -74,6 +74,53 @@ export type Database = {
         }
         Relationships: []
       }
+      design_templates: {
+        Row: {
+          business_id: string
+          created_at: string
+          format: string
+          height: number
+          id: string
+          image_base64: string
+          prompt_used: string | null
+          style_metadata: Json | null
+          user_id: string
+          width: number
+        }
+        Insert: {
+          business_id: string
+          created_at?: string
+          format?: string
+          height?: number
+          id?: string
+          image_base64: string
+          prompt_used?: string | null
+          style_metadata?: Json | null
+          user_id: string
+          width?: number
+        }
+        Update: {
+          business_id?: string
+          created_at?: string
+          format?: string
+          height?: number
+          id?: string
+          image_base64?: string
+          prompt_used?: string | null
+          style_metadata?: Json | null
+          user_id?: string
+          width?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "design_templates_business_id_fkey"
+            columns: ["business_id"]
+            isOneToOne: false
+            referencedRelation: "businesses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
