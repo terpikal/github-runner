@@ -328,6 +328,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
             if (result) {
                 // Store generated templates in React state (not localStorage — too large for base64)
                 const templatesToStore = (result.templates || []).map(t => ({
+                    id: t.id,
                     image_base64: t.image_base64,
                     format: t.format,
                     width: t.width,
@@ -335,6 +336,8 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                     variation_index: t.variation_index,
                 }));
                 setPendingTemplates(templatesToStore);
+                // Auto-select all by default
+                setLocalBrand(prev => ({ ...prev, designTemplate: templatesToStore.map(t => t.id) }));
                 setShowTemplateModal(true);
             }
         } catch (err) {
