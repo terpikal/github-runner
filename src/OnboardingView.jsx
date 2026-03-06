@@ -475,8 +475,6 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
             setBusinesses([...businesses, newBrand]);
         }
         setIsSaving(false);
-        // Clean up localStorage
-        localStorage.removeItem('onboarding_generated_templates');
         setCurrentView('dashboard');
     };
 
