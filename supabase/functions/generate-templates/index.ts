@@ -154,14 +154,16 @@ async function generateTemplateImage(
     messages.push({ role: "user", content: prompt });
   }
 
-  const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
+      "HTTP-Referer": "https://postibel.lovable.app",
+      "X-Title": "Postibel",
     },
     body: JSON.stringify({
-      model: "google/gemini-3-pro-image-preview",
+      model: "google/gemini-2.5-flash-preview-image-generation",
       messages,
       modalities: ["image", "text"],
     }),
