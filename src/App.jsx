@@ -2931,49 +2931,10 @@ const LibraryView = ({ library, setLibrary, setPreviewPost, setEditingPost, setC
     );
 };
 
-const ProfileView = ({ brandDNA, setBrandDNA, businesses, setBusinesses, setCurrentView }) => {
+const ProfileView = ({ brandDNA, setBrandDNA, businesses, setBusinesses, setCurrentView, setDetailBusinessId }) => {
     const [activeTab, setActiveTab] = useState('account');
     const [user, setUser] = useState({ name: 'Budi Gunawan', email: 'budi@example.com', phone: '081234567890' });
     const [saveStatus, setSaveStatus] = useState(null);
-    const [detailBiz, setDetailBiz] = useState(null);
-    const [editingBiz, setEditingBiz] = useState(null);
-    const [savingDetail, setSavingDetail] = useState(false);
-    const [bizTemplates, setBizTemplates] = useState([]);
-    const [loadingTemplates, setLoadingTemplates] = useState(false);
-    const { isGenerating: isRegenerating, progress: regenProgress, generateTemplates } = useGenerateTemplates();
-
-    const openDetail = async (biz) => {
-        setDetailBiz(biz);
-        setEditingBiz({ ...biz });
-        setBizTemplates([]);
-        if (biz.id) {
-            setLoadingTemplates(true);
-            try {
-                const { data } = await supabase.from('design_templates').select('*').eq('business_id', biz.id).order('created_at', { ascending: false });
-                setBizTemplates(data || []);
-            } catch (e) { console.error(e); }
-            setLoadingTemplates(false);
-        }
-    };
-
-    const handleRegenerate = async () => {
-        if (!detailBiz?.id) return;
-        // Reset brief so a new one is generated
-        await supabase.from('businesses').update({ brief_template: null }).eq('id', detailBiz.id);
-        // Delete existing templates
-        await supabase.from('design_templates').delete().eq('business_id', detailBiz.id);
-        setBizTemplates([]);
-
-        const result = await generateTemplates({
-            businessId: detailBiz.id,
-            formats: ['ig_post'],
-            variationsPerFormat: 6,
-            saveToDb: true,
-        });
-        if (result?.templates) {
-            setBizTemplates(result.templates);
-        }
-    };
 
     const handleSaveAccount = () => {
         setSaveStatus('saving-account');
