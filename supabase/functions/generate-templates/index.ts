@@ -63,8 +63,47 @@ interface BusinessData {
   color_tertiary?: string;
   color_schema: string;
   typography_preset?: string;
+  typography_custom?: {
+    judul?: string;
+    subJudul?: string;
+    deskripsi?: string;
+  };
   logo_base64?: string;
 }
+
+// Map typography preset IDs to font descriptions for AI prompt
+const TYPOGRAPHY_MAP: Record<string, { heading: string; body: string; style: string }> = {
+  "modern-bersih": {
+    heading: "Inter (weight 800, tight letter-spacing)",
+    body: "Inter (weight 400, clean and readable)",
+    style: "Modern, clean, and professional — sharp geometric sans-serif"
+  },
+  "klasik-elegan": {
+    heading: "Georgia serif (weight 700, elegant)",
+    body: "Georgia serif (weight 400, italic sub-headings)",
+    style: "Classic, elegant, and sophisticated — refined serif typography"
+  },
+  "tegas-kuat": {
+    heading: "Arial Black (weight 900, uppercase, wide letter-spacing)",
+    body: "Arial (weight 400, compact line-height)",
+    style: "Bold, powerful, and commanding — strong impactful typography"
+  },
+  "kreatif-unik": {
+    heading: "Trebuchet MS (weight 700, italic, wide letter-spacing)",
+    body: "Trebuchet MS (weight 400, relaxed line-height)",
+    style: "Creative, unique, and playful — dynamic italic typography"
+  },
+  "hangat-bersahabat": {
+    heading: "Verdana (weight 700, no letter-spacing)",
+    body: "Verdana (weight 400, generous line-height)",
+    style: "Warm, friendly, and approachable — soft rounded typography"
+  },
+  "minimalis-tipis": {
+    heading: "Inter thin (weight 300, very wide letter-spacing)",
+    body: "Inter thin (weight 300, airy line-height)",
+    style: "Minimalist, thin, and airy — elegant lightweight typography"
+  },
+};
 
 interface TemplateRequest {
   business_id?: string;
