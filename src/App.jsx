@@ -2934,6 +2934,9 @@ const ProfileView = ({ brandDNA, setBrandDNA, businesses, setBusinesses, setCurr
     const [activeTab, setActiveTab] = useState('account');
     const [user, setUser] = useState({ name: 'Budi Gunawan', email: 'budi@example.com', phone: '081234567890' });
     const [saveStatus, setSaveStatus] = useState(null);
+    const [detailBiz, setDetailBiz] = useState(null);
+    const [editingBiz, setEditingBiz] = useState(null);
+    const [savingDetail, setSavingDetail] = useState(false);
 
     const handleSaveAccount = () => {
         setSaveStatus('saving-account');
