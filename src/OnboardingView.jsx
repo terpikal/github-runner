@@ -905,9 +905,36 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                                             </div>
                                                             <p className="text-xs text-slate-500 mt-0.5">{palette.desc}</p>
                                                             <div className="flex gap-1.5 mt-2">
-                                                                {palette.colors.map((c, i) => (
-                                                                    <span key={i} className="text-[9px] font-mono text-slate-400 uppercase">{c}</span>
-                                                                ))}
+                                                {palette.colors.map((c, i) => (
+                                                                     <div key={i} className="flex items-center gap-1">
+                                                                         <span className="text-[9px] font-mono text-slate-400 uppercase">{c}</span>
+                                                                         {selectedPaletteIdx === idx && (
+                                                                             <label className="cursor-pointer group relative">
+                                                                                 <span className="text-[9px] text-primary hover:text-primary-darker font-bold transition-colors">✏️</span>
+                                                                                 <input
+                                                                                     type="color"
+                                                                                     value={c}
+                                                                                     onChange={e => {
+                                                                                         e.stopPropagation();
+                                                                                         const newColors = [...palette.colors];
+                                                                                         newColors[i] = e.target.value;
+                                                                                         const updatedPalettes = [...generatedPalettes];
+                                                                                         updatedPalettes[idx] = { ...palette, colors: newColors };
+                                                                                         setGeneratedPalettes(updatedPalettes);
+                                                                                         setLocalBrand(prev => ({
+                                                                                             ...prev,
+                                                                                             primaryColor: newColors[0],
+                                                                                             secondaryColor: newColors[1],
+                                                                                             tertiaryColor: newColors[2],
+                                                                                         }));
+                                                                                     }}
+                                                                                     onClick={e => e.stopPropagation()}
+                                                                                     className="absolute inset-0 opacity-0 w-full h-full cursor-pointer"
+                                                                                 />
+                                                                             </label>
+                                                                         )}
+                                                                     </div>
+                                                                 ))}
                                                             </div>
                                                         </div>
                                                     </button>
