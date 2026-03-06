@@ -315,7 +315,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                 color_secondary: localBrand.secondaryColor,
                 color_tertiary: localBrand.tertiaryColor || null,
                 color_schema: localBrand.colorSchema || 'custom',
-                typography_preset: null,
+                typography_preset: localBrand.typography?.preset || 'modern-bersih',
                 logo_base64: localBrand.logo || null,
             };
 
