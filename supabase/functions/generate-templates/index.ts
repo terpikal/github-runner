@@ -57,6 +57,7 @@ interface BusinessData {
   name: string;
   category: string;
   product?: string;
+  website?: string;
   color_primary: string;
   color_secondary: string;
   color_tertiary?: string;
