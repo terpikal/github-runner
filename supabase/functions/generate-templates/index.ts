@@ -202,6 +202,7 @@ serve(async (req) => {
 
   try {
     const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
+    console.log("OPENROUTER_API_KEY exists:", !!OPENROUTER_API_KEY, "length:", OPENROUTER_API_KEY?.length, "starts with:", OPENROUTER_API_KEY?.substring(0, 10));
     if (!OPENROUTER_API_KEY) throw new Error("OPENROUTER_API_KEY is not configured");
 
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
