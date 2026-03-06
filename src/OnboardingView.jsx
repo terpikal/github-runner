@@ -470,6 +470,9 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
             }
         }
 
+        // Clear all generated templates from memory
+        setPendingTemplates([]);
+
         setBrandDNA(newBrand);
         const existingIdx = businesses.findIndex(b => b.name === newBrand.name);
         if (existingIdx >= 0) {
