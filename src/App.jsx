@@ -3090,6 +3090,7 @@ const ProfileView = ({ brandDNA, setBrandDNA, businesses, setBusinesses, setCurr
                                                     )}
 
                                                     <button
+                                                        onClick={() => { setDetailBiz(biz); setEditingBiz({ ...biz }); }}
                                                         className={`p-2.5 rounded-xl transition-colors border flex items-center justify-center ${isActive ? 'flex-1 border-slate-200 bg-white hover:bg-slate-50 hover:text-primary text-slate-600' : 'border-transparent text-slate-400 hover:text-primary hover:bg-primary/10'}`}
                                                         title="Detail Profil"
                                                     >
