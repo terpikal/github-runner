@@ -154,14 +154,16 @@ async function generateTemplateImage(
     messages.push({ role: "user", content: prompt });
   }
 
-  const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
+      "HTTP-Referer": "https://postibel.lovable.app",
+      "X-Title": "Postibel",
     },
     body: JSON.stringify({
-      model: "google/gemini-3-pro-image-preview",
+      model: "google/gemini-2.5-flash-preview-image-generation",
       messages,
       modalities: ["image", "text"],
     }),
@@ -177,7 +179,19 @@ async function generateTemplateImage(
   }
 
   const data = await response.json();
-  const imageUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+  // OpenRouter returns inline_data for image generation models
+  const parts = data.choices?.[0]?.message?.content;
+  let imageUrl: string | null = null;
+  if (Array.isArray(parts)) {
+    const imgPart = parts.find((p: any) => p.type === "image_url" || p.type === "image");
+    if (imgPart?.image_url?.url) {
+      imageUrl = imgPart.image_url.url;
+    }
+  }
+  // Fallback: check Lovable-style response
+  if (!imageUrl) {
+    imageUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url || null;
+  }
   return imageUrl || null;
 }
 
@@ -187,8 +201,8 @@ serve(async (req) => {
   }
 
   try {
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    if (!LOVABLE_API_KEY) throw new Error("LOVABLE_API_KEY is not configured");
+    const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
+    if (!OPENROUTER_API_KEY) throw new Error("OPENROUTER_API_KEY is not configured");
 
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
@@ -318,7 +332,7 @@ serve(async (req) => {
           const prompt = buildPrompt(business as BusinessData, task.format, task.variationIndex);
           let imageBase64 = await generateTemplateImage(
             prompt,
-            LOVABLE_API_KEY,
+            OPENROUTER_API_KEY,
             business.logo_base64 || undefined
           );
 
@@ -326,7 +340,7 @@ serve(async (req) => {
           if (!imageBase64) {
             console.warn(`Retry: ${task.format} variation ${task.variationIndex + 1}`);
             await new Promise(resolve => setTimeout(resolve, 2000));
-            imageBase64 = await generateTemplateImage(prompt, LOVABLE_API_KEY, business.logo_base64 || undefined);
+            imageBase64 = await generateTemplateImage(prompt, OPENROUTER_API_KEY, business.logo_base64 || undefined);
           }
 
           if (!imageBase64) {
