@@ -298,6 +298,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
     const [showTemplateModal, setShowTemplateModal] = useState(false);
     const [isGeneratingTemplate, setIsGeneratingTemplate] = useState(false);
     const [savedBusinessId, setSavedBusinessId] = useState(null);
+    const [pendingTemplates, setPendingTemplates] = useState([]);
 
     const handleGenerateTemplate = async () => {
         if (!user) return;
