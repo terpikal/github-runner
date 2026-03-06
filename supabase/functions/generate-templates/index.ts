@@ -201,8 +201,10 @@ serve(async (req) => {
   }
 
   try {
-    const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
+    let OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
     if (!OPENROUTER_API_KEY) throw new Error("OPENROUTER_API_KEY is not configured");
+    // Fix common key format issue: space instead of hyphen
+    OPENROUTER_API_KEY = OPENROUTER_API_KEY.replace(/^(sk-or-v1)\s+/, "$1-");
 
     // Debug: test OpenRouter connectivity
     const url = new URL(req.url);
