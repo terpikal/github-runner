@@ -4197,6 +4197,7 @@ function App() {
     }, [navigate]);
     const [brandDNA, setBrandDNA] = useState(DEFAULT_BRAND_DNA);
     const [businesses, setBusinesses] = useState([DEFAULT_BRAND_DNA, SECONDARY_BRAND_DNA]);
+    const [detailBusinessId, setDetailBusinessId] = useState(null);
     const [library, setLibrary] = useState(MOCK_LIBRARY);
     const [planners, setPlanners] = useState([]);
 
