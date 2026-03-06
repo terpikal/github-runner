@@ -4177,6 +4177,7 @@ function App() {
         'foto-model': '/foto-model',
         'video-editor': '/video-editor',
         'profile': '/profile',
+        'business-detail': '/business-detail',
         'signup': '/signup',
         'onboarding': '/onboarding',
         'generating': '/generating',
