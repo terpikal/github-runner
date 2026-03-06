@@ -96,6 +96,10 @@ function buildPrompt(business: BusinessData, format: string, variationIndex: num
   ];
   const styleVariation = styles[variationIndex % styles.length];
 
+  const websiteRule = business.website
+    ? `- IMPORTANT: Include the website "${business.website}" visibly in the design (e.g. at the bottom or near the logo area). Use the EXACT text "${business.website}" — do not modify or abbreviate it.`
+    : `- Do NOT include any website URL or web address in the design.`;
+
   return `Create a professional ${config.label} design template (${config.ratio} aspect ratio) for a business called "${business.name}" in the "${business.category}" industry.
 ${business.product ? `Their main product/service: ${business.product}` : ""}
 
@@ -117,6 +121,7 @@ REQUIREMENTS:
 - Leave space for a logo in a corner
 - Make it visually striking and professional
 - The design should work as a reusable template
+${websiteRule}
 
 Use Lorem ipsum placeholder text for all text elements. DO NOT leave text areas empty or use colored rectangles — always fill them with realistic-looking Lorem ipsum dummy text to show how the final design will look.`;
 }
