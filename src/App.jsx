@@ -3215,7 +3215,7 @@ const BusinessDetailView = ({ businessId, businesses, setBusinesses, brandDNA, s
                         </div>
                         <div className="space-y-1.5">
                             <label className="text-xs font-semibold text-slate-400 ml-1">Kategori</label>
-                            <div className="w-full p-3.5 rounded-xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{biz.category}</div>
+                            <div className="w-full p-3.5 rounded-2xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{biz.category}</div>
                         </div>
                         <div className="space-y-1.5">
                             <label className="text-xs font-semibold text-slate-400 ml-1">Produk / Layanan</label>
