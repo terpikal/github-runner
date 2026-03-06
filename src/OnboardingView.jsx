@@ -310,6 +310,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                 name: localBrand.name,
                 category: localBrand.category,
                 product: localBrand.product || null,
+                website: localBrand.website || null,
                 color_primary: localBrand.primaryColor,
                 color_secondary: localBrand.secondaryColor,
                 color_tertiary: localBrand.tertiaryColor || null,
