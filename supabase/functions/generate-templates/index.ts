@@ -163,7 +163,7 @@ async function generateTemplateImage(
       "X-Title": "Postibel",
     },
     body: JSON.stringify({
-      model: "google/gemini-2.5-flash-preview-image-generation",
+      model: "google/gemini-2.5-flash-image",
       messages,
       modalities: ["image", "text"],
     }),
@@ -201,23 +201,12 @@ serve(async (req) => {
   }
 
   try {
-    const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
+    let OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
     if (!OPENROUTER_API_KEY) throw new Error("OPENROUTER_API_KEY is not configured");
+    // Fix common key format issue: space instead of hyphen
+    OPENROUTER_API_KEY = OPENROUTER_API_KEY.replace(/^(sk-or-v1)\s+/, "$1-");
 
-    // Debug: test OpenRouter connectivity
-    const url = new URL(req.url);
-    if (url.searchParams.get("test") === "1") {
-      const testResp = await fetch("https://openrouter.ai/api/v1/models", {
-        headers: { "Authorization": `Bearer ${OPENROUTER_API_KEY}` },
-      });
-      const testBody = await testResp.text();
-      return new Response(JSON.stringify({
-        key_length: OPENROUTER_API_KEY.length,
-        key_prefix: OPENROUTER_API_KEY.substring(0, 12),
-        test_status: testResp.status,
-        test_body_preview: testBody.substring(0, 200),
-      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    }
+
 
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
