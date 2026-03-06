@@ -3206,7 +3206,7 @@ const BusinessDetailView = ({ businessId, businesses, setBusinesses, brandDNA, s
                     <div className="flex items-center gap-2 mb-4">
                         <Briefcase className="w-4 h-4 text-primary" />
                         <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Informasi Bisnis</h4>
-                        <span className="ml-auto px-2 py-0.5 bg-slate-100 text-slate-400 text-[10px] font-bold rounded-md uppercase tracking-wider">Tidak dapat diubah</span>
+                        <span className="ml-auto px-2.5 py-0.5 bg-slate-100 text-slate-400 text-[10px] font-bold rounded-full uppercase tracking-wider">Tidak dapat diubah</span>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-1.5">
