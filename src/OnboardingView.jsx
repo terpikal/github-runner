@@ -298,6 +298,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
     const [showTemplateModal, setShowTemplateModal] = useState(false);
     const [isGeneratingTemplate, setIsGeneratingTemplate] = useState(false);
     const [savedBusinessId, setSavedBusinessId] = useState(null);
+    const [pendingTemplates, setPendingTemplates] = useState([]);
 
     const handleGenerateTemplate = async () => {
         if (!user) return;
@@ -325,7 +326,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
             });
 
             if (result) {
-                // Store generated templates temporarily in localStorage
+                // Store generated templates in React state (not localStorage — too large for base64)
                 const templatesToStore = (result.templates || []).map(t => ({
                     image_base64: t.image_base64,
                     format: t.format,
@@ -333,7 +334,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                     height: t.height,
                     variation_index: t.variation_index,
                 }));
-                localStorage.setItem('onboarding_generated_templates', JSON.stringify(templatesToStore));
+                setPendingTemplates(templatesToStore);
                 setShowTemplateModal(true);
             }
         } catch (err) {
@@ -444,11 +445,9 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                 } else if (data) {
                     newBrand.id = data.id;
 
-                    // Save generated templates from localStorage to DB
-                    const storedTemplates = localStorage.getItem('onboarding_generated_templates');
-                    if (storedTemplates) {
-                        const templates = JSON.parse(storedTemplates);
-                        for (const t of templates) {
+                    // Save generated templates from state to DB
+                    if (pendingTemplates.length > 0) {
+                        for (const t of pendingTemplates) {
                             await supabase.from('design_templates').insert({
                                 user_id: user.id,
                                 business_id: data.id,
@@ -459,7 +458,6 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                 style_metadata: { variation_index: t.variation_index },
                             });
                         }
-                        localStorage.removeItem('onboarding_generated_templates');
                     }
                 }
             } catch (err) {
@@ -477,8 +475,6 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
             setBusinesses([...businesses, newBrand]);
         }
         setIsSaving(false);
-        // Clean up localStorage
-        localStorage.removeItem('onboarding_generated_templates');
         setCurrentView('dashboard');
     };
 
