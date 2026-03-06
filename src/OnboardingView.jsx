@@ -448,9 +448,11 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                 } else if (data) {
                     newBrand.id = data.id;
 
-                    // Save generated templates from state to DB
-                    if (pendingTemplates.length > 0) {
-                        for (const t of pendingTemplates) {
+                    // Save only SELECTED templates to DB
+                    const selectedIds = localBrand.designTemplate || [];
+                    const selectedTemplates = pendingTemplates.filter(t => selectedIds.includes(t.id));
+                    if (selectedTemplates.length > 0) {
+                        for (const t of selectedTemplates) {
                             await supabase.from('design_templates').insert({
                                 user_id: user.id,
                                 business_id: data.id,
