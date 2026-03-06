@@ -340,7 +340,7 @@ serve(async (req) => {
           if (!imageBase64) {
             console.warn(`Retry: ${task.format} variation ${task.variationIndex + 1}`);
             await new Promise(resolve => setTimeout(resolve, 2000));
-            imageBase64 = await generateTemplateImage(prompt, LOVABLE_API_KEY, business.logo_base64 || undefined);
+            imageBase64 = await generateTemplateImage(prompt, OPENROUTER_API_KEY, business.logo_base64 || undefined);
           }
 
           if (!imageBase64) {
