@@ -204,6 +204,21 @@ serve(async (req) => {
     const OPENROUTER_API_KEY = Deno.env.get("OPENROUTER_API_KEY");
     if (!OPENROUTER_API_KEY) throw new Error("OPENROUTER_API_KEY is not configured");
 
+    // Debug: test OpenRouter connectivity
+    const url = new URL(req.url);
+    if (url.searchParams.get("test") === "1") {
+      const testResp = await fetch("https://openrouter.ai/api/v1/models", {
+        headers: { "Authorization": `Bearer ${OPENROUTER_API_KEY}` },
+      });
+      const testBody = await testResp.text();
+      return new Response(JSON.stringify({
+        key_length: OPENROUTER_API_KEY.length,
+        key_prefix: OPENROUTER_API_KEY.substring(0, 12),
+        test_status: testResp.status,
+        test_body_preview: testBody.substring(0, 200),
+      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    }
+
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
     if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) throw new Error("Supabase config missing");
