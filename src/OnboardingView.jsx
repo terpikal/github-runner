@@ -445,11 +445,9 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                 } else if (data) {
                     newBrand.id = data.id;
 
-                    // Save generated templates from localStorage to DB
-                    const storedTemplates = localStorage.getItem('onboarding_generated_templates');
-                    if (storedTemplates) {
-                        const templates = JSON.parse(storedTemplates);
-                        for (const t of templates) {
+                    // Save generated templates from state to DB
+                    if (pendingTemplates.length > 0) {
+                        for (const t of pendingTemplates) {
                             await supabase.from('design_templates').insert({
                                 user_id: user.id,
                                 business_id: data.id,
@@ -460,7 +458,6 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                                 style_metadata: { variation_index: t.variation_index },
                             });
                         }
-                        localStorage.removeItem('onboarding_generated_templates');
                     }
                 }
             } catch (err) {
