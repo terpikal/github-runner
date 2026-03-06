@@ -3356,8 +3356,8 @@ const BusinessDetailView = ({ businessId, businesses, setBusinesses, brandDNA, s
 
                 {/* Save Button */}
                 <div className="flex justify-end gap-3 pb-4">
-                    <button onClick={() => setCurrentView('profile')} className="px-6 py-3 text-sm font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-xl transition-all">Batal</button>
-                    <button onClick={handleSave} disabled={savingDetail} className="px-8 py-3 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-xl transition-all shadow-sm hover:shadow-primary flex items-center gap-2 min-w-[160px] justify-center">
+                    <button onClick={() => setCurrentView('profile')} className="px-6 py-3 text-sm font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-2xl transition-all border border-slate-100">Batal</button>
+                    <button onClick={handleSave} disabled={savingDetail} className="px-8 py-3 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-2xl transition-all shadow-sm hover:shadow-primary flex items-center gap-2 min-w-[160px] justify-center">
                         {savingDetail ? <><Loader2 className="w-4 h-4 animate-spin" /> Menyimpan...</> : 'Simpan Perubahan'}
                     </button>
                 </div>
