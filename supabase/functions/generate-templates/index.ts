@@ -206,30 +206,7 @@ serve(async (req) => {
     // Fix common key format issue: space instead of hyphen
     OPENROUTER_API_KEY = OPENROUTER_API_KEY.replace(/^(sk-or-v1)\s+/, "$1-");
 
-    // Debug: test OpenRouter connectivity
-    const url = new URL(req.url);
-    if (url.searchParams.get("test") === "1") {
-      // Test actual chat completions endpoint
-      const testResp = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json",
-          "HTTP-Referer": "https://postibel.lovable.app",
-          "X-Title": "Postibel",
-        },
-        body: JSON.stringify({
-          model: "google/gemini-2.5-flash-preview-image-generation",
-          messages: [{ role: "user", content: "Say hello" }],
-        }),
-      });
-      const testBody = await testResp.text();
-      return new Response(JSON.stringify({
-        key_prefix: OPENROUTER_API_KEY.substring(0, 15),
-        chat_status: testResp.status,
-        chat_body: testBody.substring(0, 500),
-      }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
-    }
+
 
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL");
     const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
