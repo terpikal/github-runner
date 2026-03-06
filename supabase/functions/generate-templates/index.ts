@@ -332,7 +332,7 @@ serve(async (req) => {
           const prompt = buildPrompt(business as BusinessData, task.format, task.variationIndex);
           let imageBase64 = await generateTemplateImage(
             prompt,
-            LOVABLE_API_KEY,
+            OPENROUTER_API_KEY,
             business.logo_base64 || undefined
           );
 
