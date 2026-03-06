@@ -3122,269 +3122,245 @@ const ProfileView = ({ brandDNA, setBrandDNA, businesses, setBusinesses, setCurr
                         </div>
                     )}
             </div>
+        </div>
+    );
+};
 
-            {/* Detail Business Modal */}
-            {detailBiz && editingBiz && (
-                <ModalPortal>
-                    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
-                        <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => { setDetailBiz(null); setEditingBiz(null); }} />
-                        <div className="relative bg-white rounded-[2rem] shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto z-10">
-                            <div className="sticky top-0 bg-white/95 backdrop-blur-md border-b border-slate-100 px-6 py-5 rounded-t-[2rem] flex items-center justify-between z-20">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 rounded-xl flex items-center justify-center font-black text-lg text-white" style={{ background: `linear-gradient(135deg, ${detailBiz.primaryColor}, ${detailBiz.secondaryColor})` }}>
-                                        {detailBiz.name.charAt(0)}
-                                    </div>
-                                    <div>
-                                        <h3 className="text-lg font-bold text-slate-900">{detailBiz.name}</h3>
-                                        <p className="text-xs text-slate-400">{detailBiz.category}</p>
-                                    </div>
-                                </div>
-                                <button onClick={() => { setDetailBiz(null); setEditingBiz(null); }} className="p-2 hover:bg-slate-100 rounded-xl transition-colors">
-                                    <X className="w-5 h-5 text-slate-400" />
-                                </button>
-                            </div>
+const BusinessDetailView = ({ businessId, businesses, setBusinesses, brandDNA, setBrandDNA, setCurrentView }) => {
+    const biz = businesses.find(b => b.id === businessId);
+    const [editingBiz, setEditingBiz] = useState(biz ? { ...biz } : null);
+    const [savingDetail, setSavingDetail] = useState(false);
+    const [bizTemplates, setBizTemplates] = useState([]);
+    const [loadingTemplates, setLoadingTemplates] = useState(false);
+    const { isGenerating: isRegenerating, progress: regenProgress, generateTemplates } = useGenerateTemplates();
 
-                            <div className="p-6 space-y-8">
-                                {/* Informasi Bisnis - READ ONLY */}
-                                <div>
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <Briefcase className="w-4 h-4 text-primary" />
-                                        <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Informasi Bisnis</h4>
-                                        <span className="ml-auto px-2 py-0.5 bg-slate-100 text-slate-400 text-[10px] font-bold rounded-md uppercase tracking-wider">Tidak dapat diubah</span>
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div className="space-y-1.5">
-                                            <label className="text-xs font-semibold text-slate-400 ml-1">Nama Bisnis</label>
-                                            <div className="w-full p-3.5 rounded-xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{detailBiz.name}</div>
-                                        </div>
-                                        <div className="space-y-1.5">
-                                            <label className="text-xs font-semibold text-slate-400 ml-1">Kategori</label>
-                                            <div className="w-full p-3.5 rounded-xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{detailBiz.category}</div>
-                                        </div>
-                                        <div className="space-y-1.5">
-                                            <label className="text-xs font-semibold text-slate-400 ml-1">Produk / Layanan</label>
-                                            <div className="w-full p-3.5 rounded-xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{detailBiz.product || '-'}</div>
-                                        </div>
-                                        <div className="space-y-1.5">
-                                            <label className="text-xs font-semibold text-slate-400 ml-1">Website</label>
-                                            <div className="w-full p-3.5 rounded-xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{detailBiz.website || '-'}</div>
-                                        </div>
-                                    </div>
-                                </div>
+    useEffect(() => {
+        if (!businessId) return;
+        setLoadingTemplates(true);
+        supabase.from('design_templates').select('*').eq('business_id', businessId).order('created_at', { ascending: false })
+            .then(({ data }) => { setBizTemplates(data || []); setLoadingTemplates(false); })
+            .catch(() => setLoadingTemplates(false));
+    }, [businessId]);
 
-                                {/* Warna Brand - EDITABLE */}
-                                <div>
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <Palette className="w-4 h-4 text-primary" />
-                                        <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Warna Brand</h4>
-                                    </div>
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        {[
-                                            { label: 'Warna Primer', key: 'primaryColor' },
-                                            { label: 'Warna Sekunder', key: 'secondaryColor' },
-                                            { label: 'Warna Tersier', key: 'tertiaryColor' },
-                                        ].map(({ label, key }) => (
-                                            <div key={key} className="space-y-1.5">
-                                                <label className="text-xs font-semibold text-slate-400 ml-1">{label}</label>
-                                                <div className="flex items-center gap-2">
-                                                    <input
-                                                        type="color"
-                                                        value={editingBiz[key] || '#000000'}
-                                                        onChange={e => setEditingBiz({ ...editingBiz, [key]: e.target.value })}
-                                                        className="w-10 h-10 rounded-lg border border-slate-200 cursor-pointer"
-                                                    />
-                                                    <input
-                                                        type="text"
-                                                        value={editingBiz[key] || ''}
-                                                        onChange={e => setEditingBiz({ ...editingBiz, [key]: e.target.value })}
-                                                        className="flex-1 p-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary/40 outline-none text-sm font-mono font-medium text-slate-700"
-                                                    />
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    {/* Color Preview */}
-                                    <div className="mt-4 flex items-center gap-2">
-                                        <span className="text-xs text-slate-400 font-medium">Preview:</span>
-                                        <div className="flex gap-1">
-                                            <div className="w-16 h-8 rounded-lg shadow-inner border border-slate-100" style={{ backgroundColor: editingBiz.primaryColor }} />
-                                            <div className="w-10 h-8 rounded-lg shadow-inner border border-slate-100" style={{ backgroundColor: editingBiz.secondaryColor }} />
-                                            <div className="w-6 h-8 rounded-lg shadow-inner border border-slate-100" style={{ backgroundColor: editingBiz.tertiaryColor }} />
-                                        </div>
-                                    </div>
-                                </div>
+    const handleRegenerate = async () => {
+        if (!businessId) return;
+        await supabase.from('businesses').update({ brief_template: null }).eq('id', businessId);
+        await supabase.from('design_templates').delete().eq('business_id', businessId);
+        setBizTemplates([]);
+        const result = await generateTemplates({ businessId, formats: ['ig_post'], variationsPerFormat: 6, saveToDb: true });
+        if (result?.templates) setBizTemplates(result.templates);
+    };
 
-                                {/* Skema Warna - EDITABLE */}
-                                <div>
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <Layers className="w-4 h-4 text-primary" />
-                                        <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Skema Warna</h4>
-                                    </div>
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                        {COLOR_SCHEMAS.map(schema => (
-                                            <button
-                                                key={schema.id}
-                                                onClick={() => setEditingBiz({ ...editingBiz, colorSchema: schema.id, primaryColor: schema.colors[0], secondaryColor: schema.colors[1], tertiaryColor: schema.colors[2] })}
-                                                className={`p-3 rounded-xl border-2 transition-all text-left ${editingBiz.colorSchema === schema.id ? 'border-primary bg-primary/5 shadow-sm' : 'border-slate-100 hover:border-primary/30'}`}
-                                            >
-                                                <div className="flex gap-1 mb-2">
-                                                    {schema.colors.map((c, i) => <div key={i} className="w-5 h-5 rounded-full border border-white shadow-sm" style={{ backgroundColor: c }} />)}
-                                                </div>
-                                                <p className="text-[10px] font-bold text-slate-600 truncate">{schema.name}</p>
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
+    const handleSave = async () => {
+        if (!businessId || !editingBiz) return;
+        setSavingDetail(true);
+        const { error } = await supabase.from('businesses').update({
+            color_primary: editingBiz.primaryColor,
+            color_secondary: editingBiz.secondaryColor,
+            color_tertiary: editingBiz.tertiaryColor,
+            color_schema: editingBiz.colorSchema,
+            typography_preset: editingBiz.typographyPreset,
+            typography_custom: editingBiz.typography,
+            logo_base64: editingBiz.logo,
+        }).eq('id', businessId);
+        setSavingDetail(false);
+        if (!error) {
+            const updated = businesses.map(b => b.id === businessId ? { ...b, ...editingBiz } : b);
+            setBusinesses(updated);
+            if (brandDNA.id === businessId) setBrandDNA({ ...brandDNA, ...editingBiz });
+        }
+    };
 
-                                {/* Tipografi - EDITABLE */}
-                                <div>
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <Type className="w-4 h-4 text-primary" />
-                                        <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Tipografi</h4>
-                                    </div>
-                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                        {TYPOGRAPHY_PRESETS.map(preset => (
-                                            <button
-                                                key={preset.id}
-                                                onClick={() => setEditingBiz({ ...editingBiz, typographyPreset: preset.id, typography: preset.combo })}
-                                                className={`p-4 rounded-xl border-2 transition-all text-center ${editingBiz.typographyPreset === preset.id ? 'border-primary bg-primary/5 shadow-sm' : 'border-slate-100 hover:border-primary/30'}`}
-                                            >
-                                                <p className={`text-base mb-1 ${getFontClass(preset.combo.judul, 'font-sans font-black')}`}>Aa</p>
-                                                <p className="text-[10px] font-bold text-slate-500">{preset.label}</p>
-                                            </button>
-                                        ))}
-                                    </div>
-                                </div>
+    if (!biz || !editingBiz) {
+        return (
+            <div className="flex flex-col items-center justify-center py-20 text-slate-400">
+                <p className="text-sm font-medium">Bisnis tidak ditemukan</p>
+                <button onClick={() => setCurrentView('profile')} className="mt-4 text-primary font-bold text-sm hover:underline">Kembali ke Profil</button>
+            </div>
+        );
+    }
 
-                                {/* Logo - EDITABLE */}
-                                <div>
-                                    <div className="flex items-center gap-2 mb-4">
-                                        <ImageIcon className="w-4 h-4 text-primary" />
-                                        <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Logo</h4>
-                                    </div>
-                                    {editingBiz.logo ? (
-                                        <div className="flex items-center gap-4">
-                                            <div className="w-20 h-20 rounded-2xl border border-slate-200 bg-slate-50 flex items-center justify-center overflow-hidden">
-                                                <img src={editingBiz.logo} alt="Logo" className="max-w-full max-h-full object-contain" />
-                                            </div>
-                                            <button onClick={() => setEditingBiz({ ...editingBiz, logo: null })} className="text-xs text-red-500 hover:text-red-600 font-bold hover:bg-red-50 px-3 py-2 rounded-lg transition-colors">Hapus Logo</button>
-                                        </div>
-                                    ) : (
-                                        <div className="w-full border-2 border-dashed border-slate-200 rounded-2xl p-6 flex flex-col items-center justify-center text-slate-400 bg-slate-50/50">
-                                            <Upload className="w-6 h-6 mb-2" />
-                                            <p className="text-xs font-medium">Belum ada logo</p>
-                                        </div>
-                                    )}
-                                </div>
-                                </div>
+    return (
+        <div className="w-full max-w-3xl mx-auto animation-fade-in pb-24 md:pb-8">
+            {/* Header with Back */}
+            <div className="flex items-center gap-4 mb-8 pt-4 md:pt-0">
+                <button onClick={() => setCurrentView('profile')} className="flex items-center gap-2 text-slate-500 hover:text-primary font-bold text-sm transition-colors">
+                    <ChevronLeft className="w-4 h-4" /> Kembali
+                </button>
+            </div>
 
-                                {/* Template Desain */}
-                                <div>
-                                    <div className="flex items-center justify-between mb-4">
-                                        <div className="flex items-center gap-2">
-                                            <Layout className="w-4 h-4 text-primary" />
-                                            <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Template Desain</h4>
-                                            <span className="ml-2 px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded-full">{bizTemplates.length}</span>
-                                        </div>
-                                        <button
-                                            onClick={handleRegenerate}
-                                            disabled={isRegenerating}
-                                            className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold rounded-xl transition-all disabled:opacity-50"
-                                        >
-                                            {isRegenerating ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Generating ({regenProgress.current}/{regenProgress.total})...</> : <><RefreshCw className="w-3.5 h-3.5" /> Generate Ulang</>}
-                                        </button>
-                                    </div>
+            <div className="flex items-center gap-4 mb-8">
+                <div className="w-14 h-14 rounded-2xl flex items-center justify-center font-black text-2xl text-white shadow-lg" style={{ background: `linear-gradient(135deg, ${biz.primaryColor}, ${biz.secondaryColor})` }}>
+                    {biz.name.charAt(0)}
+                </div>
+                <div>
+                    <h1 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">{biz.name}</h1>
+                    <p className="text-sm text-slate-400">{biz.category}</p>
+                </div>
+            </div>
 
-                                    {loadingTemplates ? (
-                                        <div className="flex items-center justify-center py-12 text-slate-400">
-                                            <Loader2 className="w-5 h-5 animate-spin mr-2" /> <span className="text-sm font-medium">Memuat template...</span>
-                                        </div>
-                                    ) : bizTemplates.length > 0 ? (
-                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                            {bizTemplates.map((tpl, i) => (
-                                                <div key={tpl.id || i} className="group relative rounded-2xl overflow-hidden border border-slate-100 bg-slate-50 aspect-square">
-                                                    <img
-                                                        src={tpl.image_base64?.startsWith('data:') ? tpl.image_base64 : `data:image/png;base64,${tpl.image_base64}`}
-                                                        alt={`Template ${i + 1}`}
-                                                        className="w-full h-full object-cover"
-                                                    />
-                                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
-                                                        <div className="flex gap-2">
-                                                            <a
-                                                                href={tpl.image_base64?.startsWith('data:') ? tpl.image_base64 : `data:image/png;base64,${tpl.image_base64}`}
-                                                                download={`template-${i + 1}.png`}
-                                                                className="p-2 bg-white/90 rounded-lg hover:bg-white transition-colors"
-                                                                title="Download"
-                                                            >
-                                                                <Download className="w-4 h-4 text-slate-700" />
-                                                            </a>
-                                                            <button
-                                                                onClick={async () => {
-                                                                    await supabase.from('design_templates').delete().eq('id', tpl.id);
-                                                                    setBizTemplates(prev => prev.filter(t => t.id !== tpl.id));
-                                                                }}
-                                                                className="p-2 bg-white/90 rounded-lg hover:bg-red-50 transition-colors"
-                                                                title="Hapus"
-                                                            >
-                                                                <Trash2 className="w-4 h-4 text-red-500" />
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                    <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/50 text-white text-[9px] font-bold rounded-md backdrop-blur-sm">
-                                                        {tpl.format === 'ig_post' ? 'IG Post' : tpl.format === 'ig_story' ? 'IG Story' : tpl.format}
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    ) : (
-                                        <div className="w-full border-2 border-dashed border-slate-200 rounded-2xl p-8 flex flex-col items-center justify-center text-slate-400 bg-slate-50/50">
-                                            <Layout className="w-8 h-8 mb-3 text-slate-300" />
-                                            <p className="text-sm font-medium mb-1">Belum ada template</p>
-                                            <p className="text-xs text-slate-300">Klik "Generate Ulang" untuk membuat template desain</p>
-                                        </div>
-                                    )}
-                                </div>
-
-                            {/* Footer Actions */}
-                            <div className="sticky bottom-0 bg-white/95 backdrop-blur-md border-t border-slate-100 px-6 py-4 rounded-b-[2rem] flex items-center justify-end gap-3">
-                                <button
-                                    onClick={() => { setDetailBiz(null); setEditingBiz(null); }}
-                                    className="px-6 py-3 text-sm font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-xl transition-all"
-                                >
-                                    Batal
-                                </button>
-                                <button
-                                    onClick={async () => {
-                                        if (!detailBiz.id) return;
-                                        setSavingDetail(true);
-                                        const { error } = await supabase.from('businesses').update({
-                                            color_primary: editingBiz.primaryColor,
-                                            color_secondary: editingBiz.secondaryColor,
-                                            color_tertiary: editingBiz.tertiaryColor,
-                                            color_schema: editingBiz.colorSchema,
-                                            typography_preset: editingBiz.typographyPreset,
-                                            typography_custom: editingBiz.typography,
-                                            logo_base64: editingBiz.logo,
-                                        }).eq('id', detailBiz.id);
-                                        setSavingDetail(false);
-                                        if (!error) {
-                                            const updated = businesses.map(b => b.id === detailBiz.id ? { ...b, ...editingBiz } : b);
-                                            setBusinesses(updated);
-                                            if (brandDNA.id === detailBiz.id) setBrandDNA({ ...brandDNA, ...editingBiz });
-                                            setDetailBiz(null);
-                                            setEditingBiz(null);
-                                        }
-                                    }}
-                                    disabled={savingDetail}
-                                    className="px-8 py-3 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-xl transition-all shadow-sm hover:shadow-primary flex items-center gap-2 min-w-[160px] justify-center"
-                                >
-                                    {savingDetail ? <><Loader2 className="w-4 h-4 animate-spin" /> Menyimpan...</> : 'Simpan Perubahan'}
-                                </button>
-                            </div>
+            <div className="space-y-8">
+                {/* Informasi Bisnis - READ ONLY */}
+                <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                        <Briefcase className="w-4 h-4 text-primary" />
+                        <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Informasi Bisnis</h4>
+                        <span className="ml-auto px-2 py-0.5 bg-slate-100 text-slate-400 text-[10px] font-bold rounded-md uppercase tracking-wider">Tidak dapat diubah</span>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-semibold text-slate-400 ml-1">Nama Bisnis</label>
+                            <div className="w-full p-3.5 rounded-xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{biz.name}</div>
+                        </div>
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-semibold text-slate-400 ml-1">Kategori</label>
+                            <div className="w-full p-3.5 rounded-xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{biz.category}</div>
+                        </div>
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-semibold text-slate-400 ml-1">Produk / Layanan</label>
+                            <div className="w-full p-3.5 rounded-xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{biz.product || '-'}</div>
+                        </div>
+                        <div className="space-y-1.5">
+                            <label className="text-xs font-semibold text-slate-400 ml-1">Website</label>
+                            <div className="w-full p-3.5 rounded-xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{biz.website || '-'}</div>
                         </div>
                     </div>
-                </ModalPortal>
-            )}
+                </div>
+
+                {/* Warna Brand - EDITABLE */}
+                <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                        <Palette className="w-4 h-4 text-primary" />
+                        <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Warna Brand</h4>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {[
+                            { label: 'Warna Primer', key: 'primaryColor' },
+                            { label: 'Warna Sekunder', key: 'secondaryColor' },
+                            { label: 'Warna Tersier', key: 'tertiaryColor' },
+                        ].map(({ label, key }) => (
+                            <div key={key} className="space-y-1.5">
+                                <label className="text-xs font-semibold text-slate-400 ml-1">{label}</label>
+                                <div className="flex items-center gap-2">
+                                    <input type="color" value={editingBiz[key] || '#000000'} onChange={e => setEditingBiz({ ...editingBiz, [key]: e.target.value })} className="w-10 h-10 rounded-lg border border-slate-200 cursor-pointer" />
+                                    <input type="text" value={editingBiz[key] || ''} onChange={e => setEditingBiz({ ...editingBiz, [key]: e.target.value })} className="flex-1 p-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary/40 outline-none text-sm font-mono font-medium text-slate-700" />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="mt-4 flex items-center gap-2">
+                        <span className="text-xs text-slate-400 font-medium">Preview:</span>
+                        <div className="flex gap-1">
+                            <div className="w-16 h-8 rounded-lg shadow-inner border border-slate-100" style={{ backgroundColor: editingBiz.primaryColor }} />
+                            <div className="w-10 h-8 rounded-lg shadow-inner border border-slate-100" style={{ backgroundColor: editingBiz.secondaryColor }} />
+                            <div className="w-6 h-8 rounded-lg shadow-inner border border-slate-100" style={{ backgroundColor: editingBiz.tertiaryColor }} />
+                        </div>
+                    </div>
+                </div>
+
+                {/* Skema Warna */}
+                <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                        <Layers className="w-4 h-4 text-primary" />
+                        <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Skema Warna</h4>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {COLOR_SCHEMAS.map(schema => (
+                            <button key={schema.id} onClick={() => setEditingBiz({ ...editingBiz, colorSchema: schema.id, primaryColor: schema.colors[0], secondaryColor: schema.colors[1], tertiaryColor: schema.colors[2] })} className={`p-3 rounded-xl border-2 transition-all text-left ${editingBiz.colorSchema === schema.id ? 'border-primary bg-primary/5 shadow-sm' : 'border-slate-100 hover:border-primary/30'}`}>
+                                <div className="flex gap-1 mb-2">{schema.colors.map((c, i) => <div key={i} className="w-5 h-5 rounded-full border border-white shadow-sm" style={{ backgroundColor: c }} />)}</div>
+                                <p className="text-[10px] font-bold text-slate-600 truncate">{schema.name}</p>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Tipografi */}
+                <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                        <Type className="w-4 h-4 text-primary" />
+                        <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Tipografi</h4>
+                    </div>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        {TYPOGRAPHY_PRESETS.map(preset => (
+                            <button key={preset.id} onClick={() => setEditingBiz({ ...editingBiz, typographyPreset: preset.id, typography: preset.combo })} className={`p-4 rounded-xl border-2 transition-all text-center ${editingBiz.typographyPreset === preset.id ? 'border-primary bg-primary/5 shadow-sm' : 'border-slate-100 hover:border-primary/30'}`}>
+                                <p className={`text-base mb-1 ${getFontClass(preset.combo.judul, 'font-sans font-black')}`}>Aa</p>
+                                <p className="text-[10px] font-bold text-slate-500">{preset.label}</p>
+                            </button>
+                        ))}
+                    </div>
+                </div>
+
+                {/* Logo */}
+                <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                        <ImageIcon className="w-4 h-4 text-primary" />
+                        <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Logo</h4>
+                    </div>
+                    {editingBiz.logo ? (
+                        <div className="flex items-center gap-4">
+                            <div className="w-20 h-20 rounded-2xl border border-slate-200 bg-slate-50 flex items-center justify-center overflow-hidden">
+                                <img src={editingBiz.logo} alt="Logo" className="max-w-full max-h-full object-contain" />
+                            </div>
+                            <button onClick={() => setEditingBiz({ ...editingBiz, logo: null })} className="text-xs text-red-500 hover:text-red-600 font-bold hover:bg-red-50 px-3 py-2 rounded-lg transition-colors">Hapus Logo</button>
+                        </div>
+                    ) : (
+                        <div className="w-full border-2 border-dashed border-slate-200 rounded-2xl p-6 flex flex-col items-center justify-center text-slate-400 bg-slate-50/50">
+                            <Upload className="w-6 h-6 mb-2" />
+                            <p className="text-xs font-medium">Belum ada logo</p>
+                        </div>
+                    )}
+                </div>
+
+                {/* Template Desain */}
+                <div className="bg-white rounded-[2rem] border border-slate-100 shadow-sm p-6">
+                    <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-2">
+                            <Layout className="w-4 h-4 text-primary" />
+                            <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Template Desain</h4>
+                            <span className="ml-2 px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded-full">{bizTemplates.length}</span>
+                        </div>
+                        <button onClick={handleRegenerate} disabled={isRegenerating} className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold rounded-xl transition-all disabled:opacity-50">
+                            {isRegenerating ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Generating ({regenProgress.current}/{regenProgress.total})...</> : <><RefreshCw className="w-3.5 h-3.5" /> Generate Ulang</>}
+                        </button>
+                    </div>
+                    {loadingTemplates ? (
+                        <div className="flex items-center justify-center py-12 text-slate-400">
+                            <Loader2 className="w-5 h-5 animate-spin mr-2" /> <span className="text-sm font-medium">Memuat template...</span>
+                        </div>
+                    ) : bizTemplates.length > 0 ? (
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                            {bizTemplates.map((tpl, i) => (
+                                <div key={tpl.id || i} className="group relative rounded-2xl overflow-hidden border border-slate-100 bg-slate-50 aspect-square">
+                                    <img src={tpl.image_base64?.startsWith('data:') ? tpl.image_base64 : `data:image/png;base64,${tpl.image_base64}`} alt={`Template ${i + 1}`} className="w-full h-full object-cover" />
+                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                        <div className="flex gap-2">
+                                            <a href={tpl.image_base64?.startsWith('data:') ? tpl.image_base64 : `data:image/png;base64,${tpl.image_base64}`} download={`template-${i + 1}.png`} className="p-2 bg-white/90 rounded-lg hover:bg-white transition-colors" title="Download"><Download className="w-4 h-4 text-slate-700" /></a>
+                                            <button onClick={async () => { await supabase.from('design_templates').delete().eq('id', tpl.id); setBizTemplates(prev => prev.filter(t => t.id !== tpl.id)); }} className="p-2 bg-white/90 rounded-lg hover:bg-red-50 transition-colors" title="Hapus"><Trash2 className="w-4 h-4 text-red-500" /></button>
+                                        </div>
+                                    </div>
+                                    <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/50 text-white text-[9px] font-bold rounded-md backdrop-blur-sm">
+                                        {tpl.format === 'ig_post' ? 'IG Post' : tpl.format === 'ig_story' ? 'IG Story' : tpl.format}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="w-full border-2 border-dashed border-slate-200 rounded-2xl p-8 flex flex-col items-center justify-center text-slate-400 bg-slate-50/50">
+                            <Layout className="w-8 h-8 mb-3 text-slate-300" />
+                            <p className="text-sm font-medium mb-1">Belum ada template</p>
+                            <p className="text-xs text-slate-300">Klik "Generate Ulang" untuk membuat template desain</p>
+                        </div>
+                    )}
+                </div>
+
+                {/* Save Button */}
+                <div className="flex justify-end gap-3 pb-4">
+                    <button onClick={() => setCurrentView('profile')} className="px-6 py-3 text-sm font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-xl transition-all">Batal</button>
+                    <button onClick={handleSave} disabled={savingDetail} className="px-8 py-3 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-xl transition-all shadow-sm hover:shadow-primary flex items-center gap-2 min-w-[160px] justify-center">
+                        {savingDetail ? <><Loader2 className="w-4 h-4 animate-spin" /> Menyimpan...</> : 'Simpan Perubahan'}
+                    </button>
+                </div>
+            </div>
         </div>
     );
 };
