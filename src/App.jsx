@@ -3184,9 +3184,10 @@ const BusinessDetailView = ({ businessId, businesses, setBusinesses, brandDNA, s
         <div className="w-full max-w-3xl mx-auto animation-fade-in pb-24 md:pb-8">
             {/* Header with Back */}
             <div className="flex items-center gap-4 mb-8 pt-4 md:pt-0">
-                <button onClick={() => setCurrentView('profile')} className="flex items-center gap-2 text-slate-500 hover:text-primary font-bold text-sm transition-colors">
-                    <ChevronLeft className="w-4 h-4" /> Kembali
+                <button onClick={() => setCurrentView('profile')} className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-primary transition-all border border-slate-100 shadow-sm">
+                    <ChevronLeft className="w-5 h-5" />
                 </button>
+                <span className="text-sm font-bold text-slate-500">Kembali ke Profil</span>
             </div>
 
             <div className="flex items-center gap-4 mb-8">
@@ -3205,24 +3206,24 @@ const BusinessDetailView = ({ businessId, businesses, setBusinesses, brandDNA, s
                     <div className="flex items-center gap-2 mb-4">
                         <Briefcase className="w-4 h-4 text-primary" />
                         <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Informasi Bisnis</h4>
-                        <span className="ml-auto px-2 py-0.5 bg-slate-100 text-slate-400 text-[10px] font-bold rounded-md uppercase tracking-wider">Tidak dapat diubah</span>
+                        <span className="ml-auto px-2.5 py-0.5 bg-slate-100 text-slate-400 text-[10px] font-bold rounded-full uppercase tracking-wider">Tidak dapat diubah</span>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-1.5">
                             <label className="text-xs font-semibold text-slate-400 ml-1">Nama Bisnis</label>
-                            <div className="w-full p-3.5 rounded-xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{biz.name}</div>
+                            <div className="w-full p-3.5 rounded-2xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{biz.name}</div>
                         </div>
                         <div className="space-y-1.5">
                             <label className="text-xs font-semibold text-slate-400 ml-1">Kategori</label>
-                            <div className="w-full p-3.5 rounded-xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{biz.category}</div>
+                            <div className="w-full p-3.5 rounded-2xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{biz.category}</div>
                         </div>
                         <div className="space-y-1.5">
                             <label className="text-xs font-semibold text-slate-400 ml-1">Produk / Layanan</label>
-                            <div className="w-full p-3.5 rounded-xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{biz.product || '-'}</div>
+                            <div className="w-full p-3.5 rounded-2xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{biz.product || '-'}</div>
                         </div>
                         <div className="space-y-1.5">
                             <label className="text-xs font-semibold text-slate-400 ml-1">Website</label>
-                            <div className="w-full p-3.5 rounded-xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{biz.website || '-'}</div>
+                            <div className="w-full p-3.5 rounded-2xl border border-slate-100 bg-slate-50 text-sm font-medium text-slate-500 cursor-not-allowed">{biz.website || '-'}</div>
                         </div>
                     </div>
                 </div>
@@ -3243,7 +3244,7 @@ const BusinessDetailView = ({ businessId, businesses, setBusinesses, brandDNA, s
                                 <label className="text-xs font-semibold text-slate-400 ml-1">{label}</label>
                                 <div className="flex items-center gap-2">
                                     <input type="color" value={editingBiz[key] || '#000000'} onChange={e => setEditingBiz({ ...editingBiz, [key]: e.target.value })} className="w-10 h-10 rounded-lg border border-slate-200 cursor-pointer" />
-                                    <input type="text" value={editingBiz[key] || ''} onChange={e => setEditingBiz({ ...editingBiz, [key]: e.target.value })} className="flex-1 p-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary/40 outline-none text-sm font-mono font-medium text-slate-700" />
+                                    <input type="text" value={editingBiz[key] || ''} onChange={e => setEditingBiz({ ...editingBiz, [key]: e.target.value })} className="flex-1 p-3 rounded-2xl border border-slate-200 bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary/40 outline-none text-sm font-mono font-medium text-slate-700" />
                                 </div>
                             </div>
                         ))}
@@ -3319,7 +3320,7 @@ const BusinessDetailView = ({ businessId, businesses, setBusinesses, brandDNA, s
                             <h4 className="text-sm font-bold text-slate-700 uppercase tracking-wider">Template Desain</h4>
                             <span className="ml-2 px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-bold rounded-full">{bizTemplates.length}</span>
                         </div>
-                        <button onClick={handleRegenerate} disabled={isRegenerating} className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary text-xs font-bold rounded-xl transition-all disabled:opacity-50">
+                        <button onClick={handleRegenerate} disabled={isRegenerating} className="flex items-center gap-2 px-4 py-2 bg-primary/10 hover:bg-primary/20 text-primary-darker text-xs font-bold rounded-xl transition-all disabled:opacity-50">
                             {isRegenerating ? <><Loader2 className="w-3.5 h-3.5 animate-spin" /> Generating ({regenProgress.current}/{regenProgress.total})...</> : <><RefreshCw className="w-3.5 h-3.5" /> Generate Ulang</>}
                         </button>
                     </div>
@@ -3338,7 +3339,7 @@ const BusinessDetailView = ({ businessId, businesses, setBusinesses, brandDNA, s
                                             <button onClick={async () => { await supabase.from('design_templates').delete().eq('id', tpl.id); setBizTemplates(prev => prev.filter(t => t.id !== tpl.id)); }} className="p-2 bg-white/90 rounded-lg hover:bg-red-50 transition-colors" title="Hapus"><Trash2 className="w-4 h-4 text-red-500" /></button>
                                         </div>
                                     </div>
-                                    <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/50 text-white text-[9px] font-bold rounded-md backdrop-blur-sm">
+                                    <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/50 text-white text-[9px] font-bold rounded-full backdrop-blur-sm">
                                         {tpl.format === 'ig_post' ? 'IG Post' : tpl.format === 'ig_story' ? 'IG Story' : tpl.format}
                                     </div>
                                 </div>
@@ -3355,8 +3356,8 @@ const BusinessDetailView = ({ businessId, businesses, setBusinesses, brandDNA, s
 
                 {/* Save Button */}
                 <div className="flex justify-end gap-3 pb-4">
-                    <button onClick={() => setCurrentView('profile')} className="px-6 py-3 text-sm font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-xl transition-all">Batal</button>
-                    <button onClick={handleSave} disabled={savingDetail} className="px-8 py-3 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-xl transition-all shadow-sm hover:shadow-primary flex items-center gap-2 min-w-[160px] justify-center">
+                    <button onClick={() => setCurrentView('profile')} className="px-6 py-3 text-sm font-bold text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-2xl transition-all border border-slate-100">Batal</button>
+                    <button onClick={handleSave} disabled={savingDetail} className="px-8 py-3 bg-primary hover:bg-primary-dark text-white text-sm font-bold rounded-2xl transition-all shadow-sm hover:shadow-primary flex items-center gap-2 min-w-[160px] justify-center">
                         {savingDetail ? <><Loader2 className="w-4 h-4 animate-spin" /> Menyimpan...</> : 'Simpan Perubahan'}
                     </button>
                 </div>
