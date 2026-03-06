@@ -3339,7 +3339,7 @@ const BusinessDetailView = ({ businessId, businesses, setBusinesses, brandDNA, s
                                             <button onClick={async () => { await supabase.from('design_templates').delete().eq('id', tpl.id); setBizTemplates(prev => prev.filter(t => t.id !== tpl.id)); }} className="p-2 bg-white/90 rounded-lg hover:bg-red-50 transition-colors" title="Hapus"><Trash2 className="w-4 h-4 text-red-500" /></button>
                                         </div>
                                     </div>
-                                    <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/50 text-white text-[9px] font-bold rounded-md backdrop-blur-sm">
+                                    <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-black/50 text-white text-[9px] font-bold rounded-full backdrop-blur-sm">
                                         {tpl.format === 'ig_post' ? 'IG Post' : tpl.format === 'ig_story' ? 'IG Story' : tpl.format}
                                     </div>
                                 </div>
