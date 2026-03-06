@@ -179,7 +179,19 @@ async function generateTemplateImage(
   }
 
   const data = await response.json();
-  const imageUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+  // OpenRouter returns inline_data for image generation models
+  const parts = data.choices?.[0]?.message?.content;
+  let imageUrl: string | null = null;
+  if (Array.isArray(parts)) {
+    const imgPart = parts.find((p: any) => p.type === "image_url" || p.type === "image");
+    if (imgPart?.image_url?.url) {
+      imageUrl = imgPart.image_url.url;
+    }
+  }
+  // Fallback: check Lovable-style response
+  if (!imageUrl) {
+    imageUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url || null;
+  }
   return imageUrl || null;
 }
 
