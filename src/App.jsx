@@ -3184,9 +3184,10 @@ const BusinessDetailView = ({ businessId, businesses, setBusinesses, brandDNA, s
         <div className="w-full max-w-3xl mx-auto animation-fade-in pb-24 md:pb-8">
             {/* Header with Back */}
             <div className="flex items-center gap-4 mb-8 pt-4 md:pt-0">
-                <button onClick={() => setCurrentView('profile')} className="flex items-center gap-2 text-slate-500 hover:text-primary font-bold text-sm transition-colors">
-                    <ChevronLeft className="w-4 h-4" /> Kembali
+                <button onClick={() => setCurrentView('profile')} className="p-3 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-primary transition-all border border-slate-100 shadow-sm">
+                    <ChevronLeft className="w-5 h-5" />
                 </button>
+                <span className="text-sm font-bold text-slate-500">Kembali ke Profil</span>
             </div>
 
             <div className="flex items-center gap-4 mb-8">
