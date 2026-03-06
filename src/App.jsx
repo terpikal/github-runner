@@ -4566,6 +4566,19 @@ function App() {
                             businesses={businesses}
                             setBusinesses={setBusinesses}
                             setCurrentView={setCurrentView}
+                            setDetailBusinessId={setDetailBusinessId}
+                        />
+                    )
+                }
+                {
+                    currentView === 'business-detail' && detailBusinessId && (
+                        <BusinessDetailView
+                            businessId={detailBusinessId}
+                            businesses={businesses}
+                            setBusinesses={setBusinesses}
+                            brandDNA={brandDNA}
+                            setBrandDNA={setBrandDNA}
+                            setCurrentView={setCurrentView}
                         />
                     )
                 }
