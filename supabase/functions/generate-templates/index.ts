@@ -63,8 +63,47 @@ interface BusinessData {
   color_tertiary?: string;
   color_schema: string;
   typography_preset?: string;
+  typography_custom?: {
+    judul?: string;
+    subJudul?: string;
+    deskripsi?: string;
+  };
   logo_base64?: string;
 }
+
+// Map typography preset IDs to font descriptions for AI prompt
+const TYPOGRAPHY_MAP: Record<string, { heading: string; body: string; style: string }> = {
+  "modern-bersih": {
+    heading: "Inter (weight 800, tight letter-spacing)",
+    body: "Inter (weight 400, clean and readable)",
+    style: "Modern, clean, and professional — sharp geometric sans-serif"
+  },
+  "klasik-elegan": {
+    heading: "Georgia serif (weight 700, elegant)",
+    body: "Georgia serif (weight 400, italic sub-headings)",
+    style: "Classic, elegant, and sophisticated — refined serif typography"
+  },
+  "tegas-kuat": {
+    heading: "Arial Black (weight 900, uppercase, wide letter-spacing)",
+    body: "Arial (weight 400, compact line-height)",
+    style: "Bold, powerful, and commanding — strong impactful typography"
+  },
+  "kreatif-unik": {
+    heading: "Trebuchet MS (weight 700, italic, wide letter-spacing)",
+    body: "Trebuchet MS (weight 400, relaxed line-height)",
+    style: "Creative, unique, and playful — dynamic italic typography"
+  },
+  "hangat-bersahabat": {
+    heading: "Verdana (weight 700, no letter-spacing)",
+    body: "Verdana (weight 400, generous line-height)",
+    style: "Warm, friendly, and approachable — soft rounded typography"
+  },
+  "minimalis-tipis": {
+    heading: "Inter thin (weight 300, very wide letter-spacing)",
+    body: "Inter thin (weight 300, airy line-height)",
+    style: "Minimalist, thin, and airy — elegant lightweight typography"
+  },
+};
 
 interface TemplateRequest {
   business_id?: string;
@@ -100,6 +139,27 @@ function buildPrompt(business: BusinessData, format: string, variationIndex: num
     ? `- IMPORTANT: Include the website "${business.website}" visibly in the design (e.g. at the bottom or near the logo area). Use the EXACT text "${business.website}" — do not modify or abbreviate it.`
     : `- Do NOT include any website URL or web address in the design.`;
 
+  // Build typography instruction
+  let typographySection = "";
+  const presetId = business.typography_preset;
+  const typoMap = presetId ? TYPOGRAPHY_MAP[presetId] : null;
+  if (typoMap) {
+    typographySection = `
+TYPOGRAPHY & FONT STYLE:
+- Heading font: ${typoMap.heading}
+- Body font: ${typoMap.body}
+- Overall typography feel: ${typoMap.style}
+- IMPORTANT: Match the font weight, spacing, and style described above in the design`;
+  } else if (business.typography_custom) {
+    const tc = business.typography_custom;
+    typographySection = `
+TYPOGRAPHY & FONT STYLE:
+- Heading style: ${tc.judul || "bold"}
+- Sub-heading style: ${tc.subJudul || "medium"}
+- Body text style: ${tc.deskripsi || "regular"}
+- Match these typography characteristics in the design`;
+  }
+
   return `Create a professional ${config.label} design template (${config.ratio} aspect ratio) for a business called "${business.name}" in the "${business.category}" industry.
 ${business.product ? `Their main product/service: ${business.product}` : ""}
 
@@ -108,6 +168,7 @@ BRAND COLORS:
 - Secondary: ${business.color_secondary}
 ${business.color_tertiary ? `- Tertiary: ${business.color_tertiary}` : ""}
 - Color scheme: ${business.color_schema}
+${typographySection}
 
 DESIGN STYLE: ${styleVariation}
 

@@ -315,7 +315,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                 color_secondary: localBrand.secondaryColor,
                 color_tertiary: localBrand.tertiaryColor || null,
                 color_schema: localBrand.colorSchema || 'custom',
-                typography_preset: null,
+                typography_preset: localBrand.typography?.preset || 'modern-bersih',
                 logo_base64: localBrand.logo || null,
             };
 
@@ -422,7 +422,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                     color_secondary: newBrand.secondaryColor,
                     color_tertiary: newBrand.tertiaryColor || null,
                     color_schema: newBrand.colorSchema || 'custom',
-                    typography_preset: null,
+                    typography_preset: newBrand.typography?.preset || 'modern-bersih',
                     typography_custom: newBrand.typography || null,
                     logo_base64: newBrand.logo || null,
                     design_templates: newBrand.designTemplate || [],
