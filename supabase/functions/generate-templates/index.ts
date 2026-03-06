@@ -107,17 +107,17 @@ ${business.color_tertiary ? `- Tertiary: ${business.color_tertiary}` : ""}
 DESIGN STYLE: ${styleVariation}
 
 REQUIREMENTS:
-- This is a TEMPLATE design — include placeholder areas for headline text, body text, and product image
+- This is a TEMPLATE design — include areas for headline text, body text, and product image
 - Use the brand colors prominently following the 60-30-10 rule
 - Create clear visual hierarchy with a strong focal point
 - Include decorative elements that match the brand's industry
-- NO actual text content — use placeholder blocks/lines to indicate text areas
+- For any text areas, use Lorem ipsum dummy text (e.g. "Lorem Ipsum Dolor Sit Amet" for headlines, "Consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." for body text)
 - Design should feel cohesive with the brand identity
 - Leave space for a logo in a corner
 - Make it visually striking and professional
 - The design should work as a reusable template
 
-DO NOT include any real text, words, or letters in the image. Use colored rectangles or lines as text placeholders.`;
+Use Lorem ipsum placeholder text for all text elements. DO NOT leave text areas empty or use colored rectangles — always fill them with realistic-looking Lorem ipsum dummy text to show how the final design will look.`;
 }
 
 async function generateTemplateImage(
