@@ -139,6 +139,27 @@ function buildPrompt(business: BusinessData, format: string, variationIndex: num
     ? `- IMPORTANT: Include the website "${business.website}" visibly in the design (e.g. at the bottom or near the logo area). Use the EXACT text "${business.website}" — do not modify or abbreviate it.`
     : `- Do NOT include any website URL or web address in the design.`;
 
+  // Build typography instruction
+  let typographySection = "";
+  const presetId = business.typography_preset;
+  const typoMap = presetId ? TYPOGRAPHY_MAP[presetId] : null;
+  if (typoMap) {
+    typographySection = `
+TYPOGRAPHY & FONT STYLE:
+- Heading font: ${typoMap.heading}
+- Body font: ${typoMap.body}
+- Overall typography feel: ${typoMap.style}
+- IMPORTANT: Match the font weight, spacing, and style described above in the design`;
+  } else if (business.typography_custom) {
+    const tc = business.typography_custom;
+    typographySection = `
+TYPOGRAPHY & FONT STYLE:
+- Heading style: ${tc.judul || "bold"}
+- Sub-heading style: ${tc.subJudul || "medium"}
+- Body text style: ${tc.deskripsi || "regular"}
+- Match these typography characteristics in the design`;
+  }
+
   return `Create a professional ${config.label} design template (${config.ratio} aspect ratio) for a business called "${business.name}" in the "${business.category}" industry.
 ${business.product ? `Their main product/service: ${business.product}` : ""}
 
@@ -147,6 +168,7 @@ BRAND COLORS:
 - Secondary: ${business.color_secondary}
 ${business.color_tertiary ? `- Tertiary: ${business.color_tertiary}` : ""}
 - Color scheme: ${business.color_schema}
+${typographySection}
 
 DESIGN STYLE: ${styleVariation}
 
