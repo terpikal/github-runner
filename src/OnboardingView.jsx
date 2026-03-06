@@ -326,7 +326,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
             });
 
             if (result) {
-                // Store generated templates temporarily in localStorage
+                // Store generated templates in React state (not localStorage — too large for base64)
                 const templatesToStore = (result.templates || []).map(t => ({
                     image_base64: t.image_base64,
                     format: t.format,
@@ -334,7 +334,7 @@ const OnboardingView = ({ setBrandDNA, businesses, setBusinesses, setCurrentView
                     height: t.height,
                     variation_index: t.variation_index,
                 }));
-                localStorage.setItem('onboarding_generated_templates', JSON.stringify(templatesToStore));
+                setPendingTemplates(templatesToStore);
                 setShowTemplateModal(true);
             }
         } catch (err) {
