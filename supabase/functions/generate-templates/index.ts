@@ -129,7 +129,9 @@ async function generateTemplateImage(
   if (businessLogoBase64 && (businessLogoBase64.startsWith('blob:') || businessLogoBase64.startsWith('http'))) {
     businessLogoBase64 = undefined;
   }
-  const messages: any[] = [];
+  const messages: any[] = [
+    { role: "system", content: GRAPHIC_DESIGNER_SYSTEM_PROMPT },
+  ];
 
   if (businessLogoBase64) {
     messages.push({
