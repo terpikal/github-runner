@@ -3244,7 +3244,7 @@ const BusinessDetailView = ({ businessId, businesses, setBusinesses, brandDNA, s
                                 <label className="text-xs font-semibold text-slate-400 ml-1">{label}</label>
                                 <div className="flex items-center gap-2">
                                     <input type="color" value={editingBiz[key] || '#000000'} onChange={e => setEditingBiz({ ...editingBiz, [key]: e.target.value })} className="w-10 h-10 rounded-lg border border-slate-200 cursor-pointer" />
-                                    <input type="text" value={editingBiz[key] || ''} onChange={e => setEditingBiz({ ...editingBiz, [key]: e.target.value })} className="flex-1 p-3 rounded-xl border border-slate-200 bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary/40 outline-none text-sm font-mono font-medium text-slate-700" />
+                                    <input type="text" value={editingBiz[key] || ''} onChange={e => setEditingBiz({ ...editingBiz, [key]: e.target.value })} className="flex-1 p-3 rounded-2xl border border-slate-200 bg-white focus:ring-2 focus:ring-primary/10 focus:border-primary/40 outline-none text-sm font-mono font-medium text-slate-700" />
                                 </div>
                             </div>
                         ))}
