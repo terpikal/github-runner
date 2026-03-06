@@ -22,6 +22,7 @@ import CanvasEditor from './CanvasEditor';
 import DesignSystemView from './DesignSystemView';
 import LoginView from './LoginView';
 import postibleLogo from './assets/postibel-logo.svg';
+import { useGenerateTemplates } from './hooks/useGenerateTemplates';
 
 // Renders children into document.body to guarantee full-viewport overlay
 const ModalPortal = ({ children }) => ReactDOM.createPortal(children, document.body);
