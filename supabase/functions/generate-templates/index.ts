@@ -163,7 +163,7 @@ async function generateTemplateImage(
       "X-Title": "Postibel",
     },
     body: JSON.stringify({
-      model: "google/gemini-2.5-flash-preview-image-generation",
+      model: "google/gemini-2.5-flash-image",
       messages,
       modalities: ["image", "text"],
     }),
