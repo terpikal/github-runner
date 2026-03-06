@@ -1,0 +1,1 @@
+ALTER TABLE public.businesses ADD COLUMN brief_template text DEFAULT NULL;

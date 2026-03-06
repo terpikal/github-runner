@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       businesses: {
         Row: {
+          brief_template: string | null
           category: string
           color_primary: string
           color_schema: string
@@ -35,6 +36,7 @@ export type Database = {
           website: string | null
         }
         Insert: {
+          brief_template?: string | null
           category: string
           color_primary?: string
           color_schema?: string
@@ -54,6 +56,7 @@ export type Database = {
           website?: string | null
         }
         Update: {
+          brief_template?: string | null
           category?: string
           color_primary?: string
           color_schema?: string
