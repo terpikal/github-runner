@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 
-const GENERATE_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/generate-templates`;
+const GENERATE_URL = "https://dmlrgfxjmcwqwfjiwvfo.supabase.co/functions/v1/generate-templates";
 
 export function useGenerateTemplates() {
   const [isGenerating, setIsGenerating] = useState(false);
