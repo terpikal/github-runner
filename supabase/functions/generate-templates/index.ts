@@ -77,6 +77,99 @@ interface TemplateRequest {
   save_to_db?: boolean;
 }
 
+// ─── Standard Brief Template ────────────────────────────────────
+// This is the fixed framework. AI analyzes business data to fill each section.
+const STANDARD_BRIEF_TEMPLATE = `
+## 1. BRAND PERSONALITY PROFILE
+- **Brand Archetype**: [Analyze from business category, product, and visual identity]
+- **Brand Voice**: [Derive tone from color scheme, typography choice, and industry]
+- **Core Values**: [Infer 3-5 values from business positioning]
+- **Target Audience**: [Deduce from category, product, and brand style]
+- **Emotional Response**: [What feeling should the design evoke?]
+
+## 2. VISUAL IDENTITY ANALYSIS
+- **Color Psychology**: [Analyze what the chosen colors communicate]
+- **Color Harmony Type**: [Identify: complementary, analogous, triadic, etc.]
+- **Typography Character**: [What personality does the font choice convey?]
+- **Overall Aesthetic**: [Summarize the visual direction from all brand elements]
+- **Industry Visual Conventions**: [What design norms exist in this industry?]
+- **Differentiation Opportunity**: [How to stand out from industry norms?]
+
+## 3. COLOR APPLICATION STRATEGY
+- **60% Dominant**: [Which color and where to apply as background/base]
+- **30% Secondary**: [Which color for supporting elements, shapes, containers]
+- **10% Accent**: [Which color for CTAs, highlights, key elements]
+- **Gradient/Overlay Rules**: [When and how to use gradients if applicable]
+- **Text on Color**: [Contrast rules for readability on each color]
+
+## 4. TYPOGRAPHY HIERARCHY
+- **Headline Treatment**: [Size, weight, spacing, case for main headlines]
+- **Subheadline Treatment**: [Differentiation from headline]
+- **Body Text Treatment**: [Readability specs]
+- **CTA Text Treatment**: [How call-to-action text should appear]
+- **Maximum Font Sizes**: [Relative scale system]
+
+## 5. LAYOUT FRAMEWORK
+- **Grid System**: [Column/row structure for each format]
+- **Content Zones**: [Where headline, body, CTA, logo, decorative elements go]
+- **Safe Margins**: [Minimum padding from edges]
+- **Visual Flow Pattern**: [Z-pattern, F-pattern, or other]
+- **White Space Strategy**: [Minimum white space percentage and distribution]
+
+## 6. DESIGN VARIATION DIRECTIONS
+[Define distinct style directions for each variation number]
+
+### Variation 1: [Style Name]
+- **Visual Concept**: [Core visual idea]
+- **Key Elements**: [Specific shapes, patterns, textures]
+- **Mood**: [Emotional tone]
+- **Layout Approach**: [Specific layout for this variation]
+
+### Variation 2: [Style Name]
+- **Visual Concept**: [Core visual idea]
+- **Key Elements**: [Specific shapes, patterns, textures]
+- **Mood**: [Emotional tone]
+- **Layout Approach**: [Specific layout for this variation]
+
+### Variation 3: [Style Name]
+- **Visual Concept**: [Core visual idea]
+- **Key Elements**: [Specific shapes, patterns, textures]
+- **Mood**: [Emotional tone]
+- **Layout Approach**: [Specific layout for this variation]
+
+### Variation 4: [Style Name]
+- **Visual Concept**: [Core visual idea]
+- **Key Elements**: [Specific shapes, patterns, textures]
+- **Mood**: [Emotional tone]
+- **Layout Approach**: [Specific layout for this variation]
+
+### Variation 5: [Style Name]
+- **Visual Concept**: [Core visual idea]
+- **Key Elements**: [Specific shapes, patterns, textures]
+- **Mood**: [Emotional tone]
+- **Layout Approach**: [Specific layout for this variation]
+
+### Variation 6: [Style Name]
+- **Visual Concept**: [Core visual idea]
+- **Key Elements**: [Specific shapes, patterns, textures]
+- **Mood**: [Emotional tone]
+- **Layout Approach**: [Specific layout for this variation]
+
+## 7. CONSISTENCY RULES
+- **Must-Have Elements**: [Elements present in every variation]
+- **Color Consistency**: [Which colors must appear in every design]
+- **Typography Consistency**: [Font rules that never change]
+- **Logo Placement**: [Fixed position and minimum size]
+- **Brand Signature**: [Unique visual element that ties all designs together]
+
+## 8. DECORATIVE ELEMENTS LIBRARY
+- **Primary Shapes**: [Geometric or organic shapes to use]
+- **Pattern Style**: [Type of patterns if any]
+- **Texture Treatment**: [Subtle textures or clean flat]
+- **Icon Style**: [If icons are used, what style]
+- **Border/Line Treatment**: [How borders and dividers should look]
+`;
+
 // ─── Step 1: Generate Design Brief using GPT-5 ─────────────────
 async function generateDesignBrief(
   business: BusinessData,
@@ -84,7 +177,7 @@ async function generateDesignBrief(
   variationsPerFormat: number,
   apiKey: string,
 ): Promise<string> {
-  // Build typography info for the brief prompt
+  // Build typography info for analysis
   let typographyInfo = "";
   const presetId = business.typography_preset;
   const typoMap = presetId ? TYPOGRAPHY_MAP[presetId] : null;
@@ -108,43 +201,34 @@ async function generateDesignBrief(
     return cfg ? `${cfg.label} (${cfg.ratio}, ${cfg.width}×${cfg.height})` : f;
   }).join(", ");
 
-  const briefPrompt = `You are a senior graphic designer and creative director. Create a comprehensive design brief for a social media design template project.
+  const briefPrompt = `You are a senior graphic designer and creative director. Your task is to ANALYZE the business information below and FILL IN the standard design brief template.
 
-## Client Information
+## BUSINESS DATA TO ANALYZE
 - Business name: "${business.name}"
 - Industry/category: "${business.category}"
-${business.product ? `- Main product/service: "${business.product}"` : ""}
-${business.website ? `- Website: "${business.website}"` : ""}
+${business.product ? `- Main product/service: "${business.product}"` : "- Main product/service: not specified"}
+${business.website ? `- Website: "${business.website}"` : "- Website: not specified"}
 
-## Brand Identity
+## BRAND IDENTITY DATA
 - Primary color: ${business.color_primary}
 - Secondary color: ${business.color_secondary}
-${business.color_tertiary ? `- Tertiary color: ${business.color_tertiary}` : ""}
-- Color scheme: ${business.color_schema}
+${business.color_tertiary ? `- Tertiary color: ${business.color_tertiary}` : "- Tertiary color: not specified"}
+- Color scheme style: ${business.color_schema}
 ${typographyInfo}
 
-## Project Requirements
-- Formats needed: ${formatDescriptions}
-- Number of variations per format: ${variationsPerFormat}
-- Total templates to produce: ${formats.length * variationsPerFormat}
+## PROJECT PARAMETERS
+- Formats: ${formatDescriptions}
+- Variations per format: ${variationsPerFormat}
+- Total templates: ${formats.length * variationsPerFormat}
 
-## Your Task
-Create a detailed design brief that covers:
+## INSTRUCTIONS
+Below is the STANDARD BRIEF TEMPLATE. Replace every bracketed placeholder [...] with your expert analysis based on the business data above. Be specific, actionable, and detailed — no vague or generic answers. Each section must directly reference the actual brand data provided.
 
-1. **Brand Analysis**: Summarize the brand personality based on the business info, colors, and typography
-2. **Visual Direction**: Define the overall visual direction — mood, tone, aesthetic
-3. **Color Strategy**: How to apply the 60-30-10 rule with the brand colors across all templates
-4. **Typography Strategy**: How to use the selected typography to create hierarchy and visual impact
-5. **Layout Principles**: Specific layout approaches for each format (considering aspect ratios)
-6. **Design Variations**: Define ${variationsPerFormat} distinct style directions for the variations. Each variation must have:
-   - A clear style name (e.g., "Bold Minimalist", "Elegant Gradient", "Dynamic Geometric")
-   - Key visual characteristics
-   - Mood/tone description
-   - Specific decorative elements or patterns to use
-7. **Content Zones**: Define where headline, body text, CTA, logo, and decorative elements should be placed
-8. **Consistency Rules**: What elements must remain consistent across all variations to maintain brand cohesion
+For Section 6 (Design Variation Directions), create exactly ${formats.length * variationsPerFormat} variations. Each must be distinctly different while maintaining brand cohesion.
 
-Write the brief in a structured, detailed manner. This brief will be used as the guiding document for an AI image generator to produce the actual templates. Be specific about visual details, not vague.`;
+${STANDARD_BRIEF_TEMPLATE}
+
+IMPORTANT: Fill in ALL bracketed placeholders with specific, data-driven analysis. Do not leave any placeholder unfilled.`;
 
   const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
     method: "POST",
@@ -159,11 +243,11 @@ Write the brief in a structured, detailed manner. This brief will be used as the
       messages: [
         {
           role: "system",
-          content: "You are a world-class creative director specializing in brand identity and social media design systems. You create thorough, actionable design briefs that result in cohesive, professional template designs. Always respond in English for maximum clarity in downstream AI image generation."
+          content: "You are a world-class creative director specializing in brand identity and social media design systems. You receive a standard brief template and business data. Your job is to analyze the business data thoroughly and fill in every section of the template with specific, actionable insights. Never leave placeholders unfilled. Always respond in English for clarity in downstream AI image generation."
         },
         { role: "user", content: briefPrompt },
       ],
-      max_tokens: 4000,
+      max_tokens: 5000,
     }),
   });
 
